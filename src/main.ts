@@ -12,6 +12,8 @@ import { zhTw } from 'element-plus/es/locales.mjs'
 import 'element-plus/dist/index.css'
 import './styles/element-vars.scss'
 
+import { registerComponents } from './components'
+
 const app = createApp(App)
 
 app.use(pinia)
@@ -19,5 +21,8 @@ app.use(router)
 app.use(ElementPlus, {
   locale: zhTw,
 })
+
+// 全局注册组件
+registerComponents(app)
 
 app.mount('#app')
