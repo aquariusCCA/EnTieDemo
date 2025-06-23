@@ -1,193 +1,59 @@
 <template>
-  <div class="login-container">
-    <transition name="form-slide">
-      <div v-show="showForm" class="login-wrapper">
-        <!-- 標題 -->
-        <transition name="title-slide" appear>
-          <h2 class="form-title">登入系統</h2>
-        </transition>
-
-        <!-- 表單 -->
-        <el-form
-          ref="loginForm"
-          class="login-form"
-          :model="form"
-          :rules="rules"
-          label-position="top"
-        >
-          <transition name="input-slide" appear>
-            <el-form-item label="帳號" prop="username">
-              <el-input v-model="form.username" placeholder="請輸入帳號" />
-            </el-form-item>
-          </transition>
-
-          <transition name="input-slide" appear>
-            <el-form-item label="密碼" prop="password">
-              <el-input
-                v-model="form.password"
-                type="password"
-                placeholder="請輸入密碼"
-                show-password
-              />
-            </el-form-item>
-          </transition>
-
-          <transition name="input-slide" appear>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit" class="login-button">登入</el-button>
-            </el-form-item>
-          </transition>
-        </el-form>
-
-        <!-- 提示區塊 -->
-        <transition name="hint-slide" appear>
-          <p class="hint-text">
-            密碼同電腦開機時所輸入的密碼，輸入錯誤三次以上會鎖住電腦。
-          </p>
-        </transition>
+  <div class="flex items-center justify-center h-screen px-6 bg-gray-200">
+    <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">
+      <div class="flex items-center justify-center">
+        <svg class="w-10 h-10" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M364.61 390.213C304.625 450.196 207.37 450.196 147.386 390.213C117.394 360.22 102.398 320.911 102.398 281.6C102.398 242.291 117.394 202.981 147.386 172.989C147.386 230.4 153.6 281.6 230.4 307.2C230.4 256 256 102.4 294.4 76.7999C320 128 334.618 142.997 364.608 172.989C394.601 202.981 409.597 242.291 409.597 281.6C409.597 320.911 394.601 360.22 364.61 390.213Z"
+            fill="#4C51BF" stroke="#4C51BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M201.694 387.105C231.686 417.098 280.312 417.098 310.305 387.105C325.301 372.109 332.8 352.456 332.8 332.8C332.8 313.144 325.301 293.491 310.305 278.495C295.309 263.498 288 256 275.2 230.4C256 243.2 243.201 320 243.201 345.6C201.694 345.6 179.2 332.8 179.2 332.8C179.2 352.456 186.698 372.109 201.694 387.105Z"
+            fill="white" />
+        </svg>
+        <span class="text-2xl font-semibold text-gray-700">登入系統</span>
       </div>
-    </transition>
+
+      <!-- 表單 -->
+      <form class="mt-4">
+        <!-- 帳號 -->
+        <label class="floating-label mt-6">
+          <input 
+            type="text" 
+            required
+            placeholder="請輸入帳號" 
+            class="w-full input input-primary bg-white text-black" 
+          />
+          <span class="text-xl font-semibold">帳號</span>
+        </label>
+
+        <!-- 密碼 -->
+        <label class="floating-label mt-6">
+          <input
+            type="password" 
+            required
+            placeholder="請輸入密碼"
+            class="w-full input input-primary bg-white text-black"   
+          />
+          <span class="text-xl font-semibold">密碼</span>
+        </label>
+
+        <p class="mt-2 text-sm text-gray-600 leading-snug">
+          密碼同電腦開機時所輸入的密碼，輸入錯誤三次以上會鎖住電腦。
+        </p>
+
+        <div class="mt-6">
+          <button class="w-full btn btn-primary ">登錄</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const showForm = ref(false)
-const form = ref({
-  username: '',
-  password: ''
-})
-
-const rules = {
-  username: [{ required: true, message: '請輸入帳號', trigger: 'blur' }],
-  password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }]
-}
-
-const onSubmit = () => {
-  console.log('登入資料：', form.value)
-}
-
-onMounted(() => {
-  showForm.value = true
-})
+const router = useRouter()
+const email = ref('johndoe@mail.com')
+const password = ref('@#!@#asdf1231!_!@#')
 </script>
-
-<style scoped>
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 1rem;
-  background: linear-gradient(135deg, #f0f3f8, #d9e4f5);
-}
-
-.login-wrapper {
-  width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.form-title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #303133;
-}
-
-.login-form {
-  width: 100%;
-}
-
-.login-button {
-  width: 100%;
-}
-
-/* 新增提示文字樣式 */
-.hint-text {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: #909399;
-  text-align: center;
-  line-height: 1.4;
-}
-
-/* --- 過渡動畫 --- */
-.form-slide-enter-active {
-  animation: form-slide-in 0.6s ease-out forwards;
-}
-@keyframes form-slide-in {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.input-slide-enter-active {
-  animation: input-slide-in 0.5s ease-out forwards;
-}
-@keyframes input-slide-in {
-  0% {
-    transform: translateX(50%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.title-slide-enter-active {
-  animation: title-slide-in 0.5s ease-out forwards;
-}
-@keyframes title-slide-in {
-  0% {
-    transform: translateX(50%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* 提示文字過渡動畫 */
-.hint-slide-enter-active {
-  animation: hint-slide-in 0.5s ease-out forwards;
-}
-@keyframes hint-slide-in {
-  0% {
-    transform: translateX(30%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* RWD */
-@media (max-width: 480px) {
-  .login-wrapper {
-    padding: 1.5rem;
-    box-shadow: none;
-  }
-
-  .form-title {
-    font-size: 1.25rem;
-  }
-
-  .hint-text {
-    font-size: 0.75rem;
-  }
-}
-</style>

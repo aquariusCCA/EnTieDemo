@@ -12,6 +12,9 @@ import { zhTw } from 'element-plus/es/locales.mjs'
 import 'element-plus/dist/index.css'
 import './styles/element-vars.scss'
 
+// 引入 Tailwind CSS
+import './styles/tailwind.css'
+
 import { registerComponents } from './components'
 
 const app = createApp(App)
