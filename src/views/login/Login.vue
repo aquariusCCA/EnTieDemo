@@ -14,10 +14,11 @@
       </div>
 
       <!-- 表單 -->
-      <form class="mt-4">
+      <form class="mt-4"  @submit.prevent="clickLoginButton">
         <!-- 帳號 -->
         <label class="floating-label mt-6">
           <input 
+            v-model="empId"
             type="text" 
             required
             placeholder="請輸入帳號" 
@@ -29,6 +30,7 @@
         <!-- 密碼 -->
         <label class="floating-label mt-6">
           <input
+            v-model="password"
             type="password" 
             required
             placeholder="請輸入密碼"
@@ -42,7 +44,7 @@
         </p>
 
         <div class="mt-6">
-          <button class="w-full btn btn-primary ">登錄</button>
+          <button class="w-full btn btn-primary">登錄</button>
         </div>
       </form>
     </div>
@@ -51,9 +53,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { doLogin } from '@/api/user'
 
-const router = useRouter()
-const email = ref('johndoe@mail.com')
-const password = ref('@#!@#asdf1231!_!@#')
+const empId = ref('')
+const password = ref('')
+
+async function clickLoginButton() {
+ let { data } = await doLogin({ 
+   empId: empId.value,
+   password: password.value
+ })
+
+ console.log(data)
+}
 </script>
