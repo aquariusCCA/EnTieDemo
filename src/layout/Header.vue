@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useSidebar } from '../composables/useSidebar'
-import Breadcrumb from '@/components/Breadcrumb.vue'
+import Breadcrumb from './Breadcrumb.vue'
 
 const dropdownOpen = ref(false)
 const { isOpen } = useSidebar()

@@ -1,5 +1,4 @@
 import type { App } from 'vue'
-import Breadcrumb from './Breadcrumb.vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 export function registerComponents(app: App): void {
@@ -7,7 +6,4 @@ export function registerComponents(app: App): void {
   Object.entries(ElementPlusIconsVue).forEach(([componentName, component]) => {
     app.component(componentName, component)
   })
-
-  // 全局註冊 Breadcrumb 組件
-  app.component('Breadcrumb', Breadcrumb)
 }
