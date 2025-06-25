@@ -1,9 +1,29 @@
+import type {
+  RouteLocationNormalized,
+} from 'vue-router'
+
 export const routes = [
   // 一个一个的路由规则
   {
     name: "login",
     path: "/login",
     component: () => import("@/views/login/Login.vue"), // 懒加载Login组件
+  },
+  {
+    name: "error",
+    path: "/error/:code/:message", // 捕获错误ID和消息
+    component: () => import("@/views/error/Error.vue"), // 懒加载Error组件
+  },
+  // ★ 放在最後，避免攔截到其他有效路由
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: (to: RouteLocationNormalized) => ({
+      name: "error",
+      params: {
+        code: 404,
+        message: "Page Not Found",
+      },
+    }),
   },
   // {
   //   name: "layout",
@@ -49,4 +69,4 @@ export const routes = [
   //       }
   //   ]
   //   },
-]
+];

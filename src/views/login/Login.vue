@@ -53,17 +53,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { doLogin } from '@/api/user'
+import { useUserStore } from '@/stores/modules/user'
 
 const empId = ref('')
 const password = ref('')
 
-async function clickLoginButton() {
- let { data } = await doLogin({ 
-   empId: empId.value,
-   password: password.value
- })
+const userStore = useUserStore()
+const { login } = userStore
 
- console.log(data)
+async function clickLoginButton() {
+  await login(empId.value, password.value)
 }
 </script>

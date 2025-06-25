@@ -15,7 +15,8 @@ request.interceptors.request.use((config)=>{
 // 添加相应拦截器
 request.interceptors.response.use((res)=>{
     // 成功回调
-    return res.data
+    console.log('请求成功', res)
+    return res
 },(err)=>{
     // 失败回调
     let message = ''
