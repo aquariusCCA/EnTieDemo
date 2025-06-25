@@ -2,8 +2,9 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 
 const request = axios.create({
-    baseURL:import.meta.env.VITE_APP_BASE_API,
+    baseURL:import.meta.env.VITE_SERVER,
     timeout:8000,
+    withCredentials:true, //携带cookie
 })
 
 //添加请求拦截器

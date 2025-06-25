@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 //枚举请求地址，（定义常量）
 enum API {
-    LOGIN_URL = '/user/doLogin',
+    LOGIN_URL = '/login',
 }
 // 暴露请求函数
 // 登录
