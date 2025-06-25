@@ -34,9 +34,9 @@ function clickBreadcrumb(item: Crumb) {
 const breadcrumbs = computed<Crumb[]>(() => {
     // route.matched 儲存了從根到當前的所有匹配記錄
     return route.matched
-        .filter((record) => record.meta.breadcrumb) // 只選有設定 breadcrumb 的路由
+        .filter((record) => record.meta.title) // 只選有設定 breadcrumb 的路由
         .map((record) => ({
-            text: String(record.meta.breadcrumb),
+            text: String(record.meta.title),
             to: {
                 name: record.name as string,
                 params: route.params, // 帶上目前的 params（如果有的話）
