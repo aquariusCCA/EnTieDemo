@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
-interface User {
-  username: string
-  email: string
-  password: string
-  confirm: string
-}
-
-const user = ref<User>({
-  username: '',
-  email: '',
-  password: '',
-  confirm: '',
+const form = reactive({
+  clientID: '',
+  startDate: '',
+  endDate: '',
 })
 
-function register() {
-  const data = JSON.parse(JSON.stringify(user.value))
-  // eslint-disable-next-line no-console
-  console.log('Registered: ', data)
+function searchReport() {
+  console.log('Searching report with:', {
+    clientID: form.clientID,
+    startDate: form.startDate,
+    endDate: form.endDate,
+  });
+
+  // 驗證日期格式：結束日期不得早於開始日期
+  if (form.startDate && form.endDate && form.startDate > form.endDate) {
+    ElMessage({
+      message: '結束日期不得早於開始日期',
+      type: 'warning',
+    })
+    return;
+  }
 }
+
 </script>
 
 <template>
@@ -31,12 +36,13 @@ function register() {
             Account settings
           </h2>
 
-          <form @submit.prevent="register">
+          <form @submit.prevent="searchReport">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div>
                 <label class="text-gray-700" for="username">統編</label>
                 <input 
-                  class="input bg-transparent input-primary placeholder:text-gray-500 mt-2" 
+                  v-model="form.clientID"
+                  class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2" 
                   required
                   type="text" 
                   placeholder="請輸入統編" 
@@ -44,10 +50,22 @@ function register() {
               </div>
 
               <div>
-                <label class="text-gray-700" for="emailAddress">日期範圍</label>
+                <label class="text-gray-700" for="emailAddress">開始日期</label>
                 <input 
+                  v-model="form.startDate"
                   class="input bg-transparent input-primary text-gray-500 mt-2" 
-                  type="date" 
+                  type="month"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="text-gray-700" for="password">結束日期</label>
+                <input 
+                  v-model="form.endDate"
+                  class="input bg-transparent input-primary text-gray-500 mt-2" 
+                  type="month"
+                  required
                 />
               </div>
             </div>
