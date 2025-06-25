@@ -40,35 +40,35 @@ export const routes = [
       },
     }),
   },
-  // {
-  //   name: "reports",
-  //   path: "/reports",
-  //   component: () => import("@/layout/Layout.vue"), // 懒加载
-  //   redirect: "/reports/performance-details", // 重定向到/reports/performance-details
-  //   meta: { title: "報表" },
-  //   children: [
-  //     {
-  //       name: "performance-details", // 路由名稱：小寫 + 連字符
-  //       path: "performance-details",
-  //       meta: { title: "績效查詢" },
-  //       component: () =>
-  //         import("@/views/reports/performanceDetails/PerformanceDetails.vue"), // 懶加载PerformanceDetails组件
-  //     },
-  //   ],
-  // },
   {
-    name: "test1",
-    path: "/test1",
-    component: () => import("@/layout/DashboardLayout.vue"), 
-    // redirect: "/test1/child", // 重定向到/test1/child
-    meta: { title: "測試1", showInMenu: true },
-    // children: [
-    //   {
-    //     name: "child",
-    //     path: "child",
-    //     meta: { title: "測試1-子路由" },
-    //     component: () => import("@/views/Test1Child.vue"), // 懒加载Test1Child组件
-    //   },
-    // ],
+    name: "reports",
+    path: "/reports",
+    component: () => import("@/layout/DashboardLayout.vue"), // 懒加载
+    redirect: "/reports/performance-details", // 重定向到/reports/performance-details
+    meta: { title: "報表", showInMenu: true },
+    children: [
+      {
+        name: "performance-details", // 路由名稱：小寫 + 連字符
+        path: "performance-details",
+        meta: { title: "績效查詢", showInMenu: true },
+        component: () =>
+          import("@/views/reports/performanceDetails/PerformanceDetails.vue"), // 懶加载PerformanceDetails组件
+      },
+    ],
   },
+  // {
+  //   name: "test1",
+  //   path: "/test1",
+  //   component: () => import("@/layout/DashboardLayout.vue"), 
+  //   // redirect: "/test1/child", // 重定向到/test1/child
+  //   meta: { title: "測試1", showInMenu: true },
+  //   // children: [
+  //   //   {
+  //   //     name: "child",
+  //   //     path: "child",
+  //   //     meta: { title: "測試1-子路由" },
+  //   //     component: () => import("@/views/Test1Child.vue"), // 懒加载Test1Child组件
+  //   //   },
+  //   // ],
+  // },
 ];
