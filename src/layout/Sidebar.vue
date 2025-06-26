@@ -15,8 +15,8 @@ const inactiveClass = ref(
 
 const menuItems = computed(() => {
   console.log('SidebarMenu routes', routes);
-  console.log('SidebarMenu routes find', routes.filter(r => r.meta.showInMenu));
-  return routes.filter(r => r.meta.showInMenu)
+  console.log('SidebarMenu routes find', routes.filter(r => r.meta?.showInMenu));
+  return routes.filter(r => r.meta?.showInMenu)
 });
 
 </script>

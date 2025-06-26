@@ -1,6 +1,7 @@
-import type { RouteLocationNormalized } from "vue-router";
+import type { RouteRecordRaw, RouteLocationGeneric, RouteLocationRaw } from 'vue-router';
 
-export const routes = [
+
+export const routes: RouteRecordRaw[] = [
   {
     name: "login",
     path: "/login",
@@ -32,7 +33,7 @@ export const routes = [
   {
     path: "/:pathMatch(.*)*",
     meta: { showInMenu: false },
-    redirect: (to: RouteLocationNormalized) => ({
+    redirect: (to: RouteLocationGeneric): RouteLocationRaw => ({
       name: "error",
       params: {
         code: 404,
