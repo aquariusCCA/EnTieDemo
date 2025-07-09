@@ -4,12 +4,18 @@
       <!-- 有子路由 → 用 details/summary 包裹 -->
       <template v-if="item.children && item.children.length">
         <li>
-          <details open >
+          <details class="text-white" open >
             <summary>{{ item.meta?.title || item.name }}</summary>
             
             <ul>
               <li v-for="(e, idx) in item.children">
-                <a href="#" @click.prevent="clickMenu(e)">{{ e.meta?.title || e.name }}</a>
+                <a 
+                  class="text-white" 
+                  href="#" 
+                  @click.prevent="clickMenu(e)"
+                >
+                  {{ e.meta?.title || e.name }}
+                </a>
               </li>
             </ul>
           </details>
@@ -20,6 +26,7 @@
         <li>
           <a 
             href="#"
+            class="text-white"
             @click.prevent="clickMenu(item)"  
           >{{ item.meta?.title || item.name }}</a>
         </li>

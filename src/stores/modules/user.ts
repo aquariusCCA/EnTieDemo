@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { doLogin } from "@/api/user";
-import { useRouter } from "vue-router";
-import router from "@/router";       // ← 直接匯入 router 實例
+import router from "@/router"; // ← 直接匯入 router 實例
+import { ElMessage } from "element-plus";
 
 const initUserInfo = {
   account: "",
@@ -28,7 +28,7 @@ export const useUserStore = defineStore(
       try {
         const response = await doLogin({ empId, password });
         console.log("登入回應:", response);
-        console.log('router' , router);
+        console.log("router", router);
         if (response.data.code === 200) {
           // 登入成功，儲存使用者資訊
           userInfo.value = {
@@ -47,12 +47,9 @@ export const useUserStore = defineStore(
           // 導向到首頁
           router.push({ name: "home" });
         } else {
-          router.push({
-            name: "error",
-            params: {
-              code: response.data.code,
-              message: response.data.message,
-            },
+          ElMessage({
+            type: "error",
+            message: response.data.message,
           });
         }
       } catch (error) {
