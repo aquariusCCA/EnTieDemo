@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 //枚举请求地址，（定义常量）
 enum API {
-    LOGIN_URL = '/login',
+    LOGIN_URL = '/public/user/login',
 }
 
 // 定義登錄請求參數接口

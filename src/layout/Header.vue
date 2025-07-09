@@ -2,9 +2,15 @@
 import { ref } from 'vue'
 import { useSidebar } from '../composables/useSidebar'
 import Breadcrumb from './Breadcrumb.vue'
+import { useUserStore } from '@/stores/modules/user'
+import { storeToRefs } from 'pinia'
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const dropdownOpen = ref(false)
 const { isOpen } = useSidebar()
+const { logout } = userStore
 </script>
 
 <template>
@@ -28,7 +34,7 @@ const { isOpen } = useSidebar()
           class="relative z-10 block"
           @click="dropdownOpen = !dropdownOpen"
         >
-          Kevin
+          {{ userInfo.displayName }}
         </button>
 
         <div
@@ -50,19 +56,12 @@ const { isOpen } = useSidebar()
             class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl"
           >
             <a
+              @click="logout"
               href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-            >Profile</a>
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-            >Products</a>
-            <router-link
-              to="/"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
-              Log out
-            </router-link>
+              登出
+            </a>
           </div>
         </transition>
       </div>
