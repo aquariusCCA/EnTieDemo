@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useSidebar } from '../composables/useSidebar'
 import Breadcrumb from './Breadcrumb.vue'
-import { useUserStore } from '@/stores/modules/user'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()

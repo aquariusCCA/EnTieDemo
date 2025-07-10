@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/modules/user'
+import { useUserStore } from '@/stores/user'
 
 const empId = ref('')
 const password = ref('')

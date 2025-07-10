@@ -28,7 +28,6 @@ export const useUserStore = defineStore(
       try {
         const response = await doLogin({ empId, password });
         console.log("登入回應:", response);
-        console.log("router", router);
         if (response.data.code === 200) {
           // 登入成功，儲存使用者資訊
           userInfo.value = {

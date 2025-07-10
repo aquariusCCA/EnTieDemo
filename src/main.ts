@@ -2,7 +2,10 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import router from "./router";
-import pinia from "./stores";
+// import pinia from "./stores";
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
 import "@/styles/index.scss";
 
 // 引入 Element Plus 组件库
@@ -32,8 +35,12 @@ if (import.meta.env.DEV) {
   });
 }
 
-const app = createApp(App);
-
+const app = createApp(App); 
+const pinia = createPinia(); // 引入持久化插件
+// 使用持久化插件
+// piniaPluginPersistedstate 是一个插件，用于将 Pinia 的状态持久化到本地存储中
+// 这样即使页面刷新，状态也能保持
+pinia.use(piniaPluginPersistedstate)
 app.use(pinia);
 app.use(router);
 app.use(ElementPlus, {
