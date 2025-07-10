@@ -1,26 +1,34 @@
 import { http, HttpResponse, passthrough } from "msw";
 import type { HttpResponseResolver } from "msw";
-import { doLogin } from './jsons/user.json'
+import { doLogin } from "./jsons/user.json";
+import { ApiMode } from "@/utils/request";
+import request from "../utils/request";
+import { get as getDataFromIdb } from 'idb-keyval'
 
-const BASE_URL = import.meta.env.VITE_SERVER
+const BASE_URL = import.meta.env.VITE_SERVER;
 
-// 加上型別註記，並解構正確的欄位名稱 `request`
-export const baseResolver: HttpResponseResolver = async ({ request }) => {
-  console.log("baseResolver", request);
+const mockResolver: HttpResponseResolver = async ({ request }) => {
+  console.log("mockResolver", request);
 
   // 判斷是否需要使用假資料
-  const newPost = await request.clone().json();
-  console.log("baseResolver newPost", newPost);
-  const useFakeData = newPost.mode.toUpperCase() === "TEST";
+  const payload = await request.clone().json();
+  console.log("mockResolver payload: ", payload);
+  const mode = payload.mode.toLowerCase();
 
-  if (request.method === "POST" && useFakeData) {
+  if (mode === ApiMode.TEST) {
     // 如果是 POST 請求且需要使用假資料，則返回假資料
-    return HttpResponse.json(doLogin);
+    // 取得在seeds.js裡設定的假資料
+    const data = await getDataFromIdb(request.url.toString());
+    return HttpResponse.json(data);
   }
 
+  // 如果不是 POST 或不需要假資料，則繼續傳遞請求
   return passthrough();
 };
 
 export const handlers = [
-  http.post(`${BASE_URL}/public/user/login`, baseResolver),
+  http.post(`${BASE_URL}/public/user/login`, (resolverInfo) => {
+    console.log("Handling login request", resolverInfo);
+    return mockResolver(resolverInfo);
+  }),
 ];
