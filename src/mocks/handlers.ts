@@ -31,4 +31,7 @@ export const handlers = [
     console.log("Handling login request", resolverInfo);
     return mockResolver(resolverInfo);
   }),
+  http.post(`${BASE_URL}/user/logout`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  }),
 ];

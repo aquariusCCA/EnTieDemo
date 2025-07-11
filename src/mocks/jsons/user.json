@@ -13,5 +13,10 @@
         "office": "test法金業務管理部"
       },
       "message": "成功"
+    },
+    "doLogout": {
+      "code": 200,
+      "data": "登出成功",
+      "message": "成功"
     }
 }

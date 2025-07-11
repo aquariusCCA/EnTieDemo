@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { doLogin } from "@/api/user";
+import { doLogin, doLogout } from "@/api/user";
 import router from "@/router"; // ← 直接匯入 router 實例
 import { ElMessage } from "element-plus";
 
@@ -60,13 +60,28 @@ export const useUserStore = defineStore(
     }
 
     // 登出
-    function logout() {
-      // 清除使用者資訊
-      userInfo.value = { ...initUserInfo };
-      // 設置未登入狀態
-      isLoggedIn.value = false;
-      // 導向到登入頁面
-      router.push({ name: "login" });
+    async function logout() {
+      // 呼叫登出 API
+      const resp = await doLogout();
+      console.log("登出回應:", resp);
+
+      if (resp.data.code === 200) {
+        // 清除使用者資訊
+        userInfo.value = { ...initUserInfo };
+        // 設置未登入狀態
+        isLoggedIn.value = false;
+        ElMessage({
+          type: "success",
+          message: resp.data.message,
+        });
+        // 導向到登入頁面
+        router.push({ name: "login" });
+      } else {
+        ElMessage({
+          type: "error",
+          message: resp.data.message,
+        });
+      }
     }
 
     return {

@@ -3,6 +3,7 @@ import request from '@/utils/request'
 //枚举请求地址，（定义常量）
 enum API {
     LOGIN_URL = '/public/user/login',
+    LOUGOUT_URL = '/user/logout',
 }
 
 // 定義登錄請求參數接口
@@ -18,5 +19,13 @@ export const doLogin =  (data: LoginParams) => {
         url: API.LOGIN_URL,
         method: 'post',
         data
+    })
+}
+
+// 登出
+export const doLogout = () => {
+    return request({
+        url: API.LOUGOUT_URL,
+        method: 'post'
     })
 }
