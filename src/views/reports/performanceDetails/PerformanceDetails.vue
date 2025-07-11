@@ -59,7 +59,7 @@ onMounted(async () => {
               <div>
                 <label class="floating-label mt-6">
                   <input v-model="form.clientID"
-                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2" required
+                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full" required
                     type="text" placeholder="請輸入統編" />
                   <span class="text-xl font-semibold">統編</span>
                 </label>
@@ -67,7 +67,7 @@ onMounted(async () => {
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="form.startDate" class="input bg-transparent input-primary text-gray-500 mt-2"
+                  <input v-model="form.startDate" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
                     type="month" required />
                   <span>
                     開始日期
@@ -77,7 +77,7 @@ onMounted(async () => {
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="form.endDate" class="input bg-transparent input-primary text-gray-500 mt-2"
+                  <input v-model="form.endDate" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
                     type="month" required />
                   <span>
                     結束日期
@@ -86,8 +86,8 @@ onMounted(async () => {
               </div>
             </div>
 
-            <div class="mt-4">
-              <button class="btn btn-primary w-full">搜尋</button>
+            <div class="flex justify-center mt-4">
+              <button class="btn btn-primary w-1/2">搜尋</button>
             </div>
           </form>
         </div>
