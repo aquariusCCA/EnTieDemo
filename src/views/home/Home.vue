@@ -12,37 +12,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue';
+<script lang="ts" setup>
+import { defineComponent, ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { ElCard } from 'element-plus';
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia';
 
-export default defineComponent({
-  name: 'HomePage',
-  components: { ElCard },
-  setup() {
-    const userName = ref('使用者');  // 後端登入資訊替換
-    const currentTime = ref('');
-    const showCard = ref(false);
-    let timer: number;
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+const userName = computed(() => {
+  return userInfo.value.displayName || userInfo.value.account || '使用者';
+});
+const currentTime = ref('');
+const showCard = ref(false);
+let timer: number;
 
-    const updateTime = () => {
-      const now = new Date();
-      currentTime.value = now.toLocaleString('zh-TW', { hour12: false });
-    };
+const updateTime = () => {
+  const now = new Date();
+  currentTime.value = now.toLocaleString('zh-TW', { hour12: false });
+};
 
-    onMounted(() => {
-      // 載入時顯示並啟動畫面過渡
-      showCard.value = true;
-      updateTime();
-      timer = window.setInterval(updateTime, 1000);
-    });
+onMounted(() => {
+  // 載入時顯示並啟動畫面過渡
+  showCard.value = true;
+  updateTime();
+  timer = window.setInterval(updateTime, 1000);
+});
 
-    onBeforeUnmount(() => {
-      clearInterval(timer);
-    });
-
-    return { userName, currentTime, showCard };
-  },
+onBeforeUnmount(() => {
+  clearInterval(timer);
 });
 </script>
 
@@ -73,6 +71,7 @@ export default defineComponent({
 .fade-leave-active {
   transition: opacity 0.5s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
@@ -83,12 +82,15 @@ export default defineComponent({
   .home-container {
     padding: 10px;
   }
+
   .welcome-card {
     padding: 10px;
   }
+
   .welcome-content h2 {
     font-size: 1.2rem;
   }
+
   .welcome-content p {
     font-size: 1rem;
   }
