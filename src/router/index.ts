@@ -18,6 +18,12 @@ router.beforeEach(async (to, _from, next) => {
   // 免驗證的頁面列表
   const accessableRoutes = ['login', 'error']
   if (accessableRoutes.includes(to.name as string)) {
+    // 如果已經登入，且目標頁面是登入頁面，則重定向到首頁
+    if (to.name === 'login' && userStore.isLoggedIn) {
+      next({ name: 'home' });
+      return;
+    }
+    // 如果目標頁面是免驗證頁面，則直接放行
     next();
     return;
   }

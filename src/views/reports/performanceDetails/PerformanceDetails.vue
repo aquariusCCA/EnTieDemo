@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { getUsers } from "@/api/test";
+import { BizError } from "@/utils/request";
 
 const form = reactive({
   clientID: '',
@@ -25,6 +27,22 @@ function searchReport() {
   }
 }
 
+onMounted(async () => {
+  try {
+    // 初始化或其他操作
+    const resp = await getUsers();
+    console.log('getUsers response:', resp);
+  } catch (error) {
+    if (error instanceof BizError) {
+      console.error("登出失敗:", error.message);
+      console.error("登出失敗:", error.code);
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    }
+  }
+});
 </script>
 
 <template>
@@ -39,34 +57,32 @@ function searchReport() {
           <form @submit.prevent="searchReport">
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div>
-                <label class="text-gray-700" for="username">統編</label>
-                <input 
-                  v-model="form.clientID"
-                  class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2" 
-                  required
-                  type="text" 
-                  placeholder="請輸入統編" 
-                />
+                <label class="floating-label mt-6">
+                  <input v-model="form.clientID"
+                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2" required
+                    type="text" placeholder="請輸入統編" />
+                  <span class="text-xl font-semibold">統編</span>
+                </label>
               </div>
 
               <div>
-                <label class="text-gray-700" for="emailAddress">開始日期</label>
-                <input 
-                  v-model="form.startDate"
-                  class="input bg-transparent input-primary text-gray-500 mt-2" 
-                  type="month"
-                  required
-                />
+                <label class="floating-label mt-6">
+                  <input v-model="form.startDate" class="input bg-transparent input-primary text-gray-500 mt-2"
+                    type="month" required />
+                  <span>
+                    開始日期
+                  </span>
+                </label>
               </div>
 
               <div>
-                <label class="text-gray-700" for="password">結束日期</label>
-                <input 
-                  v-model="form.endDate"
-                  class="input bg-transparent input-primary text-gray-500 mt-2" 
-                  type="month"
-                  required
-                />
+                <label class="floating-label mt-6">
+                  <input v-model="form.endDate" class="input bg-transparent input-primary text-gray-500 mt-2"
+                    type="month" required />
+                  <span>
+                    結束日期
+                  </span>
+                </label>
               </div>
             </div>
 

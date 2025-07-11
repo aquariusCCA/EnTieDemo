@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-//枚举请求地址，（定义常量）
 enum API {
     LOGIN_URL = '/public/user/login',
     LOUGOUT_URL = '/user/logout',

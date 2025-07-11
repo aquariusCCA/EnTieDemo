@@ -34,4 +34,7 @@ export const handlers = [
   http.post(`${BASE_URL}/user/logout`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
+  http.post(`${BASE_URL}/test/getUsers`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  })
 ];
