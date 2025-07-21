@@ -1,48 +1,25 @@
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive } from 'vue'
 import { ElMessage } from 'element-plus'
-import { getUsers } from "@/api/test";
-import { BizError } from "@/utils/request";
+import { usePerformanceStore } from '@/stores/performance'; 
+import { storeToRefs } from 'pinia';
 
-const form = reactive({
-  clientID: '',
-  startDate: '',
-  endDate: '',
-})
+const performanceStore = usePerformanceStore()
+const { fieldCondition } = storeToRefs(performanceStore)
+const { fetchPerformanceDetail } = performanceStore
 
-function searchReport() {
-  console.log('Searching report with:', {
-    clientID: form.clientID,
-    startDate: form.startDate,
-    endDate: form.endDate,
-  });
-
+async function searchReport() {
   // 驗證日期格式：結束日期不得早於開始日期
-  if (form.startDate && form.endDate && form.startDate > form.endDate) {
-    ElMessage({
-      message: '結束日期不得早於開始日期',
-      type: 'warning',
-    })
-    return;
-  }
-}
+  // if (form.startDate && form.endDate && form.startDate > form.endDate) {
+  //   ElMessage({
+  //     message: '結束日期不得早於開始日期',
+  //     type: 'warning',
+  //   })
+  //   return;
+  // }
 
-onMounted(async () => {
-  try {
-    // 初始化或其他操作
-    const resp = await getUsers();
-    console.log('getUsers response:', resp);
-  } catch (error) {
-    if (error instanceof BizError) {
-      console.error("登出失敗:", error.message);
-      console.error("登出失敗:", error.code);
-      ElMessage({
-        type: "error",
-        message: error.message,
-      });
-    }
-  }
-});
+  await fetchPerformanceDetail()
+}
 </script>
 
 <template>
@@ -58,7 +35,7 @@ onMounted(async () => {
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="form.clientID"
+                  <input v-model="fieldCondition.clientCd"
                     class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full" required
                     type="text" placeholder="請輸入統編" />
                   <span class="text-xl font-semibold">統編</span>
@@ -67,7 +44,7 @@ onMounted(async () => {
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="form.startDate" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
+                  <input v-model="fieldCondition.startDataMonth" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
                     type="month" required />
                   <span>
                     開始日期
@@ -77,7 +54,7 @@ onMounted(async () => {
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="form.endDate" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
+                  <input v-model="fieldCondition.endDataMonth" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
                     type="month" required />
                   <span>
                     結束日期
