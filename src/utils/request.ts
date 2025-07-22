@@ -60,11 +60,30 @@ request.interceptors.request.use((config) => {
 
 // 添加相应拦截器
 request.interceptors.response.use(
-  (res) => {
-    // 成功回调
+  async (res) => {
     console.log("请求成功", res);
-    // 如果是下載 Blob，直接回傳 AxiosResponse，讓調用方自己處理 res.data
+
+    // 只有在下載 Blob 時才做下面檢查
     if (res.config.responseType === "blob") {
+      const contentType = res.headers["content-type"] || "";
+      // 若 Content-Type 看起來不是 excel，而是 json 或 html → 當作錯誤處理
+      if (
+        contentType.includes("application/json") ||
+        contentType.includes("text/html")
+      ) {
+        // 將 Blob 轉成文字，再 parse JSON 拋出 BizError
+        const text = await new Response(res.data).text();
+        let obj: any;
+        try {
+          obj = JSON.parse(text);
+        } catch {
+          // parse 失敗也要當 session 過期或未知錯誤
+          return Promise.reject(new BizError(500, "未知錯誤，請重新登入"));
+        }
+        return Promise.reject(
+          new BizError(obj.code || 500, obj.message || "Session 已過期")
+        );
+      }
       return res;
     }
 
