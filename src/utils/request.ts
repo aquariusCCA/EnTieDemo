@@ -100,37 +100,12 @@ request.interceptors.response.use(
     }
   },
   (err) => {
-    // 失败回调（HTTP 层面）
     console.error("请求失败", err);
-    let message = "";
-    let status = err.response.status;
-
-    switch (status) {
-      case 400:
-        message = "請求錯誤";
-        break;
-      case 401:
-        message = "未授權";
-        break;
-      case 403:
-        message = "禁止訪問(沒有權限操作)";
-        break;
-      case 404:
-        message = "請求地址出錯";
-        break;
-      case 500:
-        message = "伺服器內部錯誤";
-        break;
-      default:
-        message = "連接錯誤";
-        break;
-    }
-
+    const  message = err.message || "未知錯誤，請稍後重試";
     ElMessage({
       type: "error",
       message,
     });
-
     return Promise.reject(err);
   }
 );
