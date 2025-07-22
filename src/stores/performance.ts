@@ -3,8 +3,17 @@ import { getPerformanceDetail } from "@/api/performance";
 import { BizError } from "@/utils/request";
 import { reactive } from "vue";
 import { ElLoading, ElMessage } from "element-plus";
+import { useUserStore } from "@/stores/user";
 
-const initFieldCondition = {
+interface FieldCondition {
+  clientCd: string;
+  rmEmpNr: string;
+  areaCd: string;
+  startDataMonth: string;
+  endDataMonth: string;
+}
+
+const initialFieldCondition: FieldCondition = {
   clientCd: "",
   rmEmpNr: "",
   areaCd: "",
@@ -14,17 +23,34 @@ const initFieldCondition = {
 
 function isValidDateRange(start?: string, end?: string): boolean {
   if (!start || !end) return false;
-
   const startDate = new Date(start + "-01");
   const endDate = new Date(end + "-01");
-
   return endDate >= startDate;
 }
 
 export const usePerformanceStore = defineStore(
   "performance",
   () => {
-    const fieldCondition = reactive({ ...initFieldCondition });
+    const userStore = useUserStore();
+    const { extractAreaCd } = userStore;
+
+    const fieldCondition = reactive<FieldCondition>({
+      ...initialFieldCondition,
+    });
+
+    // 初始化方法
+    function resetFieldCondition() {
+      fieldCondition.areaCd = "";
+      fieldCondition.clientCd = "";
+      fieldCondition.rmEmpNr = "";
+      fieldCondition.startDataMonth = "";
+      fieldCondition.endDataMonth = "";
+    }
+
+    // 設置區域中心代碼
+    function setAreaCd() {
+      fieldCondition.areaCd = extractAreaCd();
+    }
 
     async function fetchPerformanceDetail() {
       console.log("Fetching performance detail with:", fieldCondition);
@@ -40,7 +66,7 @@ export const usePerformanceStore = defineStore(
         text: "報表生成中，請稍候...",
         background: "rgba(0, 0, 0, 0.3)",
       });
-      
+
       try {
         const payload = {
           ...fieldCondition,
@@ -62,6 +88,8 @@ export const usePerformanceStore = defineStore(
     return {
       fieldCondition,
       fetchPerformanceDetail,
+      setAreaCd,
+      resetFieldCondition,
     };
   },
   {

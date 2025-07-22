@@ -10,7 +10,7 @@ const initUserInfo = {
   upn: "",
   displayName: "",
   email: "",
-  roles: [],
+  roles: [] as string[],
   department: "",
   office: "",
 };
@@ -48,7 +48,6 @@ export const useUserStore = defineStore(
           type: "success",
           message: "歡迎回來，" + userInfo.value.displayName + "！",
         });
-
 
         // 導向到首頁
         router.push({ name: "home" });
@@ -93,11 +92,24 @@ export const useUserStore = defineStore(
       }
     }
 
+    // 提取區域中心代碼
+    function extractAreaCd(): string {
+      const roles = userInfo.value.roles;
+      if (!roles || roles.length === 0) return "";
+
+      const match = roles[0].match(/OU=([^\s,]+)/g);
+      if (!match || match.length === 0) return "";
+
+      const ouValue = match[0].split("=")[1];
+      return ouValue.slice(0, 3);
+    }
+
     return {
       userInfo,
       isLoggedIn,
       login,
       logout,
+      extractAreaCd,
     };
   },
   {
