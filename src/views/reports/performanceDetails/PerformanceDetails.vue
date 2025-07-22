@@ -39,26 +39,49 @@ onUnmounted(() => {
             <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="fieldCondition.areaCd"
-                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full" required
-                    type="text" placeholder="請輸入統編" />
+                  <input 
+                    v-model="fieldCondition.areaCd"
+                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full" 
+                    required
+                    type="text" 
+                    placeholder="請輸入區域中心代碼" 
+                  />
                   <span class="text-xl font-semibold">區域中心代碼</span>
                 </label>
               </div>
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="fieldCondition.clientCd"
-                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full" required
-                    type="text" placeholder="請輸入統編" />
+                  <input 
+                    v-model="fieldCondition.clientCd"
+                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full"
+                    type="text" 
+                    placeholder="請輸入統編" 
+                  />
                   <span class="text-xl font-semibold">統編</span>
                 </label>
               </div>
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="fieldCondition.startDataMonth" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
-                    type="month" required />
+                  <input 
+                    v-model="fieldCondition.rmEmpNr"
+                    class="input bg-transparent input-primary text-gray-500 placeholder:text-gray-500 mt-2 w-full"
+                    type="text" 
+                    placeholder="請輸入員編" 
+                  />
+                  <span class="text-xl font-semibold">員編</span>
+                </label>
+              </div>
+
+              <div>
+                <label class="floating-label mt-6">
+                  <input 
+                    v-model="fieldCondition.startDataMonth" 
+                    class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
+                    type="month" 
+                    required 
+                  />
                   <span>
                     開始日期
                   </span>
@@ -67,8 +90,12 @@ onUnmounted(() => {
 
               <div>
                 <label class="floating-label mt-6">
-                  <input v-model="fieldCondition.endDataMonth" class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
-                    type="month" required />
+                  <input 
+                    v-model="fieldCondition.endDataMonth" 
+                    class="input bg-transparent input-primary text-gray-500 mt-2 w-full"
+                    type="month" 
+                    required 
+                  />
                   <span>
                     結束日期
                   </span>

@@ -1,11 +1,11 @@
-import axios from 'axios'
-import type { AxiosRequestConfig } from 'axios'
+import axios from "axios";
+import type { AxiosRequestConfig } from "axios";
 import { ElMessage } from "element-plus";
 import router from "@/router"; // ← 直接匯入 router 實例
 
 export enum ApiMode {
-  TEST = 'test',
-  PROD = '',
+  TEST = "test",
+  PROD = "",
 }
 
 // 定義 BizError
@@ -13,7 +13,7 @@ export class BizError extends Error {
   public code: number;
   constructor(code: number, message?: string) {
     super(message);
-    this.name = 'BizError';
+    this.name = "BizError";
     this.code = code;
     // TS 必要：恢復正確的原型鏈
     Object.setPrototypeOf(this, BizError.prototype);
@@ -21,7 +21,7 @@ export class BizError extends Error {
 }
 
 /** 是否為開發／測試模式 */
-const isTestMode = import.meta.env.DEV
+const isTestMode = import.meta.env.DEV;
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_SERVER,
@@ -31,45 +31,53 @@ const request = axios.create({
 
 /** 統一注入測試參數 */
 function injectTestParams(config: AxiosRequestConfig) {
-  if (!isTestMode) return
+  if (!isTestMode) return;
 
-  const marker = { mode: ApiMode.TEST }
-  const method = (config.method ?? 'get').toLowerCase()
+  const marker = { mode: ApiMode.TEST };
+  const method = (config.method ?? "get").toLowerCase();
 
   // POST / PUT / PATCH / DELETE：把 mode 放到 body
-  if (['post', 'put', 'patch', 'delete'].includes(method)) {
+  if (["post", "put", "patch", "delete"].includes(method)) {
     config.data = {
-      ...(config.data as object || {}),
+      ...((config.data as object) || {}),
       ...marker,
-    }
+    };
   }
   // 其餘方法：放到 query params
   else {
     config.params = {
-      ...(config.params as object || {}),
+      ...((config.params as object) || {}),
       ...marker,
-    }
+    };
   }
 }
 
 //添加请求拦截器
-request.interceptors.request.use(config => {
-  injectTestParams(config)
-  return config
-})
+request.interceptors.request.use((config) => {
+  injectTestParams(config);
+  return config;
+});
 
 // 添加相应拦截器
 request.interceptors.response.use(
   (res) => {
     // 成功回调
     console.log("请求成功", res);
+    // 如果是下載 Blob，直接回傳 AxiosResponse，讓調用方自己處理 res.data
+    if (res.config.responseType === "blob") {
+      return res;
+    }
+
+    // —— 原有：JSON 業務邏輯檢查
     const { code, message } = res.data;
 
-    if(code === 200) { 
-      return res
+    if (code === 200) {
+      return res;
     } else {
       // 统一将业务错误通过 reject 抛出，方便调用方 catch
-      return Promise.reject(new BizError(code, message || `Error code: ${code}`));
+      return Promise.reject(
+        new BizError(code, message || `Error code: ${code}`)
+      );
     }
   },
   (err) => {

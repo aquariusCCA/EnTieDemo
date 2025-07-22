@@ -16,6 +16,7 @@ export const getPerformanceDetail = (params: PerformanceDetailParams) => {
     return request({
         url: API.PERFORMANCE_DETAIL_URL,
         method: 'post',
-        data: params
+        data: params,
+        responseType: 'blob',                // 以二進位方式接收
     })
 }

@@ -52,6 +52,7 @@ export const usePerformanceStore = defineStore(
       fieldCondition.areaCd = extractAreaCd();
     }
 
+    // 下載績效明細 excel
     async function fetchPerformanceDetail() {
       console.log("Fetching performance detail with:", fieldCondition);
       const { startDataMonth, endDataMonth } = fieldCondition;
@@ -76,6 +77,15 @@ export const usePerformanceStore = defineStore(
 
         // 處理 API 回應
         const response = await getPerformanceDetail(payload);
+        const blob = response.data;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${fieldCondition.areaCd}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
       } catch (error) {
         if (error instanceof BizError) {
           ElMessage.error(error.message);
