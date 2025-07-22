@@ -9,15 +9,6 @@ const { fieldCondition } = storeToRefs(performanceStore)
 const { fetchPerformanceDetail } = performanceStore
 
 async function searchReport() {
-  // 驗證日期格式：結束日期不得早於開始日期
-  // if (form.startDate && form.endDate && form.startDate > form.endDate) {
-  //   ElMessage({
-  //     message: '結束日期不得早於開始日期',
-  //     type: 'warning',
-  //   })
-  //   return;
-  // }
-
   await fetchPerformanceDetail()
 }
 </script>

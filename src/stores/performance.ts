@@ -55,10 +55,7 @@ export const usePerformanceStore = defineStore(
           ElMessage.error(error.message);
         }
       } finally {
-        // loadingInstance.close();
-        setTimeout(() => {
-          loadingInstance.close();
-        }, 2000);
+        loadingInstance.close();
       }
     }
 
