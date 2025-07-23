@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { getPerformanceDetail } from "@/api/performance";
 import { BizError } from "@/utils/request";
 import { reactive } from "vue";
@@ -32,7 +32,7 @@ export const usePerformanceStore = defineStore(
   "performance",
   () => {
     const userStore = useUserStore();
-    const { extractAreaCd } = userStore;
+    const { areaCd } = storeToRefs(userStore)
 
     const fieldCondition = reactive<FieldCondition>({
       ...initialFieldCondition,
@@ -49,7 +49,7 @@ export const usePerformanceStore = defineStore(
 
     // 設置區域中心代碼
     function setAreaCd() {
-      fieldCondition.areaCd = extractAreaCd();
+      fieldCondition.areaCd = areaCd.value || "";
     }
 
     // 下載績效明細 excel

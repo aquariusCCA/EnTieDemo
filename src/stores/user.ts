@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { doLogin, doLogout } from "@/api/user";
 import router from "@/router"; // ← 直接匯入 router 實例
 import { ElMessage } from "element-plus";
@@ -93,23 +93,47 @@ export const useUserStore = defineStore(
     }
 
     // 提取區域中心代碼
-    function extractAreaCd(): string {
+    // function extractAreaCd(): string {
+    //   const roles = userInfo.value.roles;
+    //   if (!roles || roles.length === 0) return "";
+
+    //   const match = roles[0].match(/OU=([^\s,]+)/g);
+    //   if (!match || match.length === 0) return "";
+
+    //   const ouValue = match[0].split("=")[1];
+    //   return ouValue.slice(0, 3);
+    // }
+    const areaCd = computed(() => {
       const roles = userInfo.value.roles;
-      if (!roles || roles.length === 0) return "";
+      if (!roles?.length) return "";
 
-      const match = roles[0].match(/OU=([^\s,]+)/g);
-      if (!match || match.length === 0) return "";
+      // 遍歷每個 role 字串
+      for (const roleStr of roles) {
+        // 全域搜尋所有 OU=xxx
+        const regex = /OU=([^\s,]+)/g;
+        let match: RegExpExecArray | null;
 
-      const ouValue = match[0].split("=")[1];
-      return ouValue.slice(0, 3);
-    }
+        while ((match = regex.exec(roleStr)) !== null) {
+          const ou = match[1]; // e.g. "924ABC" 或 "XYZ001"
+          const code = ou.slice(0, 3); // 取前三碼
+
+          // 只要前三碼完全是數字，就認為合法、直接回傳
+          if (/^\d{3}$/.test(code)) {
+            return code;
+          }
+        }
+      }
+
+      // 全部都掃過了，沒符合的就回空
+      return "";
+    });
 
     return {
       userInfo,
       isLoggedIn,
+      areaCd,
       login,
       logout,
-      extractAreaCd,
     };
   },
   {
