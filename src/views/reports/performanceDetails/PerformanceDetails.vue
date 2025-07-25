@@ -77,7 +77,6 @@ onUnmounted(() => {
                   <input 
                     v-model="fieldCondition.areaCd"
                     class="input bg-transparent input-error text-gray-500 mt-2 w-full disabled:bg-gray-100 placeholder:text-gray-500 disabled:text-gray-400 disabled:placeholder-gray-400" 
-                    :class="{ 'input-primary': !isAreaCdDisabled }"
                     required
                     type="text" 
                     placeholder="請輸入區域中心代碼" 
