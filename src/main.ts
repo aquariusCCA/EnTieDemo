@@ -23,6 +23,9 @@ import { registerComponents } from "./components";
 import { worker } from "./mocks/browser";
 import { setSeeds } from "@/mocks/seeds";
 
+// 引入svg
+import 'virtual:svg-icons-register'
+
 // 開發環境可使用API假資料
 if (import.meta.env.DEV) {
   console.log("這是開發環境，將使用假資料API");
