@@ -1,75 +1,86 @@
-import type { RouteRecordRaw, RouteLocationGeneric, RouteLocationRaw } from 'vue-router';
+import type { RouteLocationGeneric, RouteLocationRaw } from "vue-router";
 
-
-export const routes: RouteRecordRaw[] = [
+export const constantRoutes = [
   {
-    name: "login",
+    name: "Login",
     path: "/login",
     component: () => import("@/views/login/Login.vue"), // 懒加载Login组件
-    meta: { showInMenu: false },           
+    meta: {
+      name: "登錄",
+      hidden: true,
+      icon: "",
+    },
   },
   {
-    name: "layout",
+    name: "Layout",
     path: "/",
-    component: () => import("@/layout/DashboardLayout.vue"), // 懒加载DashboardLayout组件
+    component: () => import("@/layout/index.vue"), // 懒加载Layout组件
     redirect: "/home", // 重定向到/home
-    meta: { title: "主控台", showInMenu: true },
+    meta: {
+      name: "",
+      hidden: false,
+      icon: "",
+    },
     children: [
       {
-        name: "home",
-        path: "home",
+        name: "Home",
+        path: "/home",
         component: () => import("@/views/home/Home.vue"), // 懒加载Home组件
-        meta: { title: "首頁", showInMenu: true },
+        meta: {
+          name: "首頁",
+          hidden: false,
+          icon: "House", // <el-icon><House /></el-icon>
+        },
       },
     ],
   },
   {
-    name: "error",
-    path: "/error/:code/:message", // 捕获错误ID和消息
-    component: () => import("@/views/error/Error.vue"), // 懒加载Error组件
-    meta: { showInMenu: false },
-  },
-  // ★ 放在最後，避免攔截到其他有效路由
-  {
-    path: "/:pathMatch(.*)*",
-    meta: { showInMenu: false },
-    redirect: (to: RouteLocationGeneric): RouteLocationRaw => ({
-      name: "error",
-      params: {
-        code: 404,
-        message: "Page Not Found",
-      },
-    }),
-  },
-  {
-    name: "reports",
+    name: "Reports",
     path: "/reports",
-    component: () => import("@/layout/DashboardLayout.vue"), // 懒加载
-    redirect: "/reports/performance-details", // 重定向到/reports/performance-details
-    meta: { title: "報表", showInMenu: true },
+    component: () => import("@/layout/index.vue"), // 懒加载Layout组件
+    redirect: "/reports/performanceDetails", // 重定向到/reports/performance-details
+    meta: {
+      name: "報表",
+      hidden: false,
+      icon: "Document", // <el-icon><Document /></el-icon>
+    },
     children: [
       {
-        name: "performance-details", // 路由名稱：小寫 + 連字符
-        path: "performance-details",
-        meta: { title: "績效查詢", showInMenu: true },
+        name: "PerformanceDetails",
+        path: "/reports/performanceDetails",
         component: () =>
           import("@/views/reports/performanceDetails/PerformanceDetails.vue"), // 懶加载PerformanceDetails组件
+        meta: {
+          name: "績效查詢",
+          hidden: false,
+          icon: "Document",
+        },
       },
     ],
   },
-  // {
-  //   name: "test1",
-  //   path: "/test1",
-  //   component: () => import("@/layout/DashboardLayout.vue"), 
-  //   // redirect: "/test1/child", // 重定向到/test1/child
-  //   meta: { title: "測試1", showInMenu: true },
-  //   // children: [
-  //   //   {
-  //   //     name: "child",
-  //   //     path: "child",
-  //   //     meta: { title: "測試1-子路由" },
-  //   //     component: () => import("@/views/Test1Child.vue"), // 懒加载Test1Child组件
-  //   //   },
-  //   // ],
-  // },
+  {
+    path: "/404",
+    component: () => import("@/views/error/404.vue"), // 懒加载404组件
+    name: "404",
+    meta: {
+      name: "404",
+      hidden: true,
+      icon: "",
+    },
+  },
 ];
+
+// 異步路由
+export const asyncRoutes = [];
+
+// 任意路由
+export const anyRoute = {
+  path: "/:pathMatch(.*)*",
+  redirect: "/404",
+  name: "Any",
+  meta: {
+    name: "任意",
+    hidden: true,
+    icon: "",
+  },
+};

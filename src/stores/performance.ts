@@ -1,8 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { getPerformanceDetail } from "@/api/performance";
-import { BizError } from "@/utils/request";
 import { reactive } from "vue";
-import { ElLoading, ElMessage } from "element-plus";
 import { useUserStore } from "@/stores/user";
 
 interface FieldCondition {
@@ -21,91 +19,41 @@ const initialFieldCondition: FieldCondition = {
   endDataMonth: "",
 };
 
-function isValidDateRange(start?: string, end?: string): boolean {
-  if (!start || !end) return false;
-  const startDate = new Date(start + "-01");
-  const endDate = new Date(end + "-01");
-  return endDate >= startDate;
-}
+export const usePerformanceStore = defineStore("performance", () => {
+  const userStore = useUserStore();
+  const { areaCd } = storeToRefs(userStore);
 
-export const usePerformanceStore = defineStore(
-  "performance",
-  () => {
-    const userStore = useUserStore();
-    const { areaCd } = storeToRefs(userStore)
+  const fieldCondition = reactive<FieldCondition>({
+    ...initialFieldCondition,
+  });
 
-    const fieldCondition = reactive<FieldCondition>({
-      ...initialFieldCondition,
-    });
-
-    // 初始化方法
-    function resetFieldCondition() {
-      fieldCondition.areaCd = "";
-      fieldCondition.clientCd = "";
-      fieldCondition.rmEmpNr = "";
-      fieldCondition.startDataMonth = "";
-      fieldCondition.endDataMonth = "";
-    }
-
-    // 設置區域中心代碼
-    function setAreaCd() {
-      fieldCondition.areaCd = areaCd.value || "";
-    }
-
-    // 下載績效明細 excel
-    async function fetchPerformanceDetail() {
-      console.log("Fetching performance detail with:", fieldCondition);
-      const { startDataMonth, endDataMonth } = fieldCondition;
-
-      if (!isValidDateRange(startDataMonth, endDataMonth)) {
-        ElMessage.warning("結束月份不可早於起始月份");
-        return;
-      }
-
-      const loadingInstance = ElLoading.service({
-        lock: true,
-        text: "報表生成中，請稍候...",
-        background: "rgba(0, 0, 0, 0.3)",
-      });
-
-      try {
-        const payload = {
-          ...fieldCondition,
-          startDataMonth: startDataMonth.replace("-", ""),
-          endDataMonth: endDataMonth.replace("-", ""),
-        };
-
-        // 處理 API 回應
-        const response = await getPerformanceDetail(payload);
-        const blob = response.data;
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${fieldCondition.areaCd}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        if (error instanceof BizError) {
-          ElMessage.error(error.message);
-        }
-      } finally {
-        loadingInstance.close();
-      }
-    }
-
-    return {
-      fieldCondition,
-      fetchPerformanceDetail,
-      setAreaCd,
-      resetFieldCondition,
-    };
-  },
-  {
-    // 啟用持久化
-    persist: {
-      storage: sessionStorage, // 使用 sessionStorage 來持久化
-    },
+  // 設置區域中心代碼
+  function setAreaCd() {
+    fieldCondition.areaCd = areaCd.value || "";
   }
-);
+
+  // 依查詢條件取得績效明細報表 (Blob)
+  async function fetchPerformanceBlob(): Promise<Blob> {
+    console.log("查詢條件:", fieldCondition);
+    const { startDataMonth, endDataMonth } = fieldCondition;
+    console.log("查詢條件:", fieldCondition);
+    const payload = {
+      ...fieldCondition,
+      startDataMonth: startDataMonth.replace("-", ""),
+      endDataMonth: endDataMonth.replace("-", ""),
+    };
+
+    try {
+      const res = await getPerformanceDetail(payload); // Axios 攔截器已處理非 2xx
+      return res.data as Blob;
+    } catch (e) {
+      return Promise.reject("下載報表失敗");
+    }
+  }
+
+  return {
+    fieldCondition,
+    fetchPerformanceBlob,
+    setAreaCd,
+  };
+});

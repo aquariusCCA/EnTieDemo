@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { doLogin, doLogout } from "@/api/user";
+import { doLogin, doLogout, doGetUserPermissions } from "@/api/user";
 import router from "@/router"; // ← 直接匯入 router 實例
-import { ElMessage } from "element-plus";
-import { BizError } from "@/utils/request";
+import { setIsLoggedIn, removeIsLoggedIn } from "@/utils/auth";
+import { cloneDeep } from "lodash";
+import { constantRoutes, asyncRoutes, anyRoute } from "@/router/routes";
 
 const initUserInfo = {
   account: "",
@@ -24,85 +25,100 @@ export const useUserStore = defineStore(
     // 是否已登入
     const isLoggedIn = ref(false);
 
+    // 使用者權限
+    const userPermissions = ref({});
+
+    // 路由列表
+    const routes = ref([...constantRoutes]);
+
     // 登入方法
     async function login(empId: string, password: string) {
-      try {
-        const response = await doLogin({ empId, password });
-        console.log("登入回應:", response);
+      // try {
+      const response = await doLogin({ empId, password });
+      console.log("登入回應:", response);
+      const { data, code, message } = response.data;
+      if (code === 200) {
         // 登入成功，儲存使用者資訊
         userInfo.value = {
-          account: response.data.data.account,
-          upn: response.data.data.upn,
-          displayName: response.data.data.displayName,
-          email: response.data.data.email,
-          roles: response.data.data.roles,
-          department: response.data.data.department,
-          office: response.data.data.office,
+          account: data.account,
+          upn: data.upn,
+          displayName: data.displayName,
+          email: data.email,
+          roles: data.roles,
+          department: data.department,
+          office: data.office,
         };
 
         // 設置已登入狀態
         isLoggedIn.value = true;
 
-        // 顯示成功訊息
-        ElMessage({
-          type: "success",
-          message: "歡迎回來，" + userInfo.value.displayName + "！",
-        });
+        setIsLoggedIn(true);
 
-        // 導向到首頁
-        router.push({ name: "home" });
-      } catch (error) {
-        if (error instanceof BizError) {
-          console.error("登入失敗:", error.message);
-          console.error("登入失敗:", error.code);
-          ElMessage({
-            type: "error",
-            message: error.message,
-          });
-        }
+        return userInfo.value;
+      } else {
+        return Promise.reject(message);
       }
+    }
+
+    // 獲取使用者權限
+    async function fetchUserPermissions() {
+      const response = await doGetUserPermissions();
+      console.log("獲取使用者信息回應:", response);
+      const { data, code, message } = response.data;
+      if (code === 200) {
+        // @ts-ignore
+        userPermissions.value = data;
+        // 1.过滤异步路由, 作为用户菜单展示
+        let filterRoutes = filterAsyncRoutes(
+          cloneDeep(asyncRoutes),
+          data.routes
+        );
+        routes.value = [...constantRoutes, ...filterRoutes];
+        // 2.将过滤后的异步路由, 追加到路由器中
+        filterRoutes.forEach((route) => {
+          router.addRoute(route);
+        });
+        // 3.添加任意路由
+        router.addRoute(anyRoute);
+        return "ok";
+      } else {
+        return Promise.reject(message);
+      }
+    }
+
+    function filterAsyncRoutes(asyncRoutes: any[], userRoutes: string[]) {
+      return asyncRoutes.filter((route) => {
+        if (userRoutes.includes(route.name)) {
+          if (route.children && route.children.length > 0) {
+            route.children = filterAsyncRoutes(route.children, userRoutes);
+          }
+          return true;
+        }
+      });
     }
 
     // 登出
     async function logout() {
-      try {
-        // 呼叫登出 API
-        const resp = await doLogout();
-        console.log("登出回應:", resp);
+      // 呼叫登出 API
+      const response = await doLogout();
+      console.log("登出回應:", response);
+      const { data, code, message } = response.data;
 
+      if (code === 200) {
         // 清除使用者資訊
         userInfo.value = { ...initUserInfo };
         // 設置未登入狀態
         isLoggedIn.value = false;
-        ElMessage({
-          type: "success",
-          message: resp.data.message,
-        });
-        // 導向到登入頁面
-        router.push({ name: "login" });
-      } catch (error) {
-        if (error instanceof BizError) {
-          console.error("登出失敗:", error.message);
-          console.error("登出失敗:", error.code);
-          ElMessage({
-            type: "error",
-            message: error.message,
-          });
-        }
+        // 重設路由
+        routes.value = [...constantRoutes];
+        removeIsLoggedIn();
+        return "ok";
+      } else {
+        return Promise.reject(message);
       }
     }
 
-    // 提取區域中心代碼
-    // function extractAreaCd(): string {
-    //   const roles = userInfo.value.roles;
-    //   if (!roles || roles.length === 0) return "";
-
-    //   const match = roles[0].match(/OU=([^\s,]+)/g);
-    //   if (!match || match.length === 0) return "";
-
-    //   const ouValue = match[0].split("=")[1];
-    //   return ouValue.slice(0, 3);
-    // }
+    // 提取區域中心代碼s
     const areaCd = computed(() => {
       const roles = userInfo.value.roles;
       if (!roles?.length) return "";
@@ -131,8 +147,10 @@ export const useUserStore = defineStore(
     return {
       userInfo,
       isLoggedIn,
+      routes,
       areaCd,
       login,
+      fetchUserPermissions,
       logout,
     };
   },

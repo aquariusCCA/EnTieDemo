@@ -1,23 +1,10 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import { ElMessage } from "element-plus";
-import router from "@/router"; // ← 直接匯入 router 實例
 
 export enum ApiMode {
   TEST = "test",
   PROD = "",
-}
-
-// 定義 BizError
-export class BizError extends Error {
-  public code: number;
-  constructor(code: number, message?: string) {
-    super(message);
-    this.name = "BizError";
-    this.code = code;
-    // TS 必要：恢復正確的原型鏈
-    Object.setPrototypeOf(this, BizError.prototype);
-  }
 }
 
 /** 是否為開發／測試模式 */
@@ -78,35 +65,40 @@ request.interceptors.response.use(
           obj = JSON.parse(text);
         } catch {
           // parse 失敗也要當 session 過期或未知錯誤
-          return Promise.reject(new BizError(500, "未知錯誤，請重新登入"));
+          return Promise.reject("未知錯誤，請重新登入");
         }
-        return Promise.reject(
-          new BizError(obj.code || 500, obj.message || "Session 已過期")
-        );
+        return Promise.reject(obj.message || "Session 已過期");
       }
       return res;
     }
 
-    // —— 原有：JSON 業務邏輯檢查
-    const { code, message } = res.data;
-
-    if (code === 200) {
-      return res;
-    } else {
-      // 统一将业务错误通过 reject 抛出，方便调用方 catch
-      return Promise.reject(
-        new BizError(code, message || `Error code: ${code}`)
-      );
-    }
+    return res;
   },
-  (err) => {
-    console.error("请求失败", err);
-    const  message = err.message || "未知錯誤，請稍後重試";
+  (error) => {
+    console.error("request error: ", error);
+    let msg = "";
+    const status = error.response.status;
+    switch (status) {
+      case 401:
+        msg = "請重新登入";
+        break;
+      case 403:
+        msg = "沒有權限";
+        break;
+      case 404:
+        msg = "請球的資源不存在";
+        break;
+      case 500:
+        msg = "服務器錯誤";
+        break;
+      default:
+        msg = "請求錯誤";
+    }
     ElMessage({
       type: "error",
-      message,
+      message: msg,
     });
-    return Promise.reject(err);
+    return Promise.reject(error);
   }
 );
 

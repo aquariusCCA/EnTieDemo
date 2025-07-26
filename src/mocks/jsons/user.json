@@ -7,10 +7,20 @@
         "displayName": "test蕭士麟",
         "email": "TestShihLin@entiebank.com.tw",
         "roles": [
-          "CN=98310業務管理科,OU=983法金業務管理部,OU=法人金融總處,OU=帳號,OU=用戶端,OU=安泰商業銀行,DC=entiebank,DC=com,DC=tw"
+          "CN=98310業務管理科,OU=711法金業務管理部,OU=法人金融總處,OU=帳號,OU=用戶端,OU=安泰商業銀行,DC=entiebank,DC=com,DC=tw"
         ],
         "department": "test法金業務管理部",
         "office": "test法金業務管理部"
+      },
+      "message": "成功"
+    },
+    "doGetUserPermissions": {
+      "code": 200,
+      "data": {
+        "routes": [],
+        "buttons": [],
+        "roles": [],
+        "name": "admin"
       },
       "message": "成功"
     },

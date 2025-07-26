@@ -17,10 +17,9 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       vue(), 
       vueDevTools(), 
-      tailwindcss(),
       // 配置 SVG 图标插件
       createSvgIconsPlugin({
-        iconDirs: [path.resolve(process.cwd(), "src/icons")], // 存放svg图标路径
+        iconDirs: [path.resolve(process.cwd(), "src/assets/icons")], // 存放svg图标路径
         symbolId: "icon-[dir]-[name]",
       }),
     ],
@@ -28,7 +27,14 @@ export default defineConfig(({ command, mode }) => {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)), // 相对路径别名配置，使用 @ 代替 src
       },
-    }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/styles/variable.scss" as *;`,
+        },
+      },
+    },
   };
 });
 
