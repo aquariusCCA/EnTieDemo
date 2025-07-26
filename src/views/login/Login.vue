@@ -118,7 +118,11 @@ const toLogin = async () => {
 }
 
 const loginRules: FormRules<RuleForm> = {
-  empId: [{ required: true, message: '請輸入帳號', trigger: ['blur', 'change'] }],
+  empId: [
+    { required: true, message: '請輸入帳號', trigger: ['blur', 'change'] },
+    { pattern: /^[0-9]+$/, trigger: 'blur', message: '請輸入數字',
+    }
+  ],
   password: [{ required: true, message: '請輸入密碼', trigger: ['blur', 'change'] }]
 }
 </script>
@@ -143,7 +147,6 @@ const loginRules: FormRules<RuleForm> = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
     padding: 1.5rem;
     background-color: #ffffff;
     border-radius: 0.75rem;

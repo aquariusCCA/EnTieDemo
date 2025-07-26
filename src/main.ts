@@ -23,6 +23,9 @@ import 'virtual:svg-icons-register'
 // 引入permission
 import '@/router/permission'
 
+// 引入进度条nprogress样式
+import 'nprogress/nprogress.css'
+
 // 開發環境可使用API假資料
 if (import.meta.env.DEV) {
   console.log("這是開發環境，將使用假資料API");
