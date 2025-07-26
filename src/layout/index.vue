@@ -16,7 +16,7 @@
 import Aside from './aside/index.vue'
 import Tabbar from './tabbar/index.vue'
 import Main from './main/index.vue'
-import { useSettingStore } from '@/stores/setting'
+import { useSettingStore } from '@/stores/modules/setting'
 import { storeToRefs } from 'pinia';
 
 const settingStore = useSettingStore()

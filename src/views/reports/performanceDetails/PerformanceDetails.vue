@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, reactive, ref } from 'vue'
-import { usePerformanceStore } from '@/stores/performance';
-import { useUserStore } from '@/stores/user';
+import { usePerformanceStore } from '@/stores/modules/performance';
+import { useUserStore } from '@/stores/modules/user';
 import { storeToRefs } from 'pinia';
 // 導入 Element Plus icon
 import { User, Lock } from '@element-plus/icons-vue';

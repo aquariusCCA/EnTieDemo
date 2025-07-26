@@ -19,13 +19,13 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { ElCard } from 'element-plus';
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/modules/user'
 import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const userName = computed(() => {
-  return userInfo.value.displayName || userInfo.value.account || '使用者';
+  return userInfo.value.loginUser.displayName || userInfo.value.loginUser.account || '使用者';
 });
 const currentTime = ref('');
 const showCard = ref(false);

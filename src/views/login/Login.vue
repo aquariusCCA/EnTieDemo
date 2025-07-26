@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/modules/user'
 import { Lock, User } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElNotification } from 'element-plus'
@@ -73,11 +73,11 @@ const toLogin = async () => {
   try {
     await formEl.validate()
 
-    const info = await login(loginForm.empId, loginForm.password)
+    await login(loginForm.empId, loginForm.password)
 
     ElNotification.success({
       title: '登入成功',
-      message: `歡迎 ${info.displayName}，時間：${getTime()}`
+      message: `${getTime()}好！歡迎你`
     })
     router.push({ name: 'Home' })
   } catch (err) {

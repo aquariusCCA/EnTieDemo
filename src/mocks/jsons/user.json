@@ -1,7 +1,19 @@
 {
-    "doLogin": {
-      "code": 200,
-      "data": {
+  "doLogin": {
+    "code": 200,
+    "data": {
+      "isLoggedIn": true
+    },
+    "message": "成功"
+  },
+  "doGetUserPermissions": {
+    "code": 200,
+    "data": {
+      "routes": [],
+      "buttons": [],
+      "roles": [],
+      "name": "admin",
+      "loginUser": {
         "account": "test10192",
         "upn": "test10192@entiebank.com.tw",
         "displayName": "test蕭士麟",
@@ -11,22 +23,13 @@
         ],
         "department": "test法金業務管理部",
         "office": "test法金業務管理部"
-      },
-      "message": "成功"
+      }
     },
-    "doGetUserPermissions": {
-      "code": 200,
-      "data": {
-        "routes": [],
-        "buttons": [],
-        "roles": [],
-        "name": "admin"
-      },
-      "message": "成功"
-    },
-    "doLogout": {
-      "code": 200,
-      "data": "登出成功",
-      "message": "成功"
-    }
+    "message": "成功"
+  },
+  "doLogout": {
+    "code": 200,
+    "data": "登出成功",
+    "message": "成功"
+  }
 }

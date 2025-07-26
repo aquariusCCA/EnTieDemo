@@ -17,8 +17,8 @@
 <script lang="ts" setup name="Aside">
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
-import { useUserStore } from '@/stores/user'
-import { useSettingStore } from '@/stores/setting'
+import { useUserStore } from '@/stores/modules/user'
+import { useSettingStore } from '@/stores/modules/setting'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 

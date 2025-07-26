@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { watch, ref, nextTick } from 'vue'
-import { useSettingStore } from '@/stores/setting'
+import { useSettingStore } from '@/stores/modules/setting'
 
 const mount = ref(true)
 const settingStore = useSettingStore()

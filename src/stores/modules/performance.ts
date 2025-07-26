@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from "pinia";
 import { getPerformanceDetail } from "@/api/performance";
 import { reactive } from "vue";
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/modules/user";
 
 interface FieldCondition {
   clientCd: string;
@@ -34,9 +34,7 @@ export const usePerformanceStore = defineStore("performance", () => {
 
   // 依查詢條件取得績效明細報表 (Blob)
   async function fetchPerformanceBlob(): Promise<Blob> {
-    console.log("查詢條件:", fieldCondition);
     const { startDataMonth, endDataMonth } = fieldCondition;
-    console.log("查詢條件:", fieldCondition);
     const payload = {
       ...fieldCondition,
       startDataMonth: startDataMonth.replace("-", ""),

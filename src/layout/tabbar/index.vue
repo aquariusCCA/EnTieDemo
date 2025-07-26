@@ -20,7 +20,7 @@
 			<el-button icon="FullScreen" circle @click="handleFullScreen" />
 			<el-dropdown>
 				<span class="tabbar__user">
-					{{ userStore.userInfo.displayName }}
+					{{ userStore.userInfo.loginUser.displayName }}
 					<el-icon class="tabbar__user-icon">
 						<arrow-down />
 					</el-icon>
@@ -38,8 +38,8 @@
 <script lang="ts" setup name="Tabbar">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useSettingStore } from '@/stores/setting'
-import { useUserStore } from '@/stores/user'
+import { useSettingStore } from '@/stores/modules/setting'
+import { useUserStore } from '@/stores/modules/user'
 import router from '@/router'
 const route = useRoute()
 const settingStore = useSettingStore()
