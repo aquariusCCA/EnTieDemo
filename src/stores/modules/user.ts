@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { doLogin, doLogout, doFetchUserInfo } from "@/api/user";
 import router from "@/router"; // ← 直接匯入 router 實例
-import { setIsLoggedIn, removeIsLoggedIn } from "@/utils/auth";
+import { setCsrfToken, removeCsrfToken } from "@/utils/auth";
 import { cloneDeep } from "lodash";
 import { constantRoutes, asyncRoutes, anyRoute } from "@/router/routes";
 
@@ -35,8 +35,7 @@ export const useUserStore = defineStore("user", () => {
     console.log("登入回應:", response);
     const { data, code, message } = response.data;
     if (code === 200) {
-      // 設置已登入狀態
-      setIsLoggedIn(data.loggedIn);
+      setCsrfToken(data.csrfToken);
       return "ok";
     } else {
       return Promise.reject(message);
@@ -88,8 +87,8 @@ export const useUserStore = defineStore("user", () => {
       userInfo.value = { ...initUserInfo };
       // 重設路由
       routes.value = [...constantRoutes];
-      // 清除登入狀態
-      removeIsLoggedIn();
+      // 清除 csrfToken
+      removeCsrfToken();
       return "ok";
     } else {
       return Promise.reject(message);

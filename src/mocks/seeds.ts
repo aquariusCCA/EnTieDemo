@@ -11,7 +11,7 @@ export const setSeeds = async () => {
       // [url, json key]
       [`${BASE_URL}/public/user/login`, doLogin],
       [`${BASE_URL}/user/logout`, doLogout],
-      [`${BASE_URL}/user/permissions`, doFetchUserInfo],
+      [`${BASE_URL}/user/info`, doFetchUserInfo],
     ]);
   } catch (err) {
     console.log(err);

@@ -1,11 +1,11 @@
-export function getIsLoggedIn() {
-  return localStorage.getItem("isLoggedIn") === "true";
+export function getCsrfToken() {
+  return localStorage.getItem("csrfToken");
 }
 
-export function setIsLoggedIn(isLoggedIn: boolean) {
-  localStorage.setItem("isLoggedIn", String(isLoggedIn));
+export function setCsrfToken(token: string) {
+  localStorage.setItem("csrfToken", token);
 }
 
-export function removeIsLoggedIn() {
-  localStorage.removeItem("isLoggedIn");
+export function removeCsrfToken() {
+  localStorage.removeItem("csrfToken");
 }

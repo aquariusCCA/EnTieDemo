@@ -2,15 +2,15 @@ import router from "@/router";
 // @ts-ignore
 import NProgress from "nprogress";
 import { useUserStore } from "@/stores/modules/user";
-import { getIsLoggedIn } from "@/utils/auth";
+import { getCsrfToken } from "@/utils/auth";
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
   const userStore = useUserStore();
   console.log("路由守衛觸發，當前路由:", router.getRoutes());
   console.log("userStore:", userStore.userInfo);
-  console.log("getIsLoggedIn():", getIsLoggedIn());
-  if (getIsLoggedIn()) {
+  console.log("getCsrfToken():", getCsrfToken());
+  if (getCsrfToken()) {
     if (to.path === "/login") {
       next("/");
     } else {

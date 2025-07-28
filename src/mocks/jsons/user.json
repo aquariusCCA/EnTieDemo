@@ -2,7 +2,7 @@
   "doLogin": {
     "code": 200,
     "data": {
-      "loggedIn": true
+      "csrfToken": "token1234567890"
     },
     "message": "成功"
   },

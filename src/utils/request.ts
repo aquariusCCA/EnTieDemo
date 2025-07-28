@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import { ElMessage } from "element-plus";
+import { getCsrfToken } from "@/utils/auth";
 
 export enum ApiMode {
   TEST = "test",
@@ -42,6 +43,11 @@ function injectTestParams(config: AxiosRequestConfig) {
 //添加请求拦截器
 request.interceptors.request.use((config) => {
   injectTestParams(config);
+  // 注入 CSRF Token
+  const csrfToken = getCsrfToken();
+  if (csrfToken) {
+    config.headers["X-CSRF-Token"] = csrfToken;
+  } 
   return config;
 });
 
