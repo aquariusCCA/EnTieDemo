@@ -4,7 +4,8 @@ import App from "./App.vue";
 import router from "./router";
 import pinia from "./stores/index.ts";
 
-import "@/styles/index.scss";
+// 引入全局样式
+import "@/styles/reset.scss";
 
 // 引入 Element Plus 组件库
 // 以及它的样式和中文语言包

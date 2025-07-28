@@ -2,11 +2,11 @@
   "doLogin": {
     "code": 200,
     "data": {
-      "isLoggedIn": true
+      "loggedIn": true
     },
     "message": "成功"
   },
-  "doGetUserPermissions": {
+  "doFetchUserInfo": {
     "code": 200,
     "data": {
       "routes": [],

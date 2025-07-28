@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { doLogin, doLogout, doGetUserPermissions } from "@/api/user";
+import { doLogin, doLogout, doFetchUserInfo } from "@/api/user";
 import router from "@/router"; // ← 直接匯入 router 實例
 import { setIsLoggedIn, removeIsLoggedIn } from "@/utils/auth";
 import { cloneDeep } from "lodash";
@@ -36,7 +36,7 @@ export const useUserStore = defineStore("user", () => {
     const { data, code, message } = response.data;
     if (code === 200) {
       // 設置已登入狀態
-      setIsLoggedIn(data.isLoggedIn);
+      setIsLoggedIn(data.loggedIn);
       return "ok";
     } else {
       return Promise.reject(message);
@@ -45,7 +45,7 @@ export const useUserStore = defineStore("user", () => {
 
   // 獲取使用者權限
   async function fetchUserInfo() {
-    const response = await doGetUserPermissions();
+    const response = await doFetchUserInfo();
     console.log("獲取使用者信息回應:", response);
     const { data, code, message } = response.data;
     if (code === 200) {

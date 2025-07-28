@@ -1,5 +1,5 @@
 import { setMany } from "idb-keyval";
-import { doLogin, doLogout, doGetUserPermissions } from './jsons/user.json'
+import { doLogin, doLogout, doFetchUserInfo } from './jsons/user.json'
 
 const BASE_URL = import.meta.env.VITE_SERVER;
 
@@ -11,7 +11,7 @@ export const setSeeds = async () => {
       // [url, json key]
       [`${BASE_URL}/public/user/login`, doLogin],
       [`${BASE_URL}/user/logout`, doLogout],
-      [`${BASE_URL}/user/permissions`, doGetUserPermissions],
+      [`${BASE_URL}/user/permissions`, doFetchUserInfo],
     ]);
   } catch (err) {
     console.log(err);

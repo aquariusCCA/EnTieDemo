@@ -97,7 +97,7 @@ async function searchReport() {
     const blob = await fetchPerformanceBlob()
     downloadBlob(blob, `${fieldCondition.value.areaCd}.xlsx`)
 
-    ElNotification.success('報表下載已開始，請稍候完成')
+    ElNotification.success('報表下載已完成')
   } catch (err) {
     console.error('報表生成失敗:', err)
 

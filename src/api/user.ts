@@ -3,7 +3,7 @@ import request from '@/utils/request'
 enum API {
     LOGIN_URL = '/public/user/login',
     LOUGOUT_URL = '/user/logout',
-    USERINFO_URL = '/user/permissions'
+    USERINFO_URL = '/user/info'
 }
 
 // 定義登錄請求參數接口
@@ -31,7 +31,7 @@ export const doLogout = () => {
 }
 
 // 獲取使用者權限
-export const doGetUserPermissions = () => {
+export const doFetchUserInfo = () => {
     return request({
         url: API.USERINFO_URL,
         method: 'post'
