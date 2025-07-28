@@ -21,6 +21,9 @@ export const useSettingStore = defineStore(
     function changeColor() {
       localStorage.setItem("color", String(color.value));
     }
+    function toggleFold() {
+      fold.value = !fold.value;
+    }
     return {
       fold,
       refresh,
@@ -30,6 +33,7 @@ export const useSettingStore = defineStore(
       changeRefresh,
       changeDark,
       changeColor,
+      toggleFold,
     };
   }
 );

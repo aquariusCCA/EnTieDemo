@@ -1,93 +1,158 @@
 <template>
-	<div class="layout-container">
-		<div class="layout-aside" :class="settingStore.fold ? 'fold' : ''">
-			<Aside></Aside>
-		</div>
-		<div class="layout-tabbar" :class="settingStore.fold ? 'fold' : ''">
-			<Tabbar></Tabbar>
-		</div>
-		<div class="layout-main" :class="settingStore.fold ? 'fold' : ''">
-			<Main></Main>
-		</div>
+	<div class="layout-container" :class="{ 'is-fold': fold }">
+		<aside class="layout-aside">
+			<Aside />
+		</aside>
+
+		<header class="layout-tabbar">
+			<Tabbar />
+		</header>
+
+		<main class="layout-main">
+			<Main />
+		</main>
+
+		<!-- overlay 僅在手機裝置且展開側邊欄時才顯示 -->
+		<div class="layout-overlay" v-if="isMobile && !fold" @click="toggleFold" />
 	</div>
 </template>
+
 
 <script lang="ts" setup>
 import Aside from './aside/index.vue'
 import Tabbar from './tabbar/index.vue'
 import Main from './main/index.vue'
 import { useSettingStore } from '@/stores/modules/setting'
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const settingStore = useSettingStore()
 const { fold } = storeToRefs(settingStore)
+const { toggleFold } = settingStore
+
+// 判斷是否為手機裝置
+const isMobile = ref(window.innerWidth <= 768)
+const handleResize = () => {
+	isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+	window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize)
+})
 </script>
 
+
 <style scoped lang="scss">
+$aside-width: 240px;
+$aside-fold-width: 64px;
+$tabbar-height: 56px;
+$aside-color: #24273b;
+$transition-width: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+$transition-text: 0.25s ease-out;
+
 .layout-container {
+	--aside-size: #{$aside-width};
 	height: 100vh;
-	position: relative;
+	display: grid;
+	grid-template-columns: var(--aside-size) 1fr;
+	grid-template-rows: $tabbar-height 1fr;
+	grid-template-areas:
+		"aside tabbar"
+		"aside main";
 	overflow: hidden;
+	transition: grid-template-columns $transition-width;
+
+	&.is-fold {
+		--aside-size: #{$aside-fold-width};
+	}
 
 	.layout-aside {
-		position: relative;
-		z-index: 20;
-		height: 100vh;
-		width: $aside-width;
-		background-color: $aside-color;
-		transition: all 0.3s ease;
+		grid-area: aside;
+		background: $aside-color;
+		width: var(--aside-size);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		transition: width $transition-width;
 
-		&.fold {
-			width: $aside-fold-width;
+		// 新增文字過渡動畫
+		* {
+			transition: opacity 0.2s ease, transform 0.2s ease;
+		}
+
+		.is-fold & * {
+			opacity: 0;
+			transform: translateX(-10px);
 		}
 	}
 
 	.layout-tabbar {
-		position: absolute;
-		top: 0;
-		left: $aside-width;
-		height: $tabbar-height;
-		width: calc(100vw - $aside-width);
-		box-shadow: 0 0 1px;
-		transition: all 0.3s ease;
-
-		&.fold {
-			width: calc(100vw - $aside-fold-width);
-			left: $aside-fold-width;
-		}
+		grid-area: tabbar;
+		background: #fff;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		z-index: 5;
 	}
 
 	.layout-main {
-		position: absolute;
-		top: $tabbar-height;
-		left: $aside-width;
+		grid-area: main;
 		padding: 20px;
-		height: calc(100vh - $tabbar-height);
-		width: calc(100vw - $aside-width);
-		overflow: hidden;
-		transition: all 0.3s ease;
-
-		&.fold {
-			width: calc(100vw - $aside-fold-width);
-			left: $aside-fold-width;
-		}
+		overflow: auto;
+		background: #f7f8fa;
 	}
+}
 
-	.layout-overlay {
-		position: fixed;
-		z-index: 10;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(36, 39, 59, 0.8);
-		transform: scale(1.1);
-		opacity: 0;
-		pointer-events: none;
-		transition: transform 0.3s ease, opacity 0.3s ease;
+// 👉 Media Query
+@media (max-width: 768px) {
+	.layout-container {
+		grid-template-columns: 1fr;
+		grid-template-rows: $tabbar-height 1fr;
+		grid-template-areas:
+			"tabbar"
+			"main";
 
-		&.fold {
-			transform: scale(1);
+		.layout-aside {
+			position: fixed;
+			top: 0;
+			left: -100%;
+			height: 100vh;
+			width: $aside-width;
+			transition: left $transition-width;
+			z-index: 20;
+		}
+
+		// 展開時
+		&:not(.is-fold) .layout-aside {
+			left: 0;
+		}
+
+		.layout-tabbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 15;
+		}
+
+		.layout-main {
+			height: calc(100vh - $tabbar-height);
+			padding-top: $tabbar-height;
+		}
+
+		.layout-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(36, 39, 59, 0.6);
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity $transition-text;
+			z-index: 18;
 			opacity: 1;
 			pointer-events: auto;
 		}
