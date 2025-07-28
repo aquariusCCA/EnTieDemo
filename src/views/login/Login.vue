@@ -43,6 +43,11 @@
           </el-button>
         </el-form-item>
       </el-form>
+
+      <!-- 備註訊息 -->
+      <p class="login__warning">
+        密碼同電腦開機時所輸入的密碼，錯誤三次以上會鎖住電腦！
+      </p>
     </section>
   </main>
 </template>
@@ -183,6 +188,18 @@ const loginRules: FormRules<RuleForm> = {
 
   &__submit {
     width: 100%;
+  }
+
+  &__warning {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #dc2626; 
+    background-color: #fef2f2; 
+    border: 1px solid #fecaca;
+    border-radius: 0.375rem;
+    text-align: center;
   }
 }
 </style>
