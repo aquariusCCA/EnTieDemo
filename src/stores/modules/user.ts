@@ -81,7 +81,7 @@ export const useUserStore = defineStore("user", () => {
     // 呼叫登出 API
     const response = await doLogout();
     console.log("登出回應:", response);
-    const { data, code, message } = response.data;
+    const { code, message } = response.data;
 
     if (code === 200) {
       // 清除使用者資訊

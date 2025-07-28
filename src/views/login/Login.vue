@@ -82,8 +82,16 @@ const toLogin = async () => {
     router.push({ name: 'Home' })
   } catch (err) {
     console.error('Login failed:', err)
+    // 情境 1：login() 返回自訂錯誤訊息（字串）
+    if (typeof err === 'string') {
+      ElNotification.error({
+        title: '登入失敗',
+        message: err
+      });
+      return;
+    }
 
-    // 嘗試解析欄位錯誤
+    // 情境 2：欄位驗證錯誤物件
     if (err && typeof err === 'object') {
       const messages: string[] = []
       const errorObj = err as Record<string, any>
