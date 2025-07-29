@@ -1,11 +1,11 @@
 export function getCsrfToken() {
-  return localStorage.getItem("csrfToken");
+  return sessionStorage.getItem("csrfToken");
 }
 
 export function setCsrfToken(token: string) {
-  localStorage.setItem("csrfToken", token);
+  sessionStorage.setItem("csrfToken", token);
 }
 
 export function removeCsrfToken() {
-  localStorage.removeItem("csrfToken");
+  sessionStorage.removeItem("csrfToken");
 }

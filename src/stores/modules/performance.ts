@@ -45,7 +45,8 @@ export const usePerformanceStore = defineStore("performance", () => {
       const res = await getPerformanceDetail(payload); // Axios 攔截器已處理非 2xx
       return res.data as Blob;
     } catch (e) {
-      return Promise.reject("下載報表失敗");
+      console.error("下載報表失敗:", e);
+      return Promise.reject(e);
     }
   }
 

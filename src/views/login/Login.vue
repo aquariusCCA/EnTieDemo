@@ -1,13 +1,8 @@
 <template>
   <!-- 整頁中心容器 -->
-  <main
-    v-loading="loading" 
-    class="login"
-  >
+  <main v-loading="loading" class="login">
     <!-- 卡片 -->
-    <section
-      class="login__card"
-    >
+    <section class="login__card">
       <svg class="login__icon" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M364.61 390.213C304.625 450.196 207.37 450.196 147.386 390.213C117.394 360.22 102.398 320.911 102.398 281.6C102.398 242.291 117.394 202.981 147.386 172.989C147.386 230.4 153.6 281.6 230.4 307.2C230.4 256 256 102.4 294.4 76.7999C320 128 334.618 142.997 364.608 172.989C394.601 202.981 409.597 242.291 409.597 281.6C409.597 320.911 394.601 360.22 364.61 390.213Z"
@@ -20,21 +15,16 @@
       <h1 class="login__title">登入系統</h1>
 
       <!-- 表單 -->
-      <el-form
-        ref="loginFormRef"
-        :model="loginForm"
-        :rules="loginRules"
-        :label-position="'top'"
-        status-icon
-        @submit.prevent
-        class="login__form">
-        
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" :label-position="'top'" status-icon
+        @submit.prevent class="login__form">
+
         <el-form-item prop="empId" label="員工編號">
           <el-input id="empId" v-model="loginForm.empId" :prefix-icon="User" autocomplete="username" />
         </el-form-item>
 
         <el-form-item prop="password" label="密碼">
-          <el-input id="password" v-model="loginForm.password" type="password" :prefix-icon="Lock" show-password autocomplete="current-password" />
+          <el-input id="password" v-model="loginForm.password" type="password" :prefix-icon="Lock" show-password
+            autocomplete="current-password" />
         </el-form-item>
 
         <el-form-item>
@@ -72,68 +62,40 @@ const loading = ref(false)
 const toLogin = async () => {
   const formEl = loginFormRef.value
   if (!formEl) return
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+      loading.value = true
 
-  loading.value = true
+      try {
+        await login(loginForm.empId, loginForm.password)
 
-  try {
-    await formEl.validate()
+        ElNotification.success({
+          title: '登入成功',
+          message: `${getTime()}好！歡迎你`
+        })
 
-    await login(loginForm.empId, loginForm.password)
-
-    ElNotification.success({
-      title: '登入成功',
-      message: `${getTime()}好！歡迎你`
-    })
-    router.push({ name: 'Home' })
-  } catch (err) {
-    console.error('Login failed:', err)
-    // 情境 1：login() 返回自訂錯誤訊息（字串）
-    if (typeof err === 'string') {
-      ElNotification.error({
-        title: '登入失敗',
-        message: err
-      });
-      return;
-    }
-
-    // 情境 2：欄位驗證錯誤物件
-    if (err && typeof err === 'object') {
-      const messages: string[] = []
-      const errorObj = err as Record<string, any>
-
-      for (const field in errorObj) {
-        if (Array.isArray(errorObj[field])) {
-          errorObj[field].forEach((item: any) => {
-            if (item?.message) {
-              messages.push(item.message)
-            }
-          })
-        }
-      }
-
-      if (messages.length > 0) {
+        router.push({ name: 'Home' })
+      } catch (err) {
+        console.error('Login failed:', err)
         ElNotification.error({
           title: '登入失敗',
-          message: messages.join('，')
-        })
-        return
+          message: String(err)
+        });
+      } finally {
+        loading.value = false
       }
+    } else {
+      console.log('error submit!', fields)
     }
-
-    // 回退為未知錯誤
-    ElNotification.error({
-      title: '登入失敗',
-      message: '未知錯誤，請稍後再試'
-    })
-  } finally {
-    loading.value = false
-  }
+  })
 }
 
 const loginRules: FormRules<RuleForm> = {
   empId: [
     { required: true, message: '請輸入帳號', trigger: ['blur', 'change'] },
-    { pattern: /^[0-9]+$/, trigger: 'blur', message: '請輸入數字',
+    {
+      pattern: /^[0-9]+$/, trigger: 'blur', message: '請輸入數字',
     }
   ],
   password: [{ required: true, message: '請輸入密碼', trigger: ['blur', 'change'] }]
@@ -164,7 +126,7 @@ const loginRules: FormRules<RuleForm> = {
     background-color: #ffffff;
     border-radius: 0.75rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
@@ -195,8 +157,8 @@ const loginRules: FormRules<RuleForm> = {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #dc2626; 
-    background-color: #fef2f2; 
+    color: #dc2626;
+    background-color: #fef2f2;
     border: 1px solid #fecaca;
     border-radius: 0.375rem;
     text-align: center;

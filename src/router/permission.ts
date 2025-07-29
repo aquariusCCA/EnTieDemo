@@ -3,6 +3,7 @@ import router from "@/router";
 import NProgress from "nprogress";
 import { useUserStore } from "@/stores/modules/user";
 import { getCsrfToken } from "@/utils/auth";
+import { ElNotification } from 'element-plus'
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
@@ -15,14 +16,18 @@ router.beforeEach(async (to, from, next) => {
       next("/");
     } else {
       if (userStore.userInfo.loginUser.account === "") {
-        // 用户信息不存在, 获取一次用户信息, 再放行
+        // 用戶信息不存在, 獲取一次使用者信息, 再放行
         try {
           await userStore.fetchUserInfo();
-          //刷新的时候, 有可能获取到用户信息后, 异步路由还没有加载完毕, 出现页面空白的效果, 加上 {...to}
+          // 刷新的時候，有可能獲取到使用者信息後，異步路由還沒有加載完畢，出現頁面空白的效果，加上 {...to}
           next({ ...to, replace: true });
         } catch (e) {
-          // 当获取不到用户信息, 清空token及用户信息, 回到登录页
+          // 當獲取不到使用者信息時, 清空 token 及使用者信息, 回到登入頁
           userStore.logout();
+          ElNotification.error({
+            title: '獲取使用者信息失敗',
+            message: String(e),
+          });
           next({ path: "/login" });
         }
       } else {

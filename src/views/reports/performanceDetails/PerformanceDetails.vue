@@ -85,54 +85,33 @@ const isAreaCdDisabled = computed(() => !allowed.includes(areaCd.value))
 async function searchReport() {
   const formEl = ruleFormRef.value
   if (!formEl) return
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      console.log('表單驗證通過，開始生成報表')
+      const loading = ElLoading.service({
+        lock: true,
+        text: '報表生成中，請稍候 …',
+        background: 'rgba(0,0,0,0.3)'
+      })
 
-  const loading = ElLoading.service({
-    lock: true,
-    text: '報表生成中，請稍候 …',
-    background: 'rgba(0,0,0,0.3)'
-  })
-  
-  try {
-    await formEl.validate()
-    const blob = await fetchPerformanceBlob()
-    downloadBlob(blob, `${fieldCondition.value.areaCd}.xlsx`)
+      try {
+        const blob = await fetchPerformanceBlob()
+        downloadBlob(blob, `${fieldCondition.value.areaCd}.xlsx`)
 
-    ElNotification.success('報表下載已完成')
-  } catch (err) {
-    console.error('報表生成失敗:', err)
-
-    // 嘗試解析欄位錯誤
-    if (err && typeof err === 'object') {
-      const messages: string[] = []
-      const errorObj = err as Record<string, any>
-
-      for (const field in errorObj) {
-        if (Array.isArray(errorObj[field])) {
-          errorObj[field].forEach((item: any) => {
-            if (item?.message) {
-              messages.push(item.message)
-            }
-          })
-        }
-      }
-
-      if (messages.length > 0) {
+        ElNotification.success('報表下載已完成')
+      } catch (err) {
+        console.error('報表生成失敗:', err)
         ElNotification.error({
           title: '報表生成失敗',
-          message: messages.join('，')
+          message: String(err)
         })
-        return
+      } finally {
+        loading.close()
       }
+    } else {
+      console.log('表單驗證失敗:', fields)
     }
-
-    // 回退為未知錯誤
-    ElNotification.error({
-      title: '報表生成失敗',
-      message: '未知錯誤，請稍後再試'
-    })
-  } finally {
-    loading.close()
-  }
+  })
 }
 
 onMounted(() => {
@@ -145,15 +124,8 @@ onMounted(() => {
     <h2 class="query__title">查詢績效明細</h2>
     <div class="query__hint"><span class="query__required">＊</span>為必填欄位，請務必填寫完整。</div>
 
-    <el-form
-      ref="ruleFormRef"
-      :model="fieldCondition"
-      :rules="rules"
-      label-position="top"
-      status-icon
-      @submit.prevent
-      class="query__form"
-    >
+    <el-form ref="ruleFormRef" :model="fieldCondition" :rules="rules" label-position="top" status-icon @submit.prevent
+      class="query__form">
       <div class="query__form-grid">
         <el-form-item prop="rmEmpNr" label="員編" class="query__form-item">
           <el-input v-model="fieldCondition.rmEmpNr" :prefix-icon="User" autocomplete="username" />
@@ -164,28 +136,18 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item prop="areaCd" label="區域中心代碼" class="query__form-item">
-          <el-input v-model="fieldCondition.areaCd" :prefix-icon="Lock"  autocomplete="current-password" :disabled="isAreaCdDisabled"/>
+          <el-input v-model="fieldCondition.areaCd" :prefix-icon="Lock" autocomplete="current-password"
+            :disabled="isAreaCdDisabled" />
         </el-form-item>
 
         <el-form-item prop="startDataMonth" label="起始月份" class="query__form-item">
-          <el-date-picker
-            class="query__month-picker"
-            v-model="fieldCondition.startDataMonth"
-            type="month"
-            format="YYYY-MM"
-            value-format="YYYYMM"
-            placeholder="選擇起始月份"
-          />
+          <el-date-picker class="query__month-picker" v-model="fieldCondition.startDataMonth" type="month"
+            format="YYYY-MM" value-format="YYYYMM" placeholder="選擇起始月份" />
         </el-form-item>
 
         <el-form-item prop="endDataMonth" label="結束月份" class="query__form-item">
-          <el-date-picker
-            v-model="fieldCondition.endDataMonth"
-            type="month"
-            format="YYYY-MM"
-            value-format="YYYYMM"
-            placeholder="選擇結束月份"
-          />
+          <el-date-picker v-model="fieldCondition.endDataMonth" type="month" format="YYYY-MM" value-format="YYYYMM"
+            placeholder="選擇結束月份" />
         </el-form-item>
       </div>
     </el-form>
@@ -201,7 +163,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 :deep(.el-input) {
-    width: 100%;
+  width: 100%;
 }
 
 .query {

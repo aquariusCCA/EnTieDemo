@@ -95,7 +95,7 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
-  // 提取區域中心代碼s
+  // 提取區域中心代碼x
   const areaCd = computed(() => {
     const roles = userInfo.value.loginUser.roles;
     if (!roles?.length) return "";

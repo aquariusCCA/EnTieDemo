@@ -36,11 +36,12 @@
 </template>
 
 <script lang="ts" setup name="Tabbar">
-import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSettingStore } from '@/stores/modules/setting'
 import { useUserStore } from '@/stores/modules/user'
 import router from '@/router'
+import { ElNotification } from 'element-plus'
+
 const route = useRoute()
 const settingStore = useSettingStore()
 const userStore = useUserStore()
@@ -66,8 +67,22 @@ const handleFullScreen = () => {
 
 // 退出登录
 const handleLogout = async () => {
-	await userStore.logout()
-	router.push({ path: '/login' })
+	try {
+		await userStore.logout()
+		
+		ElNotification.success({
+			title: '退出登录',
+			message: '您已成功退出登录'
+		})
+
+		router.push({ path: '/login' })
+	} catch (error) {
+		console.error('退出登录失败:', error)
+		ElNotification.error({
+			title: '退出登录失败',
+			message: String(error)
+		})
+	} 
 }
 </script>
 
@@ -75,6 +90,7 @@ const handleLogout = async () => {
 .tabbar {
 	width: 100%;
 	height: 100%;
+	padding: 10px 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

@@ -69,6 +69,7 @@ request.interceptors.response.use(
         let obj: any;
         try {
           obj = JSON.parse(text);
+          console.error("下載報表失敗:", obj);
         } catch {
           // parse 失敗也要當 session 過期或未知錯誤
           return Promise.reject("未知錯誤，請重新登入");
@@ -81,29 +82,17 @@ request.interceptors.response.use(
     return res;
   },
   (error) => {
-    console.error("request error: ", error);
-    let msg = "";
-    const status = error.response.status;
-    switch (status) {
-      case 401:
-        msg = "請重新登入";
-        break;
-      case 403:
-        msg = "沒有權限";
-        break;
-      case 404:
-        msg = "請球的資源不存在";
-        break;
-      case 500:
-        msg = "服務器錯誤";
-        break;
-      default:
-        msg = "請求錯誤";
-    }
-    ElMessage({
-      type: "error",
-      message: msg,
-    });
+    console.error("請求失敗", error);
+    let message = error.message || '未知錯誤';
+
+    if (message === 'Network Error')
+      message = '後端介面連線異常';
+    else if (message.includes('timeout'))
+      message = '系統介面請求逾時';
+    else if (message.includes('Request failed with status code'))
+      message = `系統介面 ${message.slice(-3)} 異常`;
+
+    ElMessage.error({ message, duration: 5_000 });
     return Promise.reject(error);
   }
 );
