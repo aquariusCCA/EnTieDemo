@@ -1,7 +1,12 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { getCsrfToken } from "@/utils/auth";
+import { useUserStore } from "@/stores/modules/user";
+
+
+// 是否显示重新登录
+export let isRelogin = { show: false };
 
 export enum ApiMode {
   TEST = "test",
@@ -47,7 +52,7 @@ request.interceptors.request.use((config) => {
   const csrfToken = getCsrfToken();
   if (csrfToken) {
     config.headers["X-CSRF-Token"] = csrfToken;
-  } 
+  }
   return config;
 });
 
@@ -55,6 +60,9 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   async (res) => {
     console.log("请求成功", res);
+
+    // 未设置状态码则默认成功状态
+    const code = res.data.code || 200;
 
     // 只有在下載 Blob 時才做下面檢查
     if (res.config.responseType === "blob") {
@@ -79,20 +87,47 @@ request.interceptors.response.use(
       return res;
     }
 
-    return res;
+    if (code === 440) {
+      console.log('isRelogin.show:', isRelogin.show);
+      if (!isRelogin.show) {
+        isRelogin.show = true;
+        ElMessageBox.confirm(
+          "登錄狀態已  登录状态已过期，您可以继续留在该页面，或者重新登录",
+          "系统提示",
+          {
+            confirmButtonText: "重新登錄",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        )
+          .then(() => {
+            isRelogin.show = false;
+            useUserStore()
+              .logout()
+              .then(() => {
+                location.href = "/entie/index";
+              });
+          })
+          .catch(() => {
+            isRelogin.show = false;
+            console.log('isRelogin.show:', isRelogin.show);
+          });
+      }
+      return Promise.reject("無效的會話，或者會話已過期，請關閉瀏覽器分頁重新登錄。");
+    } else {
+      return Promise.resolve(res.data);
+    }
   },
   (error) => {
     console.error("請求失敗", error);
-    let message = error.message || '未知錯誤';
+    let message = error.message || "未知錯誤";
 
-    if (message === 'Network Error')
-      message = '後端介面連線異常';
-    else if (message.includes('timeout'))
-      message = '系統介面請求逾時';
-    else if (message.includes('Request failed with status code'))
+    if (message === "Network Error") message = "後端介面連線異常";
+    else if (message.includes("timeout")) message = "系統介面請求逾時";
+    else if (message.includes("Request failed with status code"))
       message = `系統介面 ${message.slice(-3)} 異常`;
 
-    ElMessage.error({ message, duration: 5_000 });
+    ElMessage.error({ message, duration: 5 * 1000 });
     return Promise.reject(error);
   }
 );

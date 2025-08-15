@@ -58,7 +58,7 @@ export const handlers = [
     return HttpResponse.arrayBuffer(bytes, {
       headers: {
         "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/octet-stream",
         "Content-Disposition": "attachment; filename=performance_detail.xlsx",
       },
     });

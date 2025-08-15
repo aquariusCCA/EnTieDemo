@@ -1,48 +1,65 @@
 import router from "@/router";
+// 若專案已安裝型別，這行可移除 @ts-ignore
 // @ts-ignore
 import NProgress from "nprogress";
 import { useUserStore } from "@/stores/modules/user";
 import { getCsrfToken } from "@/utils/auth";
-import { ElNotification } from 'element-plus'
+import { ElNotification } from "element-plus";
+import { isRelogin } from '@/utils/request'
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
   NProgress.start();
+
   const userStore = useUserStore();
+  const csrf = getCsrfToken();
+
   console.log("路由守衛觸發，當前路由:", router.getRoutes());
   console.log("userStore:", userStore.userInfo);
-  console.log("getCsrfToken():", getCsrfToken());
-  if (getCsrfToken()) {
-    if (to.path === "/login") {
-      next("/");
-    } else {
-      if (userStore.userInfo.loginUser.account === "") {
-        // 用戶信息不存在, 獲取一次使用者信息, 再放行
-        try {
-          await userStore.fetchUserInfo();
-          // 刷新的時候，有可能獲取到使用者信息後，異步路由還沒有加載完畢，出現頁面空白的效果，加上 {...to}
-          next({ ...to, replace: true });
-        } catch (e) {
-          // 當獲取不到使用者信息時, 清空 token 及使用者信息, 回到登入頁
-          userStore.logout();
-          ElNotification.error({
-            title: '獲取使用者信息失敗',
-            message: String(e),
-          });
-          next({ path: "/login" });
-        }
-      } else {
-        next();
-      }
-    }
-  } else {
-    if (to.path === "/login") {
-      next();
-    } else {
-      next("/login");
+  console.log("getCsrfToken():", csrf);
+
+  // 未帶 CSRF（視為未登入）
+  if (!csrf) {
+    if (to.path === "/login") return true;               // 放行登入頁
+    return { path: "/login", replace: true };            // 其他一律導到登入
+  }
+
+  // 已帶 CSRF → 視為已登入
+  if (to.path === "/login") {
+    return "/";                                          // 已登入不進登入頁
+  }
+
+  // 使用者資訊尚未初始化 → 先抓取資訊
+  const account = userStore.userInfo?.loginUser?.account ?? "";
+  if (!account) {
+    isRelogin.show = true
+    try {
+      const res = await userStore.fetchUserInfo();
+      console.log("獲取使用者信息成功:", res);
+      isRelogin.show = false
+      // 可能需要等待動態路由註冊完成，故使用 replace 重新解析目標
+      return { ...to, replace: true };
+    } catch (e) {
+      userStore.logout().then(() => {
+        ElNotification.error({
+          title: "獲取使用者信息失敗",
+          message: String(e),
+        });
+        return { path: "/login", replace: true };
+      }).catch(() => {
+        ElNotification.error({
+          title: "獲取使用者信息失敗",
+          message: String(e),
+        });
+
+        return false // 阻止路由變更
+      });
     }
   }
+
+  // 其餘情況放行
+  return true;
 });
 
-router.afterEach((to, from) => {
+router.afterEach(() => {
   NProgress.done();
 });

@@ -5,12 +5,8 @@
 				<component :is="settingStore.fold ? 'Expand' : 'Fold'" />
 			</el-icon>
 			<el-breadcrumb separator=">">
-				<el-breadcrumb-item
-					v-for="x in route.matched"
-					v-show="x.meta.name"
-					:to="{ path: x.path }"
-					:key="x.path"
-				>
+				<el-breadcrumb-item v-for="x in route.matched" v-show="x.meta.name" :to="{ path: x.path }"
+					:key="x.path">
 					{{ x.meta.name }}
 				</el-breadcrumb-item>
 			</el-breadcrumb>
@@ -39,8 +35,7 @@
 import { useRoute } from 'vue-router'
 import { useSettingStore } from '@/stores/modules/setting'
 import { useUserStore } from '@/stores/modules/user'
-import router from '@/router'
-import { ElNotification } from 'element-plus'
+import { ElMessageBox, ElNotification } from 'element-plus'
 
 const route = useRoute()
 const settingStore = useSettingStore()
@@ -67,22 +62,25 @@ const handleFullScreen = () => {
 
 // 退出登录
 const handleLogout = async () => {
-	try {
-		await userStore.logout()
-		
-		ElNotification.success({
-			title: '退出登录',
-			message: '您已成功退出登录'
+	ElMessageBox.confirm('確定註銷並退出系統嗎？', '提示', {
+		confirmButtonText: '確定',
+		cancelButtonText: '取消',
+		type: 'warning'
+	}).then(() => {
+		userStore.logout().then(() => {
+			location.href = '/entie/login'
+		}).catch((e) => {
+			ElNotification.error({
+				title: '退出登錄失敗',
+				message: String(e)
+			})
 		})
-
-		router.push({ path: '/login' })
-	} catch (error) {
-		console.error('退出登录失败:', error)
+	}).catch((e) => { 
 		ElNotification.error({
-			title: '退出登录失败',
-			message: String(error)
+			title: '退出登錄失敗',
+			message: String(e)
 		})
-	} 
+	})
 }
 </script>
 
@@ -99,7 +97,7 @@ const handleLogout = async () => {
 		display: flex;
 		align-items: center;
 
-		& > .tabbar__fold-icon {
+		&>.tabbar__fold-icon {
 			margin: 0 10px;
 			cursor: pointer;
 		}
@@ -124,7 +122,7 @@ const handleLogout = async () => {
 }
 
 // 調整 Element-UI 按鈕之間的間距
-.el-button + .el-button {
+.el-button+.el-button {
 	margin-left: 0;
 }
 
@@ -135,4 +133,3 @@ const handleLogout = async () => {
 	}
 }
 </style>
-

@@ -64,27 +64,22 @@ const toLogin = async () => {
   if (!formEl) return
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      console.log('submit!')
-      loading.value = true
-
-      try {
-        await login(loginForm.empId, loginForm.password)
-
+      login(loginForm.empId, loginForm.password).then((res) => {
+        loading.value = true
         ElNotification.success({
           title: '登入成功',
           message: `${getTime()}好！歡迎你`
         })
-
         router.push({ name: 'Home' })
-      } catch (err) {
+      }).catch((err) => {
         console.error('Login failed:', err)
         ElNotification.error({
           title: '登入失敗',
           message: String(err)
-        });
-      } finally {
+        })
+      }).finally(() => {
         loading.value = false
-      }
+      })
     } else {
       console.log('error submit!', fields)
     }
