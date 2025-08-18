@@ -31,11 +31,9 @@ router.beforeEach(async (to, from) => {
   // 使用者資訊尚未初始化 → 先抓取資訊
   const account = userStore.userInfo?.loginUser?.account ?? "";
   if (!account) {
-    isRelogin.show = true
     try {
       const res = await userStore.fetchUserInfo();
       console.log("獲取使用者信息成功:", res);
-      isRelogin.show = false
       // 可能需要等待動態路由註冊完成，故使用 replace 重新解析目標
       return { ...to, replace: true };
     } catch (e) {

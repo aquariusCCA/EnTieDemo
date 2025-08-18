@@ -47,24 +47,6 @@ export const useUserStore = defineStore("user", () => {
 
   // 獲取使用者權限
   async function fetchUserInfo() {
-    // const response = await doFetchUserInfo();
-    // console.log("獲取使用者信息回應:", response);
-    // const { data, code, message } = response.data;
-    // if (code === 200) {
-    //   userInfo.value = data;
-    //   // 1.过滤异步路由, 作为用户菜单展示
-    //   let filterRoutes = filterAsyncRoutes(cloneDeep(asyncRoutes), data.routes);
-    //   routes.value = [...constantRoutes, ...filterRoutes];
-    //   // 2.将过滤后的异步路由, 追加到路由器中
-    //   filterRoutes.forEach((route) => {
-    //     router.addRoute(route);
-    //   });
-    //   // 3.添加任意路由
-    //   router.addRoute(anyRoute);
-    //   return "ok";
-    // } else {
-    //   return Promise.reject(message);
-    // }
     return new Promise((resolve, reject) => {
       doFetchUserInfo()
         .then((response) => {
@@ -119,18 +101,24 @@ export const useUserStore = defineStore("user", () => {
       doLogout()
         .then((response) => {
           console.log("登出回應:", response);
-          // 清除使用者資訊
-          userInfo.value = { ...initUserInfo };
-          // 重設路由
-          routes.value = [...constantRoutes];
-          // 清除 csrfToken
-          removeCsrfToken();
+          clearUserInfo();
           resolve("ok");
         })
         .catch((error) => {
           reject(error);
         });
     });
+  }
+
+  // 清除客戶端使用者資訊
+  function clearUserInfo() {
+    console.log("清除使用者資訊");
+    // 清除使用者資訊
+    userInfo.value = { ...initUserInfo };
+    // 重設路由
+    routes.value = [...constantRoutes];
+    // 清除 csrfToken
+    removeCsrfToken();
   }
 
   // 提取區域中心代碼x
@@ -166,5 +154,6 @@ export const useUserStore = defineStore("user", () => {
     login,
     fetchUserInfo,
     logout,
+    clearUserInfo,
   };
 });

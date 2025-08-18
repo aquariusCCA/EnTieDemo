@@ -36,6 +36,7 @@ import { useRoute } from 'vue-router'
 import { useSettingStore } from '@/stores/modules/setting'
 import { useUserStore } from '@/stores/modules/user'
 import { ElMessageBox, ElNotification } from 'element-plus'
+import router from '@/router'
 
 const route = useRoute()
 const settingStore = useSettingStore()
@@ -68,7 +69,7 @@ const handleLogout = async () => {
 		type: 'warning'
 	}).then(() => {
 		userStore.logout().then(() => {
-			location.href = '/entie/login'
+			router.push({ name: 'Login' })
 		}).catch((e) => {
 			ElNotification.error({
 				title: '退出登錄失敗',

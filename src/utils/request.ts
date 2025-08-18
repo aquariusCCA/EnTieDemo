@@ -1,9 +1,9 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage, ElLoading} from "element-plus";
 import { getCsrfToken } from "@/utils/auth";
 import { useUserStore } from "@/stores/modules/user";
-
+import router from '@/router'
 
 // 是否显示重新登录
 export let isRelogin = { show: false };
@@ -64,7 +64,10 @@ request.interceptors.response.use(
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200;
 
-    // 只有在下載 Blob 時才做下面檢查
+    // 获取错误信息
+    const message = res.data.message || "未知錯誤";
+
+    // 二进制数据则直接返回
     if (res.config.responseType === "blob") {
       const contentType = res.headers["content-type"] || "";
       // 若 Content-Type 看起來不是 excel，而是 json 或 html → 當作錯誤處理
@@ -88,32 +91,19 @@ request.interceptors.response.use(
     }
 
     if (code === 440) {
-      console.log('isRelogin.show:', isRelogin.show);
-      if (!isRelogin.show) {
-        isRelogin.show = true;
-        ElMessageBox.confirm(
-          "登錄狀態已  登录状态已过期，您可以继续留在该页面，或者重新登录",
-          "系统提示",
-          {
-            confirmButtonText: "重新登錄",
-            cancelButtonText: "取消",
-            type: "warning",
-          }
-        )
-          .then(() => {
-            isRelogin.show = false;
-            useUserStore()
-              .logout()
-              .then(() => {
-                location.href = "/entie/index";
-              });
-          })
-          .catch(() => {
-            isRelogin.show = false;
-            console.log('isRelogin.show:', isRelogin.show);
-          });
-      }
-      return Promise.reject("無效的會話，或者會話已過期，請關閉瀏覽器分頁重新登錄。");
+      useUserStore().clearUserInfo();
+      ElMessage.error({
+        message: "無效的會話，或者會話已過期，請重新登錄。",
+        duration: 5 * 1000,
+      });
+      router.push({ name: "Login" });
+      return Promise.reject("無效的會話，或者會話已過期，請重新登錄。");
+    } else if (code !== 200) {
+      ElMessage.error({
+        message: message,
+        duration: 5 * 1000,
+      });
+      return Promise.reject(message);
     } else {
       return Promise.resolve(res.data);
     }
