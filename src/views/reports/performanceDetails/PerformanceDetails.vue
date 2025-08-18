@@ -15,6 +15,7 @@ const { fieldCondition } = storeToRefs(performanceStore)
 const {
   fetchPerformanceBlob,
   setAreaCd,
+  doPerformanceDetailPreCheck
 } = performanceStore
 
 const userStore = useUserStore()
@@ -37,6 +38,27 @@ function validateEndMonth(_: any, value: string, callback: (error?: Error) => vo
   }
 }
 
+const ALLOWED_AREA = new Set([
+  '711', '712', '713', '717', '718', '722', '726', '731', '736', '924', '983'
+])
+const ALLOWED_SET = new Set(ALLOWED_AREA)
+
+const validateAreaCd = (_rule: any, value: any, callback: (error?: Error) => void) => {
+  const v = String(value ?? '').trim()
+
+  // 非必填：空字串直接通過
+  if (v === '') return callback()
+
+  // 有填寫才檢查格式與白名單
+  if (!/^\d{3}$/.test(v)) {
+    return callback(new Error('若填寫，僅可輸入「3 碼數字」'))
+  }
+  if (!ALLOWED_SET.has(v)) {
+    return callback(new Error(`僅允許：${Array.from(ALLOWED_AREA).join(', ')}`))
+  }
+  callback()
+}
+
 // 表單驗證規則
 const rules = ref({
   rmEmpNr: [
@@ -47,16 +69,7 @@ const rules = ref({
     }
   ],
   areaCd: [
-    {
-      required: true,
-      message: '請輸入區域中心代碼',
-      trigger: 'blur',
-    },
-    {
-      pattern: /^[0-9]+$/,
-      message: '僅可輸入數字',
-      trigger: 'blur'
-    }
+    { validator: validateAreaCd, trigger: ['blur', 'change'] }
   ],
   startDataMonth: [
     {
@@ -81,13 +94,24 @@ const loading = ref(false)
 const allowed = ['924', '983']
 const isAreaCdDisabled = computed(() => !allowed.includes(areaCd.value))
 
-
 async function searchReport() {
   const formEl = ruleFormRef.value
   if (!formEl) return
+
+  const { rmEmpNr, areaCd, clientCd } = fieldCondition.value
+
+  if (!rmEmpNr && !areaCd && !clientCd) {
+    ElNotification.error({
+      title: '錯誤',
+      message: '請至少填寫一個欄位：員編、區域中心代碼或統編'
+    })
+    return
+  }
+
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       console.log('表單驗證通過，開始生成報表')
+
       const loading = ElLoading.service({
         lock: true,
         text: '報表生成中，請稍候 …',
@@ -95,8 +119,14 @@ async function searchReport() {
       })
 
       try {
+        const isExists = await doPerformanceDetailPreCheck();
+        console.log('isExists', isExists)
+
         const blob = await fetchPerformanceBlob()
-        downloadBlob(blob, `${fieldCondition.value.areaCd}.xlsx`)
+        
+        const { areaCd, rmEmpNr, clientCd } = fieldCondition.value
+        const fileName = areaCd != '' ? `${areaCd}.xlsx` : rmEmpNr ? `${rmEmpNr}.xlsx` : `${clientCd}.xlsx`
+        downloadBlob(blob, fileName)
 
         ElNotification.success('報表下載已完成')
       } catch (err) {

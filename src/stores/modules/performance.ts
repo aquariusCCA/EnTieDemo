@@ -1,5 +1,9 @@
 import { defineStore, storeToRefs } from "pinia";
-import { getPerformanceDetail } from "@/api/performance";
+import {
+  getPerformanceDetail,
+  performanceDetailPreCheck,
+  performanceDetailPreCheckForAreaCd,
+} from "@/api/performance";
 import { reactive } from "vue";
 import { useUserStore } from "@/stores/modules/user";
 
@@ -50,9 +54,37 @@ export const usePerformanceStore = defineStore("performance", () => {
     }
   }
 
+  async function doPerformanceDetailPreCheck() {
+    const { startDataMonth, endDataMonth } = fieldCondition;
+    const payload = {
+      ...fieldCondition,
+      startDataMonth: startDataMonth.replace("-", ""),
+      endDataMonth: endDataMonth.replace("-", ""),
+    };
+    const ALLOWED_AREA_SET = new Set(["924", "983"]);
+    // 檢查是否為區域中心代碼(不存在於 allowed 中)
+    const api = ALLOWED_AREA_SET.has(fieldCondition.areaCd)
+      ? performanceDetailPreCheck
+      : performanceDetailPreCheckForAreaCd;
+
+      return new Promise((resolve, reject) => {
+        api(payload)
+          .then((response) => {
+            console.log("績效明細預檢查回應:", response);
+            const { exist } = response.data;
+            resolve(exist);
+          })
+          .catch((error) => {
+            console.error("績效明細預檢查失敗:", error);
+            reject(error);
+          });
+      });
+  }
+
   return {
     fieldCondition,
     fetchPerformanceBlob,
     setAreaCd,
+    doPerformanceDetailPreCheck,
   };
 });

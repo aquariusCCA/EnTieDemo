@@ -1,0 +1,16 @@
+{
+  "performanceDetailPreCheck": {
+    "code": 404,
+    "data": {
+      "exist": false
+    },
+    "message": "成功"
+  },
+  "performanceDetailPreCheckForAreaCd": {
+    "code": 200,
+    "data": {
+      "exist": true
+    },
+    "message": "成功"
+  }
+}
