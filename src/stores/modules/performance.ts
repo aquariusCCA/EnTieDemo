@@ -25,7 +25,7 @@ const initialFieldCondition: FieldCondition = {
 
 export const usePerformanceStore = defineStore("performance", () => {
   const userStore = useUserStore();
-  const { areaCd } = storeToRefs(userStore);
+  const { areaCd, isAreaCenter } = storeToRefs(userStore);
 
   const fieldCondition = reactive<FieldCondition>({
     ...initialFieldCondition,
@@ -56,16 +56,17 @@ export const usePerformanceStore = defineStore("performance", () => {
 
   async function doPerformanceDetailPreCheck() {
     const { startDataMonth, endDataMonth } = fieldCondition;
+
     const payload = {
       ...fieldCondition,
       startDataMonth: startDataMonth.replace("-", ""),
       endDataMonth: endDataMonth.replace("-", ""),
     };
-    const ALLOWED_AREA_SET = new Set(["924", "983"]);
+    
     // 檢查是否為區域中心代碼(不存在於 allowed 中)
-    const api = ALLOWED_AREA_SET.has(fieldCondition.areaCd)
-      ? performanceDetailPreCheck
-      : performanceDetailPreCheckForAreaCd;
+    const api = isAreaCenter.value
+      ? performanceDetailPreCheckForAreaCd
+      : performanceDetailPreCheck;
 
       return new Promise((resolve, reject) => {
         api(payload)

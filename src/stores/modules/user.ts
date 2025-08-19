@@ -147,10 +147,17 @@ export const useUserStore = defineStore("user", () => {
     return "";
   });
 
+  // 判斷是否為區域中心人員(不是 924 或 983)
+  const isAreaCenter = computed(() => {
+    const areaCode = areaCd.value;
+    return areaCode && !["924", "983"].includes(areaCode);
+  });
+
   return {
     userInfo,
     routes,
     areaCd,
+    isAreaCenter,
     login,
     fetchUserInfo,
     logout,
