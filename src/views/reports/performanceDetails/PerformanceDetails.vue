@@ -19,7 +19,7 @@ const {
 } = performanceStore
 
 const userStore = useUserStore()
-const { areaCd } = storeToRefs(userStore)
+const { isAreaCenter } = storeToRefs(userStore)
 
 
 const ruleFormRef = ref<FormInstance>()
@@ -90,10 +90,6 @@ const rules = ref({
 
 const loading = ref(false)
 
-// 只有 924、983 可以編輯，其他都禁用
-const allowed = ['924', '983']
-const isAreaCdDisabled = computed(() => !allowed.includes(areaCd.value))
-
 async function searchReport() {
   const formEl = ruleFormRef.value
   if (!formEl) return
@@ -157,19 +153,6 @@ onMounted(() => {
     <el-form ref="ruleFormRef" :model="fieldCondition" :rules="rules" label-position="top" status-icon @submit.prevent
       class="query__form">
       <div class="query__form-grid">
-        <el-form-item prop="rmEmpNr" label="員編" class="query__form-item">
-          <el-input v-model="fieldCondition.rmEmpNr" :prefix-icon="User" autocomplete="username" />
-        </el-form-item>
-
-        <el-form-item prop="clientCd" label="統編" class="query__form-item">
-          <el-input v-model="fieldCondition.clientCd" :prefix-icon="Lock" autocomplete="current-password" />
-        </el-form-item>
-
-        <el-form-item prop="areaCd" label="區域中心代碼" class="query__form-item">
-          <el-input v-model="fieldCondition.areaCd" :prefix-icon="Lock" autocomplete="current-password"
-            :disabled="isAreaCdDisabled" />
-        </el-form-item>
-
         <el-form-item prop="startDataMonth" label="起始月份" class="query__form-item">
           <el-date-picker class="query__month-picker" v-model="fieldCondition.startDataMonth" type="month"
             format="YYYY-MM" value-format="YYYYMM" placeholder="選擇起始月份" />
@@ -178,6 +161,19 @@ onMounted(() => {
         <el-form-item prop="endDataMonth" label="結束月份" class="query__form-item">
           <el-date-picker v-model="fieldCondition.endDataMonth" type="month" format="YYYY-MM" value-format="YYYYMM"
             placeholder="選擇結束月份" />
+        </el-form-item>
+
+        <el-form-item prop="areaCd" label="區域中心代碼" class="query__form-item">
+          <el-input v-model="fieldCondition.areaCd" :prefix-icon="Lock" autocomplete="current-password"
+            :disabled="isAreaCenter" />
+        </el-form-item>
+
+        <el-form-item prop="rmEmpNr" label="員編" class="query__form-item">
+          <el-input v-model="fieldCondition.rmEmpNr" :prefix-icon="User" autocomplete="username" />
+        </el-form-item>
+
+        <el-form-item prop="clientCd" label="統編" class="query__form-item">
+          <el-input v-model="fieldCondition.clientCd" :prefix-icon="Lock" autocomplete="current-password" />
         </el-form-item>
       </div>
     </el-form>

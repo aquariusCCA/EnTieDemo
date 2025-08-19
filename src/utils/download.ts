@@ -4,6 +4,7 @@
  * @param filename  完整檔名 (含副檔名)
  */
 export function downloadBlob (blob: Blob, filename: string) {
+  console.log('downloadBlob origin =', window.location.origin);
   const url = URL.createObjectURL(blob)
   const a   = document.createElement('a')
   a.href        = url

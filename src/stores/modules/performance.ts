@@ -33,7 +33,13 @@ export const usePerformanceStore = defineStore("performance", () => {
 
   // 設置區域中心代碼
   function setAreaCd() {
-    fieldCondition.areaCd = areaCd.value || "";
+    // 如果是區域中心人員就需要設置
+    if (isAreaCenter.value) {
+      fieldCondition.areaCd = areaCd.value || "";
+    } else {
+      // 否則清空區域中心代碼
+      fieldCondition.areaCd = "";
+    }
   }
 
   // 依查詢條件取得績效明細報表 (Blob)
@@ -62,8 +68,9 @@ export const usePerformanceStore = defineStore("performance", () => {
       startDataMonth: startDataMonth.replace("-", ""),
       endDataMonth: endDataMonth.replace("-", ""),
     };
-    
+
     // 檢查是否為區域中心代碼(不存在於 allowed 中)
+    console.log('doPerformanceDetailPreCheck', areaCd.value, !["924", "983"].includes(areaCd.value))
     const api = isAreaCenter.value
       ? performanceDetailPreCheckForAreaCd
       : performanceDetailPreCheck;
