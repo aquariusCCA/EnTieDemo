@@ -3,6 +3,9 @@ import {
   getPerformanceDetail,
   performanceDetailPreCheck,
   performanceDetailPreCheckForAreaCd,
+  getGrmPerformanceDetail,
+  grmPerformanceDetailPreCheck,
+  grmPerformanceDetailPreCheckForAreaCd,
 } from "@/api/performance";
 import { reactive } from "vue";
 import { useUserStore } from "@/stores/modules/user";
@@ -13,6 +16,7 @@ interface FieldCondition {
   areaCd: string;
   startDataMonth: string;
   endDataMonth: string;
+  dateRangePreset: string;
 }
 
 const initialFieldCondition: FieldCondition = {
@@ -21,7 +25,26 @@ const initialFieldCondition: FieldCondition = {
   areaCd: "",
   startDataMonth: "",
   endDataMonth: "",
+  dateRangePreset: "",
 };
+
+interface GrmFieldCondition {
+  grmId: string;
+  rmEmpNr: string;
+  areaCd: string;
+  startDataMonth: string;
+  endDataMonth: string;
+  dateRangePreset: string;
+}
+
+const initialGrmFieldCondition: GrmFieldCondition = {
+  grmId: "",
+  rmEmpNr: "",
+  areaCd: "",
+  startDataMonth: "",
+  endDataMonth: "",
+  dateRangePreset: "",
+}
 
 export const usePerformanceStore = defineStore("performance", () => {
   const userStore = useUserStore();
@@ -29,6 +52,10 @@ export const usePerformanceStore = defineStore("performance", () => {
 
   const fieldCondition = reactive<FieldCondition>({
     ...initialFieldCondition,
+  });
+
+  const grmFieldCondition = reactive<GrmFieldCondition>({
+    ...initialGrmFieldCondition,
   });
 
   // 設置區域中心代碼
@@ -44,11 +71,8 @@ export const usePerformanceStore = defineStore("performance", () => {
 
   // 依查詢條件取得績效明細報表 (Blob)
   async function fetchPerformanceBlob(): Promise<Blob> {
-    const { startDataMonth, endDataMonth } = fieldCondition;
     const payload = {
       ...fieldCondition,
-      startDataMonth: startDataMonth.replace("-", ""),
-      endDataMonth: endDataMonth.replace("-", ""),
     };
 
     try {
@@ -61,16 +85,11 @@ export const usePerformanceStore = defineStore("performance", () => {
   }
 
   async function doPerformanceDetailPreCheck() {
-    const { startDataMonth, endDataMonth } = fieldCondition;
-
     const payload = {
       ...fieldCondition,
-      startDataMonth: startDataMonth.replace("-", ""),
-      endDataMonth: endDataMonth.replace("-", ""),
     };
 
     // 檢查是否為區域中心代碼(不存在於 allowed 中)
-    console.log('doPerformanceDetailPreCheck', areaCd.value, !["924", "983"].includes(areaCd.value))
     const api = isAreaCenter.value
       ? performanceDetailPreCheckForAreaCd
       : performanceDetailPreCheck;
@@ -89,10 +108,52 @@ export const usePerformanceStore = defineStore("performance", () => {
       });
   }
 
+  // 依查詢條件取得 GRM 績效明細報表 (Blob)
+  async function fetchGrmPerformanceBlob(): Promise<Blob> {
+    const payload = {
+      ...grmFieldCondition,
+    };
+
+    try {
+      const res = await getGrmPerformanceDetail(payload); // Axios 攔截器已處理非 2xx
+      return res.data as Blob;
+    } catch (e) {
+      console.error("下載報表失敗:", e);
+      return Promise.reject(e);
+    }
+  }
+
+  async function doGrmPerformanceDetailPreCheck() {
+    const payload = {
+      ...grmFieldCondition,
+    };
+
+    // 檢查是否為區域中心代碼(不存在於 allowed 中)
+    const api = isAreaCenter.value
+      ? grmPerformanceDetailPreCheckForAreaCd
+      : grmPerformanceDetailPreCheck;
+
+    return new Promise((resolve, reject) => {
+      api(payload)
+        .then((response) => {
+          console.log("GRM 績效明細預檢查回應:", response);
+          const { exist } = response.data;
+          resolve(exist);
+        })
+        .catch((error) => {
+          console.error("GRM 績效明細預檢查失敗:", error);
+          reject(error);
+        });
+    });
+  }
+
   return {
     fieldCondition,
-    fetchPerformanceBlob,
+    grmFieldCondition,
     setAreaCd,
+    fetchPerformanceBlob,
     doPerformanceDetailPreCheck,
+    fetchGrmPerformanceBlob,
+    doGrmPerformanceDetailPreCheck,
   };
 });
