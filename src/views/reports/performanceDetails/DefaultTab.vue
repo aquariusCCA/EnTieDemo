@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { usePerformanceStore } from '@/stores/modules/performance';
 import { useUserStore } from '@/stores/modules/user';
 import { storeToRefs } from 'pinia';
@@ -333,10 +333,6 @@ async function searchReport() {
         }
     })
 }
-
-onMounted(() => {
-    setAreaCd();
-})
 </script>
 
 <style scoped lang="scss">

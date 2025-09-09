@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
+import { ref, onMounted } from 'vue'
+import { usePerformanceStore } from '@/stores/modules/performance';
 import DefaultTab from './DefaultTab.vue'
 import GrmTab from './GrmTab.vue'
 
 const activeName = ref('default')
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
-}
+const performanceStore = usePerformanceStore()
+const { setAreaCd } = performanceStore
+
+onMounted(() => {
+    setAreaCd();
+})
 </script>
 
 <template>
@@ -22,7 +25,6 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
       v-model="activeName"
       type="border-card"
       class="demo-tabs"
-      @tab-click="handleClick"
     >
       <el-tab-pane label="績效查詢" name="default">
         <DefaultTab />

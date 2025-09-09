@@ -2,10 +2,8 @@ import { defineStore, storeToRefs } from "pinia";
 import {
   getPerformanceDetail,
   performanceDetailPreCheck,
-  performanceDetailPreCheckForAreaCd,
   getGrmPerformanceDetail,
   grmPerformanceDetailPreCheck,
-  grmPerformanceDetailPreCheckForAreaCd,
 } from "@/api/performance";
 import { reactive } from "vue";
 import { useUserStore } from "@/stores/modules/user";
@@ -30,8 +28,8 @@ const initialFieldCondition: FieldCondition = {
 
 interface GrmFieldCondition {
   grmId: string;
-  rmEmpNr: string;
   areaCd: string;
+  assignedRegion: string
   startDataMonth: string;
   endDataMonth: string;
   dateRangePreset: string;
@@ -39,8 +37,8 @@ interface GrmFieldCondition {
 
 const initialGrmFieldCondition: GrmFieldCondition = {
   grmId: "",
-  rmEmpNr: "",
   areaCd: "",
+  assignedRegion: "",
   startDataMonth: "",
   endDataMonth: "",
   dateRangePreset: "",
@@ -63,9 +61,11 @@ export const usePerformanceStore = defineStore("performance", () => {
     // 如果是區域中心人員就需要設置
     if (isAreaCenter.value) {
       fieldCondition.areaCd = areaCd.value || "";
+      grmFieldCondition.areaCd = areaCd.value || "";
     } else {
       // 否則清空區域中心代碼
       fieldCondition.areaCd = "";
+      grmFieldCondition.areaCd = "";
     }
   }
 
@@ -89,13 +89,8 @@ export const usePerformanceStore = defineStore("performance", () => {
       ...fieldCondition,
     };
 
-    // 檢查是否為區域中心代碼(不存在於 allowed 中)
-    const api = isAreaCenter.value
-      ? performanceDetailPreCheckForAreaCd
-      : performanceDetailPreCheck;
-
       return new Promise((resolve, reject) => {
-        api(payload)
+        performanceDetailPreCheck(payload)
           .then((response) => {
             console.log("績效明細預檢查回應:", response);
             const { exist } = response.data;
@@ -114,6 +109,22 @@ export const usePerformanceStore = defineStore("performance", () => {
       ...grmFieldCondition,
     };
 
+    const mappingAreaCd: Record<string, string> = {
+      "711": "北一區",
+      "712": "北二區",
+      "713": "北三區",
+      "717": "北五區",
+      "718": "北六區",
+      "722": "北八區",
+      "726": "桃竹區",
+      "731": "台中區",
+      "736": "南部區",
+      "924": "法授部",
+      "983": "法業部"
+    }
+
+    payload.assignedRegion = mappingAreaCd[payload.areaCd];
+
     try {
       const res = await getGrmPerformanceDetail(payload); // Axios 攔截器已處理非 2xx
       return res.data as Blob;
@@ -128,13 +139,24 @@ export const usePerformanceStore = defineStore("performance", () => {
       ...grmFieldCondition,
     };
 
-    // 檢查是否為區域中心代碼(不存在於 allowed 中)
-    const api = isAreaCenter.value
-      ? grmPerformanceDetailPreCheckForAreaCd
-      : grmPerformanceDetailPreCheck;
+    const mappingAreaCd: Record<string, string> = {
+      "711": "北一區",
+      "712": "北二區",
+      "713": "北三區",
+      "717": "北五區",
+      "718": "北六區",
+      "722": "北八區",
+      "726": "桃竹區",
+      "731": "台中區",
+      "736": "南部區",
+      "924": "法授部",
+      "983": "法業部"
+    }
+
+    payload.assignedRegion = mappingAreaCd[payload.areaCd];
 
     return new Promise((resolve, reject) => {
-      api(payload)
+      grmPerformanceDetailPreCheck(payload)
         .then((response) => {
           console.log("GRM 績效明細預檢查回應:", response);
           const { exist } = response.data;

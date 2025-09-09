@@ -2,9 +2,7 @@ import { setMany } from "idb-keyval";
 import { doLogin, doLogout, doFetchUserInfo } from "./jsons/user.json";
 import {
   performanceDetailPreCheck,
-  performanceDetailPreCheckForAreaCd,
   grmPerformanceDetailPreCheck,
-  grmPerformanceDetailPreCheckForAreaCd
 } from "./jsons/performance.json";
 
 const BASE_URL = import.meta.env.VITE_SERVER;
@@ -20,9 +18,7 @@ export const setSeeds = async () => {
       [`${BASE_URL}/user/info`, doFetchUserInfo],
       [`${BASE_URL}/user/info`, doFetchUserInfo],
       [`${BASE_URL}/performance/preCheck`, performanceDetailPreCheck],
-      [`${BASE_URL}/performance/preCheckForAreaCd`, performanceDetailPreCheckForAreaCd],
       [`${BASE_URL}/performance/grmPreCheck`, grmPerformanceDetailPreCheck],
-      [`${BASE_URL}/performance/grmPreCheckForAreaCd`, grmPerformanceDetailPreCheckForAreaCd],
     ]);
   } catch (err) {
     console.log(err);

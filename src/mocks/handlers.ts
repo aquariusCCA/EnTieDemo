@@ -53,13 +53,7 @@ export const handlers = [
   http.post(`${BASE_URL}/performance/preCheck`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
-  http.post(`${BASE_URL}/performance/preCheckForAreaCd`, (resolverInfo) => {
-    return mockResolver(resolverInfo);
-  }),
   http.post(`${BASE_URL}/performance/grmPreCheck`, (resolverInfo) => {
-    return mockResolver(resolverInfo);
-  }),
-  http.post(`${BASE_URL}/performance/grmPreCheckForAreaCd`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
   http.post(`${BASE_URL}/performance/detail`, () => {

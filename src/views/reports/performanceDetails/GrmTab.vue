@@ -57,20 +57,8 @@
                 </el-form-item>
 
                 <el-form-item 
-                    prop="rmEmpNr" 
-                    label="員編" 
-                    class="query__form-item"
-                >
-                    <el-input 
-                        v-model="grmFieldCondition.rmEmpNr" 
-                        :prefix-icon="User" 
-                        autocomplete="username" 
-                    />
-                </el-form-item>
-
-                <el-form-item 
                     prop="grmId" 
-                    label="集團戶ＩＤ" 
+                    label="集團戶ID"   
                     class="query__form-item"
                 >
                     <el-input 
@@ -113,11 +101,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { usePerformanceStore } from '@/stores/modules/performance';
 import { useUserStore } from '@/stores/modules/user';
 import { storeToRefs } from 'pinia';
-import { User, Lock } from '@element-plus/icons-vue';
+import { Lock } from '@element-plus/icons-vue';
 import type { FormInstance } from 'element-plus'
 import { ElLoading, ElNotification } from 'element-plus'
 import { downloadBlob } from '@/utils/download'
@@ -125,7 +113,6 @@ import { downloadBlob } from '@/utils/download'
 const performanceStore = usePerformanceStore()
 const { grmFieldCondition } = storeToRefs(performanceStore)
 const {
-    setAreaCd,
     fetchGrmPerformanceBlob,
     doGrmPerformanceDetailPreCheck,
 } = performanceStore
@@ -225,11 +212,12 @@ function validateEndMonth(_: any, value: string, callback: (error?: Error) => vo
 
 // 表單驗證規則
 const rules = ref({
-    rmEmpNr: [
+    grmId: [
         {
+            required: true,
             pattern: /^[a-zA-Z0-9]+$/,
             trigger: 'blur',
-            message: '請輸入英數字',
+            message: '請輸入集團戶ID（英數字）',
         }
     ],
     startDataMonth: [
@@ -288,16 +276,6 @@ async function searchReport() {
     const formEl = ruleFormRef.value
     if (!formEl) return
 
-    const { rmEmpNr, areaCd, grmId } = grmFieldCondition.value
-
-    if (!rmEmpNr && !areaCd && !grmId) {
-        ElNotification.error({
-            title: '錯誤',
-            message: '請至少填寫一個欄位：員編、區域中心代碼或集團戶ＩＤ'
-        })
-        return
-    }
-
     await formEl.validate(async (valid, fields) => {
         if (valid) {
             console.log('表單驗證通過，開始生成報表')
@@ -314,8 +292,8 @@ async function searchReport() {
 
                 const blob = await fetchGrmPerformanceBlob()
 
-                const { areaCd, rmEmpNr, grmId } = grmFieldCondition.value
-                const fileName = areaCd != '' ? `${areaCd}.xlsx` : rmEmpNr ? `${rmEmpNr}.xlsx` : `${grmId}.xlsx`
+                const { areaCd, grmId } = grmFieldCondition.value
+                const fileName = areaCd != '' ? `${areaCd}.xlsx` : `${grmId}.xlsx`
                 downloadBlob(blob, fileName)
 
                 ElNotification.success('報表下載已完成')
@@ -333,10 +311,6 @@ async function searchReport() {
         }
     })
 }
-
-onMounted(() => {
-    setAreaCd();
-})
 </script>
 
 <style scoped lang="scss">
