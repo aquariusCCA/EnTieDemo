@@ -45,6 +45,7 @@
                 >
                     <el-select 
                         v-model="grmFieldCondition.areaCd" 
+                        clearable
                         :disabled="isAreaCenter" 
                     >
                         <el-option

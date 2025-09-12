@@ -29,7 +29,7 @@ onMounted(() => {
       <el-tab-pane label="績效查詢" name="default">
         <DefaultTab />
       </el-tab-pane>
-      <el-tab-pane label="集團績效查詢" name="grm">
+      <el-tab-pane label="集團戶績效查詢" name="grm">
         <GrmTab />
       </el-tab-pane>
     </el-tabs>

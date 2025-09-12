@@ -45,6 +45,7 @@
                 >
                     <el-select 
                         v-model="fieldCondition.areaCd" 
+                        clearable
                         :disabled="isAreaCenter" 
                     >
                         <el-option
