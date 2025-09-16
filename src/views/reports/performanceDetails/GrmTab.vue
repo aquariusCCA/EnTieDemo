@@ -76,6 +76,7 @@
                 >
                     <el-select 
                         v-model="grmFieldCondition.dateRangePreset" 
+                        clearable
                     >
                         <el-option
                             v-for="item in dateOptions"

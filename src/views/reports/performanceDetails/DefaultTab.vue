@@ -87,7 +87,8 @@
                     class="query__form-item"
                 >
                     <el-select 
-                        v-model="fieldCondition.dateRangePreset" 
+                        v-model="fieldCondition.dateRangePreset"
+                        clearable 
                     >
                         <el-option
                             v-for="item in dateOptions"
