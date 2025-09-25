@@ -27,7 +27,8 @@ const initialFieldCondition: FieldCondition = {
 };
 
 interface GrmFieldCondition {
-  grmId: string;
+  grmId: string
+  groupName: string;
   areaCd: string;
   assignedRegion: string
   startDataMonth: string;
@@ -37,6 +38,7 @@ interface GrmFieldCondition {
 
 const initialGrmFieldCondition: GrmFieldCondition = {
   grmId: "",
+  groupName: "",
   areaCd: "",
   assignedRegion: "",
   startDataMonth: "",

@@ -227,13 +227,6 @@ function validateEndMonth(_: any, value: string, callback: (error?: Error) => vo
 
 // 表單驗證規則
 const rules = ref({
-    rmEmpNr: [
-        {
-            pattern: /^[a-zA-Z0-9]+$/,
-            trigger: 'blur',
-            message: '請輸入英數字',
-        }
-    ],
     startDataMonth: [
         {
             required: true,
@@ -255,14 +248,24 @@ const rules = ref({
 const pad2 = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const yyyymm = (y: number, m: number) => `${y}${pad2(m)}`;
 
-/** 近一年度：當年 1 月 ~ 本月 */
-function setRecentYearRange() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = now.getMonth() + 1; // 1-12
-  fieldCondition.value.startDataMonth = yyyymm(y, 1);
-  fieldCondition.value.endDataMonth = yyyymm(y, m);
+/** 近一年度：以當前月份為結束，往前推 11 個月為開始（皆含） */
+function setRecentYearRange(base: Date = new Date()): void {
+  // 1..12
+  const endY = base.getFullYear();
+  const endM = base.getMonth() + 1;
+
+  // 以「年*12 + (月-1)」做線性月序，避免 Date 邊界問題
+  const endIndex = endY * 12 + (endM - 1);
+  const startIndex = endIndex - 11;
+
+  const startY = Math.floor(startIndex / 12);
+  const startM = (startIndex % 12) + 1;
+
+  fieldCondition.value.startDataMonth = yyyymm(startY, startM);
+  fieldCondition.value.endDataMonth = yyyymm(endY, endM);
+  console.log('setRecentYearRange', fieldCondition.value);
 }
+
 
 /** 數字年份：固定 1 月 ~ 12 月 */
 function setYearRange(year: number) {

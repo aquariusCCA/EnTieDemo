@@ -16,7 +16,8 @@ export interface PerformanceDetailParams {
 }
 
 export interface GrmPerformanceDetailParams {
-    grmId: string;
+    grmId: string
+    groupName: string;
     areaCd: string;
     assignedRegion: string;
     startDataMonth: string;

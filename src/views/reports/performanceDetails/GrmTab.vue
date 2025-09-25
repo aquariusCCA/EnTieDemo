@@ -70,6 +70,18 @@
                 </el-form-item>
 
                 <el-form-item 
+                    prop="groupName" 
+                    label="集團戶名稱"   
+                    class="query__form-item"
+                >
+                    <el-input 
+                        v-model="grmFieldCondition.groupName" 
+                        :prefix-icon="Lock" 
+                        autocomplete="current-password" 
+                    />
+                </el-form-item>
+
+                <el-form-item 
                     prop="dateRangePreset" 
                     label="時間快捷選擇" 
                     class="query__form-item"
@@ -214,14 +226,6 @@ function validateEndMonth(_: any, value: string, callback: (error?: Error) => vo
 
 // 表單驗證規則
 const rules = ref({
-    grmId: [
-        {
-            required: true,
-            pattern: /^[a-zA-Z0-9]+$/,
-            trigger: 'blur',
-            message: '請輸入集團戶ID（英數字）',
-        }
-    ],
     startDataMonth: [
         {
             required: true,
@@ -243,14 +247,24 @@ const rules = ref({
 const pad2 = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const yyyymm = (y: number, m: number) => `${y}${pad2(m)}`;
 
-/** 近一年度：當年 1 月 ~ 本月 */
-function setRecentYearRange() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = now.getMonth() + 1; // 1-12
-  grmFieldCondition.value.startDataMonth = yyyymm(y, 1);
-  grmFieldCondition.value.endDataMonth = yyyymm(y, m);
+/** 近一年度：以當前月份為結束，往前推 11 個月為開始（皆含） */
+function setRecentYearRange(base: Date = new Date()): void {
+  // 1..12
+  const endY = base.getFullYear();
+  const endM = base.getMonth() + 1;
+
+  // 以「年*12 + (月-1)」做線性月序，避免 Date 邊界問題
+  const endIndex = endY * 12 + (endM - 1);
+  const startIndex = endIndex - 11;
+
+  const startY = Math.floor(startIndex / 12);
+  const startM = (startIndex % 12) + 1;
+
+  grmFieldCondition.value.startDataMonth = yyyymm(startY, startM);
+  grmFieldCondition.value.endDataMonth = yyyymm(endY, endM);
+  console.log('setRecentYearRange', grmFieldCondition.value);
 }
+
 
 /** 數字年份：固定 1 月 ~ 12 月 */
 function setYearRange(year: number) {
@@ -278,6 +292,25 @@ async function searchReport() {
     const formEl = ruleFormRef.value
     if (!formEl) return
 
+    const { grmId, groupName } = grmFieldCondition.value
+
+    // 檢查 groupName 是否只有填寫 '集團'
+    if (groupName && groupName === '集團') {
+        ElNotification.error({
+            title: '錯誤',
+            message: '請填寫正確的集團戶名稱'
+        })
+        return
+    }
+
+    if (!grmId && !groupName) {
+        ElNotification.error({
+            title: '錯誤',
+            message: '請至少填寫一個欄位：集團戶名稱或集團戶ID'
+        })
+        return
+    }
+
     await formEl.validate(async (valid, fields) => {
         if (valid) {
             console.log('表單驗證通過，開始生成報表')
@@ -294,8 +327,10 @@ async function searchReport() {
 
                 const blob = await fetchGrmPerformanceBlob()
 
-                const { areaCd, grmId } = grmFieldCondition.value
-                const fileName = areaCd != '' ? `${areaCd}.xlsx` : `${grmId}.xlsx`
+                const { areaCd, grmId, groupName } = grmFieldCondition.value
+                const fileName = 
+                    areaCd != '' ? `${areaCd}.xlsx` : 
+                    grmId !== '' ? `${grmId}.xlsx` : `${groupName}.xlsx`
                 downloadBlob(blob, fileName)
 
                 ElNotification.success('報表下載已完成')
