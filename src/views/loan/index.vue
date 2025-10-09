@@ -10,7 +10,7 @@
                 </el-form-item>
                 <el-form-item label="預估類型" prop="demandtype">
                     <el-radio-group v-model="queryParams.demandtype">
-                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :label="opt.value">
+                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :value="opt.value">
                             {{ opt.label }}
                         </el-radio>
                     </el-radio-group>
@@ -99,7 +99,7 @@
                 </el-form-item>
                 <el-form-item label="預估類型" prop="demandtype">
                     <el-radio-group v-model="form.demandtype">
-                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :label="opt.value">
+                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :value="opt.value">
                             {{ opt.label }}
                         </el-radio>
                     </el-radio-group>
@@ -153,9 +153,10 @@
 
 <script lang="ts" setup>
 import { demandtypeOptions, proptypeOptions, loantypeOptions, currencytypeOptions } from '@/dictionaries/loan.json';
-import { reactive, toRefs, ref } from 'vue';
+import { reactive, toRefs, ref, getCurrentInstance } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 
+const { proxy } = getCurrentInstance();
 const loading = ref(false);
 const nodeList = ref([]);
 const total = ref(0);
@@ -204,8 +205,13 @@ function handleUpdate(row) {
 /** 删除操作 */
 function handleDelete(row) {
     console.log('删除', row);
-}
+    proxy.$modal.confirm('是否確認刪除 SID 編號為"' + row.sid + '"的資料？').then(function() {
+  }).then(() => {
+    getList();
+    proxy.$modal.msgSuccess("刪除成功");
+  }).catch(() => {});
 
+}
 
 function getList() {
 }

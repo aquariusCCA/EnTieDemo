@@ -4,6 +4,9 @@ import App from "./App.vue";
 import router from "./router";
 import pinia from "./stores/index.ts";
 
+// 注册指令
+import plugins from './plugins' // plugins
+
 // 引入全局样式
 import "@/styles/reset.scss";
 
@@ -45,6 +48,7 @@ app.use(router);
 app.use(ElementPlus, {
   locale: zhTw,
 });
+app.use(plugins)
 
 // 全局注册组件
 registerComponents(app);
