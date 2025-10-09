@@ -1,0 +1,194 @@
+{
+  "demandtypeOptions": [
+    { "label": "放款增加", "value": "+" },
+    { "label": "放款減少", "value": "-" }
+  ],
+  "proptypeOptions": [
+    { "showtext": "111 外幣進口押匯、即期信用狀", "datavalue1": "111" },
+    { "showtext": "112 外幣應收承兌、信用狀(轉融資)", "datavalue1": "112" },
+    { "showtext": "121 外幣出口押匯", "datavalue1": "121" },
+    { "showtext": "122 外幣出口託收轉融資", "datavalue1": "122" },
+    { "showtext": "131 外幣進口OA", "datavalue1": "131" },
+    { "showtext": "161 外幣出口OA", "datavalue1": "161" },
+    { "showtext": "162 外幣短期放款", "datavalue1": "162" },
+    { "showtext": "163 外幣中長期放款", "datavalue1": "163" },
+    { "showtext": "A00 一般週轉金貸款", "datavalue1": "A00" },
+    {
+      "showtext": "A07 本行開發國內即期信用狀及買方付息國內遠期信用狀貸款",
+      "datavalue1": "A07"
+    },
+    { "showtext": "A09 一般性外銷貸款", "datavalue1": "A09" },
+    { "showtext": "A10 出口信用狀週轉金貸款", "datavalue1": "A10" },
+    { "showtext": "A12 D/P託收方式外銷貸款", "datavalue1": "A12" },
+    { "showtext": "A14 以外銷訂單、契約辦理之外銷貸款", "datavalue1": "A14" },
+    { "showtext": "A15 進口遠期信用狀改貸新台幣放款", "datavalue1": "A15" },
+    { "showtext": "A161 土地融資-個人(有建照)", "datavalue1": "A161" },
+    { "showtext": "A161A 土地融資-個人(無建照)", "datavalue1": "A161A" },
+    { "showtext": "A162 土地融資-建築商(建地)", "datavalue1": "A162" },
+    { "showtext": "A162A 土地融資-建築商(非建地)", "datavalue1": "A162A" },
+    { "showtext": "A163 建築融資－個人", "datavalue1": "A163" },
+    {
+      "showtext": "A163I 建築融資-個人-都市更新事業計畫",
+      "datavalue1": "A163I"
+    },
+    { "showtext": "A164 建築融資－建築商", "datavalue1": "A164" },
+    {
+      "showtext": "A166A 101/1/1起承作建築融資-企業興建廠房，不計入72",
+      "datavalue1": "A166A"
+    },
+    { "showtext": "A168 建築商融資--餘屋融資", "datavalue1": "A168" },
+    { "showtext": "A170 企業建築週轉金，列入72-2", "datavalue1": "A170" },
+    { "showtext": "A19 中期週轉金貸款", "datavalue1": "A19" },
+    { "showtext": "A213 非公共工程貸款", "datavalue1": "A213" },
+    { "showtext": "A24 聯屬專案一般週轉金貸款", "datavalue1": "A24" },
+    { "showtext": "A25 中小企業信用保證基金貸款", "datavalue1": "A25" },
+    { "showtext": "A251 小額簡易貸款", "datavalue1": "A251" },
+    { "showtext": "A252 其他保證項目貸款", "datavalue1": "A252" },
+    {
+      "showtext": "A26051 中小企業批次信用保證基金組合(一)",
+      "datavalue1": "A26051"
+    },
+    {
+      "showtext": "A26052 中小企業批次信用保證基金組合(二)",
+      "datavalue1": "A26052"
+    },
+    {
+      "showtext": "A26055 中小企業批次信用保證基金組合(五)",
+      "datavalue1": "A26055"
+    },
+    {
+      "showtext": "A26056 中小企業批次信用保證基金組合(六)",
+      "datavalue1": "A26056"
+    },
+    { "showtext": "A27 合建保證金", "datavalue1": "A27" },
+    {
+      "showtext": "A2802 法金小型企業專案(信保基金批次保證)",
+      "datavalue1": "A2802"
+    },
+    {
+      "showtext": "A2803 法金小型企業專案(信保基金專案/授權保證)",
+      "datavalue1": "A2803"
+    },
+    { "showtext": "A2804 法金一般區(信保基金批次保證)", "datavalue1": "A2804" },
+    { "showtext": "A88 企業投資", "datavalue1": "A88" },
+    { "showtext": "A99 其他週轉金貸款", "datavalue1": "A99" },
+    { "showtext": "B011 企業購置營業（辦公）場所貸款", "datavalue1": "B011" },
+    { "showtext": "B012 企業購置廠房貸款（含廠地）", "datavalue1": "B012" },
+    {
+      "showtext": "B012A 101/1/1起承作企業購置廠房貸款含廠地,不計入72-2",
+      "datavalue1": "B012A"
+    },
+    { "showtext": "B013 企業裝修營業（辦公）場所貸款", "datavalue1": "B013" },
+    { "showtext": "B014 企業裝修廠房貸款（含廠地）", "datavalue1": "B014" },
+    {
+      "showtext": "B015 中小企業紮根專案貸款（購置土地、廠房、機器設備）",
+      "datavalue1": "B015"
+    },
+    {
+      "showtext": "B016 協助中小企業紮根專案貸款(第五期）－不送信保",
+      "datavalue1": "B016"
+    },
+    { "showtext": "B017 企業購置商用不動產。", "datavalue1": "B017" },
+    {
+      "showtext": "B021A 101/1/1起承作企業購置土地貸款-廠房用地不計72-2",
+      "datavalue1": "B021A"
+    },
+    { "showtext": "B03 國產機器貸款", "datavalue1": "B03" },
+    { "showtext": "B04 進口機器貸款", "datavalue1": "B04" },
+    { "showtext": "B05 對租賃業辦理製造業資本性融資", "datavalue1": "B05" },
+    { "showtext": "B062 企業購置土地貸款﹝政策性基金﹞", "datavalue1": "B062" },
+    { "showtext": "B1551 流通服務業優惠貸款－不送信保", "datavalue1": "B1551" },
+    { "showtext": "B1552 流通服務業優惠貸款－移送信保", "datavalue1": "B1552" },
+    { "showtext": "B99 其他設備性貸款", "datavalue1": "B99" },
+    { "showtext": "C01 個人理財綜合貸款", "datavalue1": "C01" },
+    { "showtext": "C011 修繕（非本行員工房屋修繕貸款）", "datavalue1": "C011" },
+    { "showtext": "C011H 房屋貸款平轉（修繕）", "datavalue1": "C011H" },
+    { "showtext": "C012 投資", "datavalue1": "C012" },
+    { "showtext": "C013 個人理財（股票擔保貸款）", "datavalue1": "C013" },
+    { "showtext": "C013A 個人股票質押貸款", "datavalue1": "C013A" },
+    { "showtext": "C019 其他", "datavalue1": "C019" },
+    { "showtext": "C091 購屋", "datavalue1": "C091" },
+    { "showtext": "C092 修繕", "datavalue1": "C092" },
+    { "showtext": "C101 購屋儲蓄貸款", "datavalue1": "C101" },
+    {
+      "showtext": "C101C 續辦二仟億優惠購屋貸款(補助0.25%)",
+      "datavalue1": "C101C"
+    },
+    {
+      "showtext": "C101D 續辦二仟億優惠購屋貸款(補助0.125%)",
+      "datavalue1": "C101D"
+    },
+    { "showtext": "C102B 一般房屋貸款（100億元專案）", "datavalue1": "C102B" },
+    {
+      "showtext": "C105E 89年度台北市輔助人民自購住宅貸款－２２０萬以內",
+      "datavalue1": "C105E"
+    },
+    { "showtext": "C109 其他購屋貸款", "datavalue1": "C109" },
+    { "showtext": "C1093 優利轉貸購屋貸款", "datavalue1": "C1093" },
+    { "showtext": "C15 卡便利融資", "datavalue1": "C15" },
+    { "showtext": "C158 保家貸專案(新貸戶)－房屋貸款", "datavalue1": "C158" },
+    { "showtext": "C15B 循環額度", "datavalue1": "C15B" },
+    { "showtext": "C195 安泰優惠房貸１９５專案", "datavalue1": "C195" },
+    { "showtext": "C198C 原屋貸款", "datavalue1": "C198C" },
+    { "showtext": "C205 安泰優惠房貸專案", "datavalue1": "C205" },
+    { "showtext": "C99A 信用貸款", "datavalue1": "C99A" },
+    { "showtext": "D02 墊付國內票款週轉金貸款", "datavalue1": "D02" },
+    { "showtext": "E01 國內即期信用狀", "datavalue1": "E01" },
+    { "showtext": "E02 國內遠期信用狀", "datavalue1": "E02" },
+    {
+      "showtext": "E03120 國內遠期信用狀辦理承兌（９１天－１２０天）",
+      "datavalue1": "E03120"
+    },
+    {
+      "showtext": "E03180 國內遠期信用狀辦理承兌（１５１天－１８０天）",
+      "datavalue1": "E03180"
+    },
+    { "showtext": "E051 工程預付款保證", "datavalue1": "E051" },
+    { "showtext": "E052 其他預付款保證", "datavalue1": "E052" },
+    { "showtext": "E061 工程履約保證", "datavalue1": "E061" },
+    { "showtext": "E062 其他履約保證", "datavalue1": "E062" },
+    { "showtext": "E07 履約保證金保證", "datavalue1": "E07" },
+    { "showtext": "E071 工程履約保證金保證", "datavalue1": "E071" },
+    { "showtext": "E072 其他履約保證金保證", "datavalue1": "E072" },
+    { "showtext": "E08 押標金保證", "datavalue1": "E08" },
+    { "showtext": "E09 保固保證金保證", "datavalue1": "E09" },
+    { "showtext": "E131 關稅記帳保證", "datavalue1": "E131" },
+    { "showtext": "E14 發行商業本票保證", "datavalue1": "E14" },
+    { "showtext": "E16 發行公司債保證", "datavalue1": "E16" },
+    { "showtext": "E18 保證函或擔保信用狀(STAND-BY L/C)", "datavalue1": "E18" },
+    { "showtext": "E99 其它保證", "datavalue1": "E99" },
+    { "showtext": "F01 國內有追索權應收帳款融資R", "datavalue1": "F01" },
+    { "showtext": "F03 國際有追索權應收帳款融資R-DIRECT", "datavalue1": "F03" },
+    { "showtext": "F07 國內應收帳款融資擔保NS/P", "datavalue1": "F07" },
+    { "showtext": "F09 國內有追索權應收帳款融資-外幣R", "datavalue1": "F09" },
+    { "showtext": "F12 OBU有追索權應收帳款融資R-DIRECT", "datavalue1": "F12" },
+    { "showtext": "Z99 其他 (非72-2放款)", "datavalue1": "Z99" }
+  ],
+  "loantypeOptions": [
+    { "showtext": "一般", "datavalue1": "1" },
+    { "showtext": "結構", "datavalue1": "2" },
+    { "showtext": "聯貸", "datavalue1": "3" },
+    { "showtext": "應收", "datavalue1": "4" },
+    { "showtext": "貿融", "datavalue1": "5" },
+    { "showtext": "其他", "datavalue1": "6" }
+  ],
+  "currencytypeOptions": [
+    { "label": "TWD", "value": "TWD" },
+    { "label": "AUD", "value": "AUD" },
+    { "label": "CAD", "value": "CHF" },
+    { "label": "CNY", "value": "CNY" },
+    { "label": "EUR", "value": "EUR" },
+    { "label": "GBP", "value": "GBP" },
+    { "label": "HKD", "value": "HKD" },
+    { "label": "IDR", "value": "IDR" },
+    { "label": "JPY", "value": "JPY" },
+    { "label": "KRW", "value": "KRW" },
+    { "label": "MYR", "value": "MYR" },
+    { "label": "NZD", "value": "NZD" },
+    { "label": "SEK", "value": "SEK" },
+    { "label": "SGD", "value": "SGD" },
+    { "label": "THB", "value": "THB" },
+    { "label": "USD", "value": "USD" },
+    { "label": "ZAR", "value": "ZAR" }
+  ]
+}

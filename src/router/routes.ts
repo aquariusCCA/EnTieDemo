@@ -59,6 +59,39 @@ export const constantRoutes = [
     ],
   },
   {
+    name: "Loan",
+    path: "/loan",
+    component: () => import("@/layout/index.vue"), // 懒加载Layout组件
+    redirect: "/loan/index", // 重定向到/loan/index
+    meta: {
+      name: "預估",
+      hidden: false,
+      icon: "Money",
+    },
+    children: [
+      {
+        name: "LoanIndex",
+        path: "/loan/index",
+        component: () => import("@/views/loan/index.vue"), // 懒加载LoanIndex组件
+        meta: {
+          name: "放款預估",
+          hidden: false,
+          icon: "Money",
+        },
+      },
+      {
+        name: "LoanTest",
+        path: "/loan/test",
+        component: () => import("@/views/loan/test.vue"), // 懒加载LoanTest组件
+        meta: {
+          name: "預估測試",
+          hidden: false,
+          icon: "Money",
+        },
+      },
+    ],
+  },
+  {
     path: "/404",
     component: () => import("@/views/error/404.vue"), // 懒加载404组件
     name: "404",
