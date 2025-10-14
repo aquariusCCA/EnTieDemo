@@ -13,10 +13,6 @@ router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   const csrf = getCsrfToken();
 
-  console.log("路由守衛觸發，當前路由:", router.getRoutes());
-  console.log("userStore:", userStore.userInfo);
-  console.log("getCsrfToken():", csrf);
-
   // 未帶 CSRF（視為未登入）
   if (!csrf) {
     if (to.path === "/login") return true;               // 放行登入頁
@@ -33,7 +29,6 @@ router.beforeEach(async (to, from) => {
   if (!account) {
     try {
       const res = await userStore.fetchUserInfo();
-      console.log("獲取使用者信息成功:", res);
       // 可能需要等待動態路由註冊完成，故使用 replace 重新解析目標
       return { ...to, replace: true };
     } catch (e) {

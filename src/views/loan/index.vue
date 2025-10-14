@@ -153,10 +153,15 @@
 
 <script lang="ts" setup>
 import { demandtypeOptions, proptypeOptions, loantypeOptions, currencytypeOptions } from '@/dictionaries/loan.json';
-import { reactive, toRefs, ref, getCurrentInstance } from 'vue';
+import { reactive, toRefs, ref, getCurrentInstance, onMounted } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
+import { useForecastLoanStore } from '@/stores/modules/forecastLoan';
+import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
 
-const { proxy } = getCurrentInstance();
+const pageLoading = ref(false);
+const forecastLoanStore = useForecastLoanStore();
+const { fetchPageBootstrap } = forecastLoanStore;
+
 const loading = ref(false);
 const nodeList = ref([]);
 const total = ref(0);
@@ -205,12 +210,18 @@ function handleUpdate(row) {
 /** 删除操作 */
 function handleDelete(row) {
     console.log('删除', row);
-    proxy.$modal.confirm('是否確認刪除 SID 編號為"' + row.sid + '"的資料？').then(function() {
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("刪除成功");
-  }).catch(() => {});
-
+    ElMessageBox.confirm(
+        '是否確認刪除 SID 編號為"' + row.sid + '"的資料？',
+        '提示',
+        {
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    ).then(() => {
+        getList();
+        ElMessage.success("刪除成功");
+    }).catch(() => {});
 }
 
 function getList() {
@@ -250,6 +261,22 @@ function cancel() {
   open.value = false;
   reset();
 }
+
+onMounted(() => {
+    pageLoading.value = true;
+    fetchPageBootstrap().then((response) => {
+        console.log('fetchPageBootstrap response:', response);
+        console.log('pageBootstrap:', forecastLoanStore.pageBooststrap);
+    }).catch((err) => {
+        console.error('Error during fetchPageBootstrap:', err);
+        ElNotification.error({
+            title: '錯誤',
+            message: String(err)
+        });
+    }).finally(() => {
+        pageLoading.value = false;
+    });
+});
 </script>
 
 <style scoped lang="scss">

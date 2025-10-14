@@ -6,8 +6,6 @@ import { get as getDataFromIdb } from "idb-keyval";
 const BASE_URL = import.meta.env.VITE_SERVER;
 
 const mockResolver: HttpResponseResolver = async ({ request }) => {
-  console.log("Mocking request:", request);
-
   // 1. 先取得 method，並轉小寫方便比對
   const method = request.method.toLowerCase();
 
@@ -41,7 +39,6 @@ const mockResolver: HttpResponseResolver = async ({ request }) => {
 
 export const handlers = [
   http.post(`${BASE_URL}/public/user/login`, (resolverInfo) => {
-    console.log("Handling login request", resolverInfo);
     return mockResolver(resolverInfo);
   }),
   http.post(`${BASE_URL}/user/logout`, (resolverInfo) => {
@@ -104,6 +101,9 @@ export const handlers = [
         "Content-Disposition": "attachment; filename=performance_detail.xlsx",
       },
     });
+  }),
+  http.post(`${BASE_URL}/api/forecast/loan/bootstrap`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
   }),
 ];
 

@@ -94,12 +94,10 @@ export const usePerformanceStore = defineStore("performance", () => {
       return new Promise((resolve, reject) => {
         performanceDetailPreCheck(payload)
           .then((response) => {
-            console.log("績效明細預檢查回應:", response);
             const { exist } = response.data;
             resolve(exist);
           })
           .catch((error) => {
-            console.error("績效明細預檢查失敗:", error);
             reject(error);
           });
       });

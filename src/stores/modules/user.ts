@@ -34,7 +34,6 @@ export const useUserStore = defineStore("user", () => {
     return new Promise((resolve, reject) => {
       doLogin({ empId, password })
         .then((res) => {
-          console.log("登入成功:", res);
           const { csrfToken } = res.data;
           setCsrfToken(csrfToken);
           resolve("ok");
@@ -50,7 +49,6 @@ export const useUserStore = defineStore("user", () => {
     return new Promise((resolve, reject) => {
       doFetchUserInfo()
         .then((response) => {
-          console.log("獲取使用者信息回應:", response);
           const { routes, buttons, roles, name, loginUser } = response.data;
           userInfo.value = {
             routes,
@@ -100,7 +98,6 @@ export const useUserStore = defineStore("user", () => {
     return new Promise((resolve, reject) => {
       doLogout()
         .then((response) => {
-          console.log("登出回應:", response);
           clearUserInfo();
           resolve("ok");
         })
@@ -112,7 +109,6 @@ export const useUserStore = defineStore("user", () => {
 
   // 清除客戶端使用者資訊
   function clearUserInfo() {
-    console.log("清除使用者資訊");
     // 清除使用者資訊
     userInfo.value = { ...initUserInfo };
     // 重設路由

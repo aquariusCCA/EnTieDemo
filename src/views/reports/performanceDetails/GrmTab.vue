@@ -262,7 +262,6 @@ function setRecentYearRange(base: Date = new Date()): void {
 
   grmFieldCondition.value.startDataMonth = yyyymm(startY, startM);
   grmFieldCondition.value.endDataMonth = yyyymm(endY, endM);
-  console.log('setRecentYearRange', grmFieldCondition.value);
 }
 
 
@@ -270,7 +269,6 @@ function setRecentYearRange(base: Date = new Date()): void {
 function setYearRange(year: number) {
   grmFieldCondition.value.startDataMonth = yyyymm(year, 1);
   grmFieldCondition.value.endDataMonth = yyyymm(year, 12);
-  console.log('setYearRange', grmFieldCondition.value);
 }
 
 /** 監聽快捷選擇 */
@@ -313,8 +311,6 @@ async function searchReport() {
 
     await formEl.validate(async (valid, fields) => {
         if (valid) {
-            console.log('表單驗證通過，開始生成報表')
-
             const loading = ElLoading.service({
                 lock: true,
                 text: '報表生成中，請稍候 …',
@@ -323,7 +319,6 @@ async function searchReport() {
 
             try {
                 const isExists = await doGrmPerformanceDetailPreCheck();
-                console.log('isExists', isExists)
 
                 const blob = await fetchGrmPerformanceBlob()
 

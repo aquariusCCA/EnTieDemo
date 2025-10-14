@@ -263,7 +263,6 @@ function setRecentYearRange(base: Date = new Date()): void {
 
   fieldCondition.value.startDataMonth = yyyymm(startY, startM);
   fieldCondition.value.endDataMonth = yyyymm(endY, endM);
-  console.log('setRecentYearRange', fieldCondition.value);
 }
 
 
@@ -271,7 +270,6 @@ function setRecentYearRange(base: Date = new Date()): void {
 function setYearRange(year: number) {
   fieldCondition.value.startDataMonth = yyyymm(year, 1);
   fieldCondition.value.endDataMonth = yyyymm(year, 12);
-  console.log('setYearRange', fieldCondition.value);
 }
 
 /** 監聽快捷選擇 */
@@ -305,8 +303,6 @@ async function searchReport() {
 
     await formEl.validate(async (valid, fields) => {
         if (valid) {
-            console.log('表單驗證通過，開始生成報表')
-
             const loading = ElLoading.service({
                 lock: true,
                 text: '報表生成中，請稍候 …',
@@ -315,8 +311,6 @@ async function searchReport() {
 
             try {
                 const isExists = await doPerformanceDetailPreCheck();
-                console.log('isExists', isExists)
-
                 const blob = await fetchPerformanceBlob()
 
                 const { areaCd, rmEmpNr, clientCd } = fieldCondition.value
