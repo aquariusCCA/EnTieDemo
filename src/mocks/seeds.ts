@@ -4,7 +4,7 @@ import {
   performanceDetailPreCheck,
   grmPerformanceDetailPreCheck,
 } from "./jsons/performance.json";
-import { forecastLoanBootstrap } from "./jsons/forecastLoan.json";
+import { forecastLoanBootstrap, forecastLoanGetListPreCheck } from "./jsons/forecastLoan.json";
 
 const BASE_URL = import.meta.env.VITE_SERVER;
 
@@ -21,6 +21,7 @@ export const setSeeds = async () => {
       [`${BASE_URL}/performance/preCheck`, performanceDetailPreCheck],
       [`${BASE_URL}/performance/grmPreCheck`, grmPerformanceDetailPreCheck],
       [`${BASE_URL}/api/forecast/loan/bootstrap`, forecastLoanBootstrap],
+      [`${BASE_URL}/api/forecast/loan/preCheck`, forecastLoanGetListPreCheck]
     ]);
   } catch (err) {
     console.log(err);

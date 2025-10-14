@@ -1,896 +1,901 @@
 {
-    "forecastLoanBootstrap": {
+  "forecastLoanGetListPreCheck": {
+    "code": 200,
+    "message": "成功",
+    "data": null
+  },
+  "forecastLoanBootstrap": {
     "code": 200,
     "message": "成功",
     "data": {
-        "propTypeList": [
-            {
-                "datavalue1": "1",
-                "itemkey": "放款類別",
-                "showtext": "一般",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "2",
-                "itemkey": "放款類別",
-                "showtext": "結構",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "3",
-                "itemkey": "放款類別",
-                "showtext": "聯貸",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "4",
-                "itemkey": "放款類別",
-                "showtext": "應收",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "5",
-                "itemkey": "放款類別",
-                "showtext": "貿融",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "6",
-                "itemkey": "放款類別",
-                "showtext": "其他",
-                "datavalue2": null
-            }
-        ],
-        "loanTypeList": [
-            {
-                "datavalue1": "111",
-                "itemkey": "放款性質",
-                "showtext": "111 外幣進口押匯、即期信用狀",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "112",
-                "itemkey": "放款性質",
-                "showtext": "112 外幣應收承兌、信用狀(轉融資)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "121",
-                "itemkey": "放款性質",
-                "showtext": "121 外幣出口押匯",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "122",
-                "itemkey": "放款性質",
-                "showtext": "122 外幣出口託收轉融資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "131",
-                "itemkey": "放款性質",
-                "showtext": "131 外幣進口OA",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "161",
-                "itemkey": "放款性質",
-                "showtext": "161 外幣出口OA",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "162",
-                "itemkey": "放款性質",
-                "showtext": "162 外幣短期放款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "163",
-                "itemkey": "放款性質",
-                "showtext": "163 外幣中長期放款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A00",
-                "itemkey": "放款性質",
-                "showtext": "A00 一般週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A07",
-                "itemkey": "放款性質",
-                "showtext": "A07 本行開發國內即期信用狀及買方付息國內遠期信用狀貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A09",
-                "itemkey": "放款性質",
-                "showtext": "A09 一般性外銷貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A10",
-                "itemkey": "放款性質",
-                "showtext": "A10 出口信用狀週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A12",
-                "itemkey": "放款性質",
-                "showtext": "A12  D/P託收方式外銷貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A14",
-                "itemkey": "放款性質",
-                "showtext": "A14 以外銷訂單、契約辦理之外銷貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A15",
-                "itemkey": "放款性質",
-                "showtext": "A15 進口遠期信用狀改貸新台幣放款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A161",
-                "itemkey": "放款性質",
-                "showtext": "A161 土地融資-個人(有建照)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A161A",
-                "itemkey": "放款性質",
-                "showtext": "A161A 土地融資-個人(無建照)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A162",
-                "itemkey": "放款性質",
-                "showtext": "A162 土地融資-建築商(建地)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A162A",
-                "itemkey": "放款性質",
-                "showtext": "A162A 土地融資-建築商(非建地)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163",
-                "itemkey": "放款性質",
-                "showtext": "A163 建築融資－個人",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163A ",
-                "itemkey": "放款性質",
-                "showtext": "A163A  九二一地震災民重建貸款（１５０萬元以內部份）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163B ",
-                "itemkey": "放款性質",
-                "showtext": "A163B  九二一地震災民重建貸款（逾１５０萬部份）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163C ",
-                "itemkey": "放款性質",
-                "showtext": "A163C 建築融資-個人-公私立各級學校",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163D ",
-                "itemkey": "放款性質",
-                "showtext": "A163D 建築融資-個人-醫療機構",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163E ",
-                "itemkey": "放款性質",
-                "showtext": "A163E 建築融資-個人-政府廳舍",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163F ",
-                "itemkey": "放款性質",
-                "showtext": "A163F 建築融資-個人-長期照顧服務機構",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163G ",
-                "itemkey": "放款性質",
-                "showtext": "A163G 建築融資-個人-社會住宅",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163H ",
-                "itemkey": "放款性質",
-                "showtext": "A163H 建築融資-個人-廠房",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163I",
-                "itemkey": "放款性質",
-                "showtext": "A163I 建築融資-個人-都市更新事業計畫",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163J ",
-                "itemkey": "放款性質",
-                "showtext": "A163J 建築融資-個人-促進民間參與公共建設法第31條",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A163K ",
-                "itemkey": "放款性質",
-                "showtext": "A163K 建築融資-個人-都市危老建物加速重建第10條之1",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A164",
-                "itemkey": "放款性質",
-                "showtext": "A164 建築融資－建築商",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A166A",
-                "itemkey": "放款性質",
-                "showtext": "A166A 101/1/1起承作建築融資-企業興建廠房，不計入72",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A168",
-                "itemkey": "放款性質",
-                "showtext": "A168 建築商融資--餘屋融資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A170",
-                "itemkey": "放款性質",
-                "showtext": "A170 企業建築週轉金，列入72-2",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A19",
-                "itemkey": "放款性質",
-                "showtext": "A19 中期週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A213",
-                "itemkey": "放款性質",
-                "showtext": "A213 非公共工程貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A24",
-                "itemkey": "放款性質",
-                "showtext": "A24 聯屬專案一般週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A25",
-                "itemkey": "放款性質",
-                "showtext": "A25 中小企業信用保證基金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A251",
-                "itemkey": "放款性質",
-                "showtext": "A251 小額簡易貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A252",
-                "itemkey": "放款性質",
-                "showtext": "A252 其他保證項目貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A26051",
-                "itemkey": "放款性質",
-                "showtext": "A26051 中小企業批次信用保證基金組合(一)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A26052",
-                "itemkey": "放款性質",
-                "showtext": "A26052 中小企業批次信用保證基金組合(二)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A26055",
-                "itemkey": "放款性質",
-                "showtext": "A26055 中小企業批次信用保證基金組合(五)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A26056",
-                "itemkey": "放款性質",
-                "showtext": "A26056 中小企業批次信用保證基金組合(六)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A27",
-                "itemkey": "放款性質",
-                "showtext": "A27 合建保證金",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A2802",
-                "itemkey": "放款性質",
-                "showtext": "A2802 法金小型企業專案(信保基金批次保證)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A2803",
-                "itemkey": "放款性質",
-                "showtext": "A2803 法金小型企業專案(信保基金專案/授權保證)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A2804",
-                "itemkey": "放款性質",
-                "showtext": "A2804 法金一般區(信保基金批次保證)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A88",
-                "itemkey": "放款性質",
-                "showtext": "A88 企業投資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "A99",
-                "itemkey": "放款性質",
-                "showtext": "A99 其他週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B011",
-                "itemkey": "放款性質",
-                "showtext": "B011 企業購置營業（辦公）場所貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B012",
-                "itemkey": "放款性質",
-                "showtext": "B012 企業購置廠房貸款（含廠地）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B012A",
-                "itemkey": "放款性質",
-                "showtext": "B012A 101/1/1起承作企業購置廠房貸款含廠地,不計入72-2",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B013",
-                "itemkey": "放款性質",
-                "showtext": "B013 企業裝修營業（辦公）場所貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B014",
-                "itemkey": "放款性質",
-                "showtext": "B014 企業裝修廠房貸款（含廠地）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B016",
-                "itemkey": "放款性質",
-                "showtext": "B016 協助中小企業紮根專案貸款(第五期）－不送信保",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B017",
-                "itemkey": "放款性質",
-                "showtext": "B017 企業購置商用不動產。",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B021A",
-                "itemkey": "放款性質",
-                "showtext": "B021A 101/1/1起承作企業購置土地貸款-廠房用地不計72-2",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B03",
-                "itemkey": "放款性質",
-                "showtext": "B03 國產機器貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B04",
-                "itemkey": "放款性質",
-                "showtext": "B04 進口機器貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B05",
-                "itemkey": "放款性質",
-                "showtext": "B05 對租賃業辦理製造業資本性融資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B062",
-                "itemkey": "放款性質",
-                "showtext": "B062 企業購置土地貸款﹝政策性基金﹞",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B1551",
-                "itemkey": "放款性質",
-                "showtext": "B1551 流通服務業優惠貸款－不送信保",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B1552",
-                "itemkey": "放款性質",
-                "showtext": "B1552 流通服務業優惠貸款－移送信保",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "B99",
-                "itemkey": "放款性質",
-                "showtext": "B99 其他設備性貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C01",
-                "itemkey": "放款性質",
-                "showtext": "C01 個人理財綜合貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C011",
-                "itemkey": "放款性質",
-                "showtext": "C011 修繕（非本行員工房屋修繕貸款）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C011H",
-                "itemkey": "放款性質",
-                "showtext": "C011H 房屋貸款平轉（修繕）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C012",
-                "itemkey": "放款性質",
-                "showtext": "C012 投資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C013",
-                "itemkey": "放款性質",
-                "showtext": "C013 個人理財（股票擔保貸款）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C013A",
-                "itemkey": "放款性質",
-                "showtext": "C013A 個人股票質押貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C019",
-                "itemkey": "放款性質",
-                "showtext": "C019 其他",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C091",
-                "itemkey": "放款性質",
-                "showtext": "C091 購屋",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C092",
-                "itemkey": "放款性質",
-                "showtext": "C092 修繕",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C101",
-                "itemkey": "放款性質",
-                "showtext": "C101 購屋儲蓄貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C101C",
-                "itemkey": "放款性質",
-                "showtext": "C101C 續辦二仟億優惠購屋貸款(補助0.25%)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C101D",
-                "itemkey": "放款性質",
-                "showtext": "C101D 續辦二仟億優惠購屋貸款(補助0.125%)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C102B",
-                "itemkey": "放款性質",
-                "showtext": "C102B 一般房屋貸款（100億元專案）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C105E",
-                "itemkey": "放款性質",
-                "showtext": "C105E 89年度台北市輔助人民自購住宅貸款－２２０萬以內",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C109",
-                "itemkey": "放款性質",
-                "showtext": "C109 其他購屋貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C1093",
-                "itemkey": "放款性質",
-                "showtext": "C1093 優利轉貸購屋貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C15",
-                "itemkey": "放款性質",
-                "showtext": "C15 卡便利融資",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C158",
-                "itemkey": "放款性質",
-                "showtext": "C158 保家貸專案(新貸戶)－房屋貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C15B",
-                "itemkey": "放款性質",
-                "showtext": "C15B 循環額度",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C195",
-                "itemkey": "放款性質",
-                "showtext": "C195 安泰優惠房貸１９５專案",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C198C",
-                "itemkey": "放款性質",
-                "showtext": "C198C 原屋貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C205",
-                "itemkey": "放款性質",
-                "showtext": "C205 安泰優惠房貸專案",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "C99A",
-                "itemkey": "放款性質",
-                "showtext": "C99A 信用貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "D02",
-                "itemkey": "放款性質",
-                "showtext": "D02 墊付國內票款週轉金貸款",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E01",
-                "itemkey": "放款性質",
-                "showtext": "E01 國內即期信用狀",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E02",
-                "itemkey": "放款性質",
-                "showtext": "E02 國內遠期信用狀",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E03120",
-                "itemkey": "放款性質",
-                "showtext": "E03120 國內遠期信用狀辦理承兌（９１天－１２０天）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E03180",
-                "itemkey": "放款性質",
-                "showtext": "E03180 國內遠期信用狀辦理承兌（１５１天－１８０天）",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E051",
-                "itemkey": "放款性質",
-                "showtext": "E051 工程預付款保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E052",
-                "itemkey": "放款性質",
-                "showtext": "E052 其他預付款保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E061",
-                "itemkey": "放款性質",
-                "showtext": "E061 工程履約保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E062",
-                "itemkey": "放款性質",
-                "showtext": "E062 其他履約保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E07",
-                "itemkey": "放款性質",
-                "showtext": "E07 履約保證金保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E071",
-                "itemkey": "放款性質",
-                "showtext": "E071 工程履約保證金保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E072",
-                "itemkey": "放款性質",
-                "showtext": "E072 其他履約保證金保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E08",
-                "itemkey": "放款性質",
-                "showtext": "E08 押標金保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E09",
-                "itemkey": "放款性質",
-                "showtext": "E09 保固保證金保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E131",
-                "itemkey": "放款性質",
-                "showtext": "E131 關稅記帳保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E14",
-                "itemkey": "放款性質",
-                "showtext": "E14 發行商業本票保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E16",
-                "itemkey": "放款性質",
-                "showtext": "E16 發行公司債保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E18",
-                "itemkey": "放款性質",
-                "showtext": "E18 保證函或擔保信用狀(STAND-BY L/C)",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "E99",
-                "itemkey": "放款性質",
-                "showtext": "E99 其它保證",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "F01",
-                "itemkey": "放款性質",
-                "showtext": "F01 國內有追索權應收帳款融資R",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "F03",
-                "itemkey": "放款性質",
-                "showtext": "F03 國際有追索權應收帳款融資R-DIRECT",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "F07",
-                "itemkey": "放款性質",
-                "showtext": "F07 國內應收帳款融資擔保NS/P",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "F09",
-                "itemkey": "放款性質",
-                "showtext": "F09 國內有追索權應收帳款融資-外幣R",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "F12",
-                "itemkey": "放款性質",
-                "showtext": "F12 OBU有追索權應收帳款融資R-DIRECT",
-                "datavalue2": null
-            },
-            {
-                "datavalue1": "Z99",
-                "itemkey": "放款性質",
-                "showtext": "其他 ( 非72-2放款 )",
-                "datavalue2": null
-            }
-        ],
-        "currencyTypeList": [
-            {
-                "exchangeDate": null,
-                "crncyCode": "ATS",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "AUD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "BEF",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "CAD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "CHF",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "DEM",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "EUR",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "FRF",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "GBP",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "HKD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "ITL",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "JPY",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "MYR",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "NLG",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "NZD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "SEK",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "SGD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "THB",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "TWD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "USD",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "ZAR",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "KRW",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "INR",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "RMB",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "CNY",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "IDR",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            },
-            {
-                "exchangeDate": null,
-                "crncyCode": "BRL",
-                "exchangeRate": null,
-                "lastupdatedatetime": null
-            }
-        ]
+      "propTypeList": [
+        {
+          "datavalue1": "1",
+          "itemkey": "放款類別",
+          "showtext": "一般",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "2",
+          "itemkey": "放款類別",
+          "showtext": "結構",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "3",
+          "itemkey": "放款類別",
+          "showtext": "聯貸",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "4",
+          "itemkey": "放款類別",
+          "showtext": "應收",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "5",
+          "itemkey": "放款類別",
+          "showtext": "貿融",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "6",
+          "itemkey": "放款類別",
+          "showtext": "其他",
+          "datavalue2": null
+        }
+      ],
+      "loanTypeList": [
+        {
+          "datavalue1": "111",
+          "itemkey": "放款性質",
+          "showtext": "111 外幣進口押匯、即期信用狀",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "112",
+          "itemkey": "放款性質",
+          "showtext": "112 外幣應收承兌、信用狀(轉融資)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "121",
+          "itemkey": "放款性質",
+          "showtext": "121 外幣出口押匯",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "122",
+          "itemkey": "放款性質",
+          "showtext": "122 外幣出口託收轉融資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "131",
+          "itemkey": "放款性質",
+          "showtext": "131 外幣進口OA",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "161",
+          "itemkey": "放款性質",
+          "showtext": "161 外幣出口OA",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "162",
+          "itemkey": "放款性質",
+          "showtext": "162 外幣短期放款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "163",
+          "itemkey": "放款性質",
+          "showtext": "163 外幣中長期放款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A00",
+          "itemkey": "放款性質",
+          "showtext": "A00 一般週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A07",
+          "itemkey": "放款性質",
+          "showtext": "A07 本行開發國內即期信用狀及買方付息國內遠期信用狀貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A09",
+          "itemkey": "放款性質",
+          "showtext": "A09 一般性外銷貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A10",
+          "itemkey": "放款性質",
+          "showtext": "A10 出口信用狀週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A12",
+          "itemkey": "放款性質",
+          "showtext": "A12  D/P託收方式外銷貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A14",
+          "itemkey": "放款性質",
+          "showtext": "A14 以外銷訂單、契約辦理之外銷貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A15",
+          "itemkey": "放款性質",
+          "showtext": "A15 進口遠期信用狀改貸新台幣放款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A161",
+          "itemkey": "放款性質",
+          "showtext": "A161 土地融資-個人(有建照)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A161A",
+          "itemkey": "放款性質",
+          "showtext": "A161A 土地融資-個人(無建照)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A162",
+          "itemkey": "放款性質",
+          "showtext": "A162 土地融資-建築商(建地)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A162A",
+          "itemkey": "放款性質",
+          "showtext": "A162A 土地融資-建築商(非建地)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163",
+          "itemkey": "放款性質",
+          "showtext": "A163 建築融資－個人",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163A ",
+          "itemkey": "放款性質",
+          "showtext": "A163A  九二一地震災民重建貸款（１５０萬元以內部份）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163B ",
+          "itemkey": "放款性質",
+          "showtext": "A163B  九二一地震災民重建貸款（逾１５０萬部份）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163C ",
+          "itemkey": "放款性質",
+          "showtext": "A163C 建築融資-個人-公私立各級學校",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163D ",
+          "itemkey": "放款性質",
+          "showtext": "A163D 建築融資-個人-醫療機構",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163E ",
+          "itemkey": "放款性質",
+          "showtext": "A163E 建築融資-個人-政府廳舍",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163F ",
+          "itemkey": "放款性質",
+          "showtext": "A163F 建築融資-個人-長期照顧服務機構",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163G ",
+          "itemkey": "放款性質",
+          "showtext": "A163G 建築融資-個人-社會住宅",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163H ",
+          "itemkey": "放款性質",
+          "showtext": "A163H 建築融資-個人-廠房",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163I",
+          "itemkey": "放款性質",
+          "showtext": "A163I 建築融資-個人-都市更新事業計畫",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163J ",
+          "itemkey": "放款性質",
+          "showtext": "A163J 建築融資-個人-促進民間參與公共建設法第31條",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A163K ",
+          "itemkey": "放款性質",
+          "showtext": "A163K 建築融資-個人-都市危老建物加速重建第10條之1",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A164",
+          "itemkey": "放款性質",
+          "showtext": "A164 建築融資－建築商",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A166A",
+          "itemkey": "放款性質",
+          "showtext": "A166A 101/1/1起承作建築融資-企業興建廠房，不計入72",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A168",
+          "itemkey": "放款性質",
+          "showtext": "A168 建築商融資--餘屋融資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A170",
+          "itemkey": "放款性質",
+          "showtext": "A170 企業建築週轉金，列入72-2",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A19",
+          "itemkey": "放款性質",
+          "showtext": "A19 中期週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A213",
+          "itemkey": "放款性質",
+          "showtext": "A213 非公共工程貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A24",
+          "itemkey": "放款性質",
+          "showtext": "A24 聯屬專案一般週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A25",
+          "itemkey": "放款性質",
+          "showtext": "A25 中小企業信用保證基金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A251",
+          "itemkey": "放款性質",
+          "showtext": "A251 小額簡易貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A252",
+          "itemkey": "放款性質",
+          "showtext": "A252 其他保證項目貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A26051",
+          "itemkey": "放款性質",
+          "showtext": "A26051 中小企業批次信用保證基金組合(一)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A26052",
+          "itemkey": "放款性質",
+          "showtext": "A26052 中小企業批次信用保證基金組合(二)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A26055",
+          "itemkey": "放款性質",
+          "showtext": "A26055 中小企業批次信用保證基金組合(五)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A26056",
+          "itemkey": "放款性質",
+          "showtext": "A26056 中小企業批次信用保證基金組合(六)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A27",
+          "itemkey": "放款性質",
+          "showtext": "A27 合建保證金",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A2802",
+          "itemkey": "放款性質",
+          "showtext": "A2802 法金小型企業專案(信保基金批次保證)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A2803",
+          "itemkey": "放款性質",
+          "showtext": "A2803 法金小型企業專案(信保基金專案/授權保證)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A2804",
+          "itemkey": "放款性質",
+          "showtext": "A2804 法金一般區(信保基金批次保證)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A88",
+          "itemkey": "放款性質",
+          "showtext": "A88 企業投資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "A99",
+          "itemkey": "放款性質",
+          "showtext": "A99 其他週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B011",
+          "itemkey": "放款性質",
+          "showtext": "B011 企業購置營業（辦公）場所貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B012",
+          "itemkey": "放款性質",
+          "showtext": "B012 企業購置廠房貸款（含廠地）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B012A",
+          "itemkey": "放款性質",
+          "showtext": "B012A 101/1/1起承作企業購置廠房貸款含廠地,不計入72-2",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B013",
+          "itemkey": "放款性質",
+          "showtext": "B013 企業裝修營業（辦公）場所貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B014",
+          "itemkey": "放款性質",
+          "showtext": "B014 企業裝修廠房貸款（含廠地）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B016",
+          "itemkey": "放款性質",
+          "showtext": "B016 協助中小企業紮根專案貸款(第五期）－不送信保",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B017",
+          "itemkey": "放款性質",
+          "showtext": "B017 企業購置商用不動產。",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B021A",
+          "itemkey": "放款性質",
+          "showtext": "B021A 101/1/1起承作企業購置土地貸款-廠房用地不計72-2",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B03",
+          "itemkey": "放款性質",
+          "showtext": "B03 國產機器貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B04",
+          "itemkey": "放款性質",
+          "showtext": "B04 進口機器貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B05",
+          "itemkey": "放款性質",
+          "showtext": "B05 對租賃業辦理製造業資本性融資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B062",
+          "itemkey": "放款性質",
+          "showtext": "B062 企業購置土地貸款﹝政策性基金﹞",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B1551",
+          "itemkey": "放款性質",
+          "showtext": "B1551 流通服務業優惠貸款－不送信保",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B1552",
+          "itemkey": "放款性質",
+          "showtext": "B1552 流通服務業優惠貸款－移送信保",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "B99",
+          "itemkey": "放款性質",
+          "showtext": "B99 其他設備性貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C01",
+          "itemkey": "放款性質",
+          "showtext": "C01 個人理財綜合貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C011",
+          "itemkey": "放款性質",
+          "showtext": "C011 修繕（非本行員工房屋修繕貸款）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C011H",
+          "itemkey": "放款性質",
+          "showtext": "C011H 房屋貸款平轉（修繕）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C012",
+          "itemkey": "放款性質",
+          "showtext": "C012 投資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C013",
+          "itemkey": "放款性質",
+          "showtext": "C013 個人理財（股票擔保貸款）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C013A",
+          "itemkey": "放款性質",
+          "showtext": "C013A 個人股票質押貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C019",
+          "itemkey": "放款性質",
+          "showtext": "C019 其他",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C091",
+          "itemkey": "放款性質",
+          "showtext": "C091 購屋",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C092",
+          "itemkey": "放款性質",
+          "showtext": "C092 修繕",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C101",
+          "itemkey": "放款性質",
+          "showtext": "C101 購屋儲蓄貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C101C",
+          "itemkey": "放款性質",
+          "showtext": "C101C 續辦二仟億優惠購屋貸款(補助0.25%)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C101D",
+          "itemkey": "放款性質",
+          "showtext": "C101D 續辦二仟億優惠購屋貸款(補助0.125%)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C102B",
+          "itemkey": "放款性質",
+          "showtext": "C102B 一般房屋貸款（100億元專案）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C105E",
+          "itemkey": "放款性質",
+          "showtext": "C105E 89年度台北市輔助人民自購住宅貸款－２２０萬以內",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C109",
+          "itemkey": "放款性質",
+          "showtext": "C109 其他購屋貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C1093",
+          "itemkey": "放款性質",
+          "showtext": "C1093 優利轉貸購屋貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C15",
+          "itemkey": "放款性質",
+          "showtext": "C15 卡便利融資",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C158",
+          "itemkey": "放款性質",
+          "showtext": "C158 保家貸專案(新貸戶)－房屋貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C15B",
+          "itemkey": "放款性質",
+          "showtext": "C15B 循環額度",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C195",
+          "itemkey": "放款性質",
+          "showtext": "C195 安泰優惠房貸１９５專案",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C198C",
+          "itemkey": "放款性質",
+          "showtext": "C198C 原屋貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C205",
+          "itemkey": "放款性質",
+          "showtext": "C205 安泰優惠房貸專案",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "C99A",
+          "itemkey": "放款性質",
+          "showtext": "C99A 信用貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "D02",
+          "itemkey": "放款性質",
+          "showtext": "D02 墊付國內票款週轉金貸款",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E01",
+          "itemkey": "放款性質",
+          "showtext": "E01 國內即期信用狀",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E02",
+          "itemkey": "放款性質",
+          "showtext": "E02 國內遠期信用狀",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E03120",
+          "itemkey": "放款性質",
+          "showtext": "E03120 國內遠期信用狀辦理承兌（９１天－１２０天）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E03180",
+          "itemkey": "放款性質",
+          "showtext": "E03180 國內遠期信用狀辦理承兌（１５１天－１８０天）",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E051",
+          "itemkey": "放款性質",
+          "showtext": "E051 工程預付款保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E052",
+          "itemkey": "放款性質",
+          "showtext": "E052 其他預付款保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E061",
+          "itemkey": "放款性質",
+          "showtext": "E061 工程履約保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E062",
+          "itemkey": "放款性質",
+          "showtext": "E062 其他履約保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E07",
+          "itemkey": "放款性質",
+          "showtext": "E07 履約保證金保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E071",
+          "itemkey": "放款性質",
+          "showtext": "E071 工程履約保證金保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E072",
+          "itemkey": "放款性質",
+          "showtext": "E072 其他履約保證金保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E08",
+          "itemkey": "放款性質",
+          "showtext": "E08 押標金保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E09",
+          "itemkey": "放款性質",
+          "showtext": "E09 保固保證金保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E131",
+          "itemkey": "放款性質",
+          "showtext": "E131 關稅記帳保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E14",
+          "itemkey": "放款性質",
+          "showtext": "E14 發行商業本票保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E16",
+          "itemkey": "放款性質",
+          "showtext": "E16 發行公司債保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E18",
+          "itemkey": "放款性質",
+          "showtext": "E18 保證函或擔保信用狀(STAND-BY L/C)",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "E99",
+          "itemkey": "放款性質",
+          "showtext": "E99 其它保證",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "F01",
+          "itemkey": "放款性質",
+          "showtext": "F01 國內有追索權應收帳款融資R",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "F03",
+          "itemkey": "放款性質",
+          "showtext": "F03 國際有追索權應收帳款融資R-DIRECT",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "F07",
+          "itemkey": "放款性質",
+          "showtext": "F07 國內應收帳款融資擔保NS/P",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "F09",
+          "itemkey": "放款性質",
+          "showtext": "F09 國內有追索權應收帳款融資-外幣R",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "F12",
+          "itemkey": "放款性質",
+          "showtext": "F12 OBU有追索權應收帳款融資R-DIRECT",
+          "datavalue2": null
+        },
+        {
+          "datavalue1": "Z99",
+          "itemkey": "放款性質",
+          "showtext": "其他 ( 非72-2放款 )",
+          "datavalue2": null
+        }
+      ],
+      "currencyTypeList": [
+        {
+          "exchangeDate": null,
+          "crncyCode": "ATS",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "AUD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "BEF",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "CAD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "CHF",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "DEM",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "EUR",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "FRF",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "GBP",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "HKD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "ITL",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "JPY",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "MYR",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "NLG",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "NZD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "SEK",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "SGD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "THB",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "TWD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "USD",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "ZAR",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "KRW",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "INR",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "RMB",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "CNY",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "IDR",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        },
+        {
+          "exchangeDate": null,
+          "crncyCode": "BRL",
+          "exchangeRate": null,
+          "lastupdatedatetime": null
+        }
+      ]
     }
-}
+  }
 }

@@ -8,49 +8,6 @@
                 <el-form-item label="RM Code" prop="rmempnr">
                     <el-input v-model="queryParams.rmempnr" placeholder="請輸入員編" clearable />
                 </el-form-item>
-                <el-form-item label="預估類型" prop="demandtype">
-                    <el-radio-group v-model="queryParams.demandtype">
-                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :value="opt.value">
-                            {{ opt.label }}
-                        </el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="性質別" prop="proptype">
-                    <el-select v-model="queryParams.proptype" placeholder="請選擇性質別" clearable>
-                        <el-option v-for="item in proptypeOptions" :key="item.datavalue1" :label="item.showtext"
-                            :value="item.datavalue1"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="客戶ID" prop="clientcd">
-                    <el-input v-model="queryParams.clientcd" placeholder="請輸入客戶ID" clearable />
-                </el-form-item>
-                <el-form-item label="放款類別" prop="loantype">
-                    <el-select v-model="queryParams.loantype" placeholder="請選擇放款類別" clearable>
-                        <el-option v-for="item in loantypeOptions" :key="item.datavalue1" :label="item.showtext"
-                            :value="item.datavalue1"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="客戶名稱" prop="clientnamec">
-                    <el-input v-model="queryParams.clientnamec" placeholder="請輸入客戶名稱" clearable />
-                </el-form-item>
-                <el-form-item label="預估發生日期" prop="demanddate">
-                    <el-date-picker v-model="queryParams.demanddate" type="dates" placeholder="請輸入預估發生日期" clearable />
-                </el-form-item>
-                <el-form-item label="幣別" prop="currencytype">
-                    <el-select v-model="queryParams.currencytype" placeholder="請選擇幣別" clearable>
-                        <el-option v-for="item in currencytypeOptions" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="匯率" prop="exchangeRate">
-                    <el-input disabled v-model="queryParams.exchangeRate" />
-                </el-form-item>
-                <el-form-item label="預估金額" prop="demandamt">
-                    <el-input v-model="queryParams.demandamt" />
-                </el-form-item>
-                <el-form-item label="原因說明" prop="loandescription">
-                    <el-input v-model="queryParams.loandescription" />
-                </el-form-item>
             </el-form>
 
             <div class="button__row">
@@ -59,7 +16,7 @@
                         <el-button type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
                     </el-col>
                     <el-col :span="1.5">
-                        <el-button type="primary" plain icon="Search">查詢</el-button>
+                        <el-button type="primary" plain icon="Search" @click="handleQuery">查詢</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -119,7 +76,7 @@
                             :value="item.datavalue1"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="form.id!=null" label="客戶名稱" prop="clientnamec">
+                <el-form-item v-if="form.id != null" label="客戶名稱" prop="clientnamec">
                     <el-input v-model="form.clientnamec" placeholder="請輸入客戶名稱" clearable />
                 </el-form-item>
                 <el-form-item label="預估發生日期" prop="demanddate">
@@ -153,15 +110,21 @@
 
 <script lang="ts" setup>
 import { demandtypeOptions, proptypeOptions, loantypeOptions, currencytypeOptions } from '@/dictionaries/loan.json';
-import { reactive, toRefs, ref, getCurrentInstance, onMounted } from 'vue';
+import { reactive, toRefs, ref, onMounted } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 import { useForecastLoanStore } from '@/stores/modules/forecastLoan';
+import { useUserStore } from '@/stores/modules/user';
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
+import { storeToRefs } from "pinia";
+
+const forecastLoanStore = useForecastLoanStore();
+const { fetchPageBootstrap, getListPreCheck } = forecastLoanStore;
+
+const userStore = useUserStore();
+const { areaCd, userInfo } = storeToRefs(userStore);
+
 
 const pageLoading = ref(false);
-const forecastLoanStore = useForecastLoanStore();
-const { fetchPageBootstrap } = forecastLoanStore;
-
 const loading = ref(false);
 const nodeList = ref([]);
 const total = ref(0);
@@ -185,17 +148,13 @@ const data = reactive({
     queryParams: {
         pageNum: 1,
         pageSize: 10,
-        rmempnr: null,
-        demandtype: null,
-        proptype: null,
-        clientcd: null,
-        loantype: null,
-        clientnamec: null,
-        demanddate: null,
-        currencytype: null,
-        exchangeRate: null,
-        demandamt: null,
-        loandescription: null
+        rmempnr: null
+    },
+    rules: {
+        rmempnr: [
+            { required: true, message: "RM Code 不能為空", trigger: "blur" }, 
+            { min: 2, max: 20, message: "用户名称长度必须介于 2 和 20 之间", trigger: "blur" }
+        ]
     }
 });
 
@@ -221,10 +180,7 @@ function handleDelete(row) {
     ).then(() => {
         getList();
         ElMessage.success("刪除成功");
-    }).catch(() => {});
-}
-
-function getList() {
+    }).catch(() => { });
 }
 
 /** 新增按钮操作 */
@@ -258,10 +214,11 @@ function submitForm() {
 
 // 取消按钮
 function cancel() {
-  open.value = false;
-  reset();
+    open.value = false;
+    reset();
 }
 
+// 頁面初始化
 onMounted(() => {
     pageLoading.value = true;
     fetchPageBootstrap().then((response) => {
@@ -277,6 +234,31 @@ onMounted(() => {
         pageLoading.value = false;
     });
 });
+
+/** 搜索按钮操作 */
+async function handleQuery() {
+    try {
+        await getListPreCheck({
+            rmEmpNr: userInfo.value.loginUser.account || '',
+            areaCd: areaCd.value || '',
+            inputRmEmpNr: queryParams.value.rmempnr || ''
+        });
+
+        queryParams.value.pageNum = 1;
+        getList();
+    } catch (error) {
+        console.error('Error during getListPreCheck:', error);
+        ElNotification.error({
+            title: '錯誤',
+            message: String(error)
+        });
+    }
+};
+
+/** 查询放款預估列表 */
+function getList() {
+    console.log('getList')
+}
 </script>
 
 <style scoped lang="scss">
@@ -311,7 +293,7 @@ onMounted(() => {
     column-gap: 24px;
     row-gap: 16px;
     background-color: #fff;
-    
+
     @media screen and (min-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
     }

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getForecastLoanBootstrap } from "@/api/forecastLoan";
+import { getForecastLoanBootstrap, getForecastLoanListPreCheck } from "@/api/forecastLoan";
+import type { ForecastLoanGetListPreCheckParams } from "@/api/forecastLoan";
 
 export const useForecastLoanStore = defineStore("forecastLoan", () => {
   const pageBooststrap = ref({
@@ -13,8 +14,20 @@ export const useForecastLoanStore = defineStore("forecastLoan", () => {
     return new Promise((resolve, reject) => {
       getForecastLoanBootstrap()
         .then((response) => {
-          console.log("獲取預測貸款頁面初始化數據:", response);
           pageBooststrap.value = response.data;
+          resolve("ok");
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  async function getListPreCheck(params: ForecastLoanGetListPreCheckParams) {
+    return new Promise((resolve, reject) => {
+      getForecastLoanListPreCheck(params)
+        .then((response) => {
+          console.log('response', response)
           resolve("ok");
         })
         .catch((error) => {
@@ -26,5 +39,6 @@ export const useForecastLoanStore = defineStore("forecastLoan", () => {
   return {
     pageBooststrap,
     fetchPageBootstrap,
+    getListPreCheck,
   };
 });
