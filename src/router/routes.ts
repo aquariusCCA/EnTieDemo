@@ -78,17 +78,7 @@ export const constantRoutes = [
           hidden: false,
           icon: "Money",
         },
-      },
-      {
-        name: "LoanTest",
-        path: "/loan/test",
-        component: () => import("@/views/loan/test.vue"), // 懒加载LoanTest组件
-        meta: {
-          name: "預估測試",
-          hidden: false,
-          icon: "Money",
-        },
-      },
+      }
     ],
   },
   {
