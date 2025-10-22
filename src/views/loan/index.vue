@@ -1,5 +1,5 @@
 <template>
-    <div class="layout" v-loading="pageLoading">
+    <div class="layout">
         <div class="operating-space">
             <h2 class="title">放款預估</h2>
 
@@ -27,10 +27,10 @@
                 <el-table-column label="客戶ID" width="127" prop="clientcd" />
                 <el-table-column label="客戶名稱" width="250" prop="clientnamec" />
                 <el-table-column label="幣別" width="127" prop="currencytype" />
-                <el-table-column label="性質別" width="200" prop="proptype" />
-                <el-table-column label="放款類別" width="127" prop="loantype" />
+                <el-table-column label="性質別" width="120" prop="proptype" />
+                <el-table-column label="放款類別" width="150" prop="loantype" />
                 <el-table-column label="預估發生日期" width="127" prop="demanddate" />
-                <el-table-column label="預估金額" width="127" prop="demandamt" :formatter="fmtDemandAmt"/>
+                <el-table-column label="預估金額" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
                 <el-table-column label="原因說明" width="127" prop="loandescription" />
                 <el-table-column label="最後更新" width="200" prop="lastupdatedatetime" :formatter="fmtDateUpdated" />
                 <el-table-column label="資料建立" width="200" prop="createdatetime" :formatter="fmtDateCreated" />
@@ -48,50 +48,57 @@
             </div>
         </div>
 
-        <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-            <el-form ref="dialogFormRef" :model="form" :rules="dialogRules" label-position="top">
+        <el-dialog :title="title" v-model="open" width="500px" append-to-body align-center>
+            <el-form v-loading="bootstrapLoading" ref="dialogFormRef" :model="form" :rules="dialogRules" label-position="top">
                 <el-form-item label="RM Code" prop="rmempnr">
                     <el-input v-model="form.rmempnr" placeholder="請輸入員編" clearable />
                 </el-form-item>
                 <el-form-item label="預估類型" prop="demandtype">
                     <el-radio-group v-model="form.demandtype">
-                        <el-radio v-for="opt in demandtypeOptions" :key="opt.value" :value="opt.value">
-                            {{ opt.label }}
+                        <el-radio v-for="(label, value) in pageBooststrap.demandtypeMap" :key="value" :value="value">
+                            {{ label }}
                         </el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="性質別" prop="proptype">
-                    <el-select v-model="form.proptype" placeholder="請選擇性質別" clearable>
-                        <el-option v-for="item in proptypeOptions" :key="item.datavalue1" :label="item.showtext"
-                            :value="item.datavalue1"></el-option>
+                    <el-select v-model="form.proptype" placeholder="請選擇性質別">
+                        <el-option v-for="item in pageBooststrap.propTypeList" :key="item.datavalue1"
+                            :label="item.showtext" :value="item.datavalue1"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="客戶ID" prop="clientcd">
                     <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable />
                 </el-form-item>
                 <el-form-item label="放款類別" prop="loantype">
-                    <el-select v-model="form.loantype" placeholder="請選擇放款類別" clearable>
-                        <el-option v-for="item in loantypeOptions" :key="item.datavalue1" :label="item.showtext"
-                            :value="item.datavalue1"></el-option>
+                    <el-select v-model="form.loantype" placeholder="請選擇放款類別">
+                        <el-option v-for="item in pageBooststrap.loanTypeList" :key="item.datavalue1"
+                            :label="item.showtext" :value="item.datavalue1"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="form.id != null" label="客戶名稱" prop="clientnamec">
+                <el-form-item v-if="form.sid == null" label="客戶名稱" prop="clientnamec">
                     <el-input v-model="form.clientnamec" placeholder="請輸入客戶名稱" clearable />
                 </el-form-item>
                 <el-form-item label="預估發生日期" prop="demanddate">
-                    <el-date-picker v-model="form.demanddate" type="dates" placeholder="請輸入預估發生日期" clearable />
+                    <el-date-picker 
+                        v-model="form.demanddate" 
+                        type="date" 
+                        placeholder="請輸入預估發生日期" 
+                        clearable 
+                        format="YYYY-MM-DD"
+                        value-format="YYYY/MM/DD"    
+                    />
                 </el-form-item>
                 <el-form-item label="幣別" prop="currencytype">
-                    <el-select v-model="form.currencytype" placeholder="請選擇幣別" clearable>
-                        <el-option v-for="item in currencytypeOptions" :key="item.value" :label="item.label"
-                            :value="item.value"></el-option>
+                    <el-select v-model="form.currencytype" placeholder="請選擇幣別" clearable @change="getExchangeRate">
+                        <el-option v-for="item in pageBooststrap.currencyTypeList" :key="item.crncyCode"
+                            :label="item.crncyCode" :value="item.crncyCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="匯率" prop="exchangeRate">
                     <el-input disabled v-model="form.exchangeRate" />
                 </el-form-item>
                 <el-form-item label="預估金額" prop="demandamt">
-                    <el-input v-model="form.demandamt" />
+                    <el-input v-model.number="form.demandamt" type="number"/>
                 </el-form-item>
                 <el-form-item label="原因說明" prop="loandescription">
                     <el-input v-model="form.loandescription" />
@@ -108,8 +115,7 @@
 </template>
 
 <script lang="ts" setup>
-import { demandtypeOptions, proptypeOptions, loantypeOptions, currencytypeOptions } from '@/dictionaries/loan.json';
-import { reactive, toRefs, ref, onMounted } from 'vue';
+import { reactive, toRefs, ref } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 import { useUserStore } from '@/stores/modules/user';
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
@@ -118,6 +124,8 @@ import type { FormInstance, TableColumnCtx } from 'element-plus'
 import {
     getForecastLoanBootstrap,
     getForecastLoanList,
+    fetchExchangeRate,
+    addForecastLoan
 } from "@/api/forecastLoan";
 import { formatToYmdHms } from '@/utils/date';
 import { formatThousands } from '@/utils/number';
@@ -148,16 +156,32 @@ interface ForecastLoan {
 }
 
 interface PageBootstrap {
-  propTypeList: Array<any>
-  loanTypeList: Array<any>
-  currencyTypeList: Array<any>
+    propTypeList: Array<any>
+    loanTypeList: Array<any>
+    currencyTypeList: Array<any>
+    demandtypeMap: Record<string, string>
+}
+
+const initFormField = {
+    sid: null as number | null,
+    rmempnr: userInfo.value.loginUser.account,
+    demandtype: '+',
+    proptype: '1',
+    clientcd: '',
+    loantype: '111',
+    clientnamec: '',
+    demanddate: '',
+    currencytype: '',
+    exchangeRate: null as number | null,
+    demandamt: null as number | null,
+    loandescription: ''
 }
 
 /** ===== Refs / State ===== */
 const queryRef = ref<FormInstance>()
 const dialogFormRef = ref<FormInstance>()
 
-const pageLoading = ref(false);
+const bootstrapLoading = ref(false);
 const tableLoading = ref(false);
 const forecastLoanList = ref<ForecastLoan[]>([]);
 const total = ref(0);
@@ -167,28 +191,18 @@ const pageBooststrap = ref<PageBootstrap>({
     propTypeList: [],
     loanTypeList: [],
     currencyTypeList: [],
+    demandtypeMap: {}
 });
 
 /** 使用 reactive + toRefs，確保 v-model 是同一引用 */
 const data = reactive({
     form: {
-        id: null as number | null,
-        rmempnr: '' as string | null,
-        demandtype: '' as string | null,
-        proptype: '' as string | null,
-        clientcd: '' as string | null,
-        loantype: '' as string | null,
-        clientnamec: '' as string | null,
-        demanddate: '' as string | null,
-        currencytype: '' as string | null,
-        exchangeRate: null as number | null,
-        demandamt: null as number | null,
-        loandescription: '' as string | null
+        ...initFormField
     },
     queryParams: {
         pageNum: 1,
         pageSize: 10,
-        rmempnr: null
+        rmempnr: ''
     },
     rules: {
         rmempnr: [
@@ -201,57 +215,47 @@ const { queryParams, form, rules } = toRefs(data);
 
 /** 對話框表單的更嚴謹驗證（避免提交垃圾資料） */
 const dialogRules = {
-  rmempnr: [{ required: true, message: '請輸入 RM Code', trigger: 'blur' }],
-  demandtype: [{ required: true, message: '請選擇預估類型', trigger: 'change' }],
-  proptype: [{ required: true, message: '請選擇性質別', trigger: 'change' }],
-  clientcd: [{ required: true, message: '請輸入客戶ID', trigger: 'blur' }],
-  loantype: [{ required: true, message: '請選擇放款類別', trigger: 'change' }],
-  demanddate: [{ required: true, message: '請選擇日期', trigger: 'change' }],
-  currencytype: [{ required: true, message: '請選擇幣別', trigger: 'change' }],
-  exchangeRate: [{ required: true, message: '請輸入匯率', trigger: 'blur' }],
-  demandamt: [
-    { required: true, message: '請輸入金額', trigger: 'blur' },
-    { type: 'number', min: 0, message: '金額必須為非負數', trigger: 'blur' }
-  ]
+    rmempnr: [{ required: true, message: '請輸入RM Code', trigger: 'blur' }],
+    clientcd: [{ required: true, message: '請輸入客戶ID', trigger: 'blur' }],
+    clientnamec: [{ required: true, message: '請輸入客戶名稱', trigger: 'blur' }],
+    demanddate: [{ required: true, message: '請選擇日期', trigger: 'change' }],
+    currencytype: [{ required: true, message: '請選擇幣別', trigger: 'change' }],
+    demandamt: [
+        { required: true, message: '請輸入金額', trigger: 'blur' },
+    ],
+    loandescription: [{ required: true, message: '請輸入原因說明', trigger: 'blur' }]
 }
 
-/** ===== Lifecycle ===== */
-onMounted(async () => {
-  pageLoading.value = true
-  try {
-    const resp = await getForecastLoanBootstrap()
-    const { propTypeList, loanTypeList, currencyTypeList } = resp?.data || {}
-    pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList }
-  } catch (err) {
-    ElNotification.error({ title: '錯誤', message: String(err) })
-  } finally {
-    pageLoading.value = false
-  }
-})
-
 /** ===== Actions ===== */
+async function getExchangeRate() {
+    try {
+        const { currencytype } = form.value
+        const resp = await fetchExchangeRate(currencytype)
+        console.log('resp', resp)
+        const rate = resp?.data?.exchangeRate || null
+        form.value.exchangeRate = rate
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    }
+}
 /** 新增按钮操作 */
-function handleAdd() {
-    resetForm();
-    open.value = true;
-    title.value = "添加放款預估";
+async function handleAdd() {
+    try {
+        resetForm();
+        const resp = await getForecastLoanBootstrap()
+        const { propTypeList, loanTypeList, currencyTypeList, demandtypeMap } = resp?.data || {}
+        pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList, demandtypeMap }
+        open.value = true;
+        title.value = "添加放款預估";
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    }
 }
 
 // 表单重置
 function resetForm() {
     form.value = {
-        id: null,
-        rmempnr: null,
-        demandtype: null,
-        proptype: null,
-        clientcd: null,
-        loantype: null,
-        clientnamec: null,
-        demanddate: null,
-        currencytype: null,
-        exchangeRate: null,
-        demandamt: null,
-        loandescription: null
+        ...initFormField
     };
 }
 
@@ -263,38 +267,39 @@ function cancel() {
 
 /** 修改操作 */
 function handleUpdate(row: ForecastLoan) {
-  open.value = true
-  title.value = '修改放款預估'
-  form.value = {
-    id: row.sid,
-    rmempnr: row.rmempnr ?? '',
-    demandtype: row.demandtype ?? '',
-    proptype: row.proptype ?? '',
-    clientcd: row.clientcd ?? '',
-    loantype: row.loantype ?? '',
-    clientnamec: row.clientnamec ?? '',
-    demanddate: row.demanddate ?? '',
-    currencytype: row.currencytype ?? '',
-    exchangeRate: row.exchangeRate ?? null,
-    demandamt: row.demandamt ?? null,
-    loandescription: row.loandescription ?? ''
-  }
+    open.value = true
+    title.value = '修改放款預估'
+    console.log('row', row)
+    //   form.value = {
+    //     sid: row.sid,
+    //     rmempnr: row.rmempnr ?? '',
+    //     demandtype: row.demandtype ?? '',
+    //     proptype: row.proptype ?? '',
+    //     clientcd: row.clientcd ?? '',
+    //     loantype: row.loantype ?? '',
+    //     clientnamec: row.clientnamec ?? '',
+    //     demanddate: row.demanddate ?? '',
+    //     currencytype: row.currencytype ?? '',
+    //     exchangeRate: row.exchangeRate ?? null,
+    //     demandamt: row.demandamt ?? null,
+    //     loandescription: row.loandescription ?? ''
+    //   }
 }
 
 /** 删除操作 */
 async function handleDelete(row: ForecastLoan) {
-  try {
-    await ElMessageBox.confirm(`是否確認刪除 SID 編號為「${row.sid}」的資料？`, '提示', {
-      confirmButtonText: '確定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-    // 這裡呼叫實際後端刪除 API（TODO）
-    await getList()
-    ElMessage.success('刪除成功')
-  } catch {
-    /* 使用者取消或失敗 */
-  }
+    try {
+        await ElMessageBox.confirm(`是否確認刪除 SID 編號為「${row.sid}」的資料？`, '提示', {
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        })
+        // 這裡呼叫實際後端刪除 API（TODO）
+        await getList()
+        ElMessage.success('刪除成功')
+    } catch {
+        /* 使用者取消或失敗 */
+    }
 }
 
 /** 搜索按钮操作 */
@@ -317,28 +322,28 @@ async function handleQuery() {
 };
 
 async function onPaginate() {
-  await getList()
+    await getList()
 }
 
 /** 查询放款預估列表 */
 async function getList() {
-  tableLoading.value = true
-  try {
-    const resp = await getForecastLoanList({
-      rmEmpNr: userInfo.value?.loginUser?.account || '',
-      areaCd: areaCd.value || '',
-      inputRmEmpNr: queryParams.value.rmempnr || '',
-      pageNum: queryParams.value.pageNum,
-      pageSize: queryParams.value.pageSize
-    })
-    const rows: ForecastLoan[] = resp?.data?.rows ?? []
-    forecastLoanList.value = rows
-    total.value = resp?.data?.total ?? 0
-  } catch (err) {
-    ElNotification.error({ title: '錯誤', message: String(err) })
-  } finally {
-    tableLoading.value = false
-  }
+    tableLoading.value = true
+    try {
+        const resp = await getForecastLoanList({
+            rmEmpNr: userInfo.value?.loginUser?.account || '',
+            areaCd: areaCd.value || '',
+            inputRmEmpNr: queryParams.value.rmempnr || '',
+            pageNum: queryParams.value.pageNum,
+            pageSize: queryParams.value.pageSize
+        })
+        const rows: ForecastLoan[] = resp?.data?.rows ?? []
+        forecastLoanList.value = rows
+        total.value = resp?.data?.total ?? 0
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    } finally {
+        tableLoading.value = false
+    }
 }
 
 /** 提交按钮 */
@@ -346,15 +351,42 @@ async function submitForm() {
     const formEl = dialogFormRef.value
     if (!formEl) return
     await formEl.validate(async (valid, fields) => {
+        console.log('fields', fields)
         if (valid) {
             try {
-                // TODO: 呼叫新增/修改 API；依 form.id 判斷
-                // await saveForecastLoan(form.value)
-                open.value = false
-                await getList()
-                ElMessage.success('已提交')
+
+                if (form.value.sid != null) {
+                    // 修改
+                    // await updateForecastLoan(form.value)
+                    ElMessage.success('修改成功')
+                    open.value = false
+                    await getList()
+                } else {
+                    // 新增
+                    console.log('add', typeof form.value.exchangeRate)
+                    console.log('add', typeof form.value.demandamt)
+                    await addForecastLoan({
+                        areaCd: areaCd.value || '',
+                        rmempnr: form.value.rmempnr,
+                        demandtype: form.value.demandtype,
+                        proptype: form.value.proptype,
+                        clientcd: form.value.clientcd,
+                        loantype: form.value.loantype,
+                        clientnamec: form.value.clientnamec,
+                        demanddate: form.value.demanddate,
+                        currencytype: form.value.currencytype,
+                        exchangeRate: Number(form.value.exchangeRate),
+                        demandamt: Number(form.value.demandamt),
+                        loandescription: form.value.loandescription
+                    })
+                    ElMessage.success('新增成功')
+                    open.value = false
+                    queryParams.value.rmempnr = form.value.rmempnr
+                    await getList()
+                }
             } catch (error) {
-                ElNotification.error({ title: '提交失敗', message: String(error) })
+                const title = form.value.sid != null ? '修改失敗' : '新增失敗'
+                ElNotification.error({ title, message: String(error) })
             }
         }
     })
@@ -362,13 +394,13 @@ async function submitForm() {
 
 /** ===== Formatters ===== */
 function fmtDateUpdated(row: ForecastLoan, _col: TableColumnCtx<ForecastLoan>) {
-  return row?.lastupdatedatetime ? formatToYmdHms(row.lastupdatedatetime) : ''
+    return row?.lastupdatedatetime ? formatToYmdHms(row.lastupdatedatetime) : ''
 }
 function fmtDateCreated(row: ForecastLoan, _col: TableColumnCtx<ForecastLoan>) {
-  return row?.createdatetime ? formatToYmdHms(row.createdatetime) : ''
+    return row?.createdatetime ? formatToYmdHms(row.createdatetime) : ''
 }
 function fmtDemandAmt(row: ForecastLoan) {
-  return typeof row?.demandamt === 'number' ? formatThousands(row.demandamt) : ''
+    return typeof row?.demandamt === 'number' ? formatThousands(row.demandamt) : ''
 }
 </script>
 

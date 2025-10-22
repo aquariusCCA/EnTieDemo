@@ -1,4 +1,19 @@
 {
+  "addForecastLoan": {
+    "code": 200,
+    "message": "操作成功",
+    "data": null
+  },
+  "fetchExchangeRate": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "exchangeDare": "2025-10-17T02:38:23.000+00:00",
+      "crncyCode": "TWD",
+      "exchangeRate": 1.0,
+      "lastupdatedatetime": "2025-10-17T02:38:23.000+00:00"
+    }
+  },
   "getForecastLoanList": {
     "code": 200,
     "message": "成功",
@@ -204,6 +219,10 @@
     "code": 200,
     "message": "成功",
     "data": {
+      "demandtypeMap": {
+        "+": "放款增加",
+        "-": "放款減少"
+      },
       "propTypeList": [
         {
           "datavalue1": "1",

@@ -6,7 +6,9 @@ import {
 } from "./jsons/performance.json";
 import { 
   forecastLoanBootstrap, 
-  getForecastLoanList
+  getForecastLoanList,
+  fetchExchangeRate,
+  addForecastLoan
 } from "./jsons/forecastLoan.json";
 
 const BASE_URL = import.meta.env.VITE_SERVER;
@@ -24,7 +26,9 @@ export const setSeeds = async () => {
       [`${BASE_URL}/performance/preCheck`, performanceDetailPreCheck],
       [`${BASE_URL}/performance/grmPreCheck`, grmPerformanceDetailPreCheck],
       [`${BASE_URL}/forecast/loan/bootstrap`, forecastLoanBootstrap],
-      [`${BASE_URL}/forecast/loan/list`, getForecastLoanList]
+      [`${BASE_URL}/forecast/loan/list`, getForecastLoanList],
+      [`${BASE_URL}/forecast/loan/exchangeRate/USD`, fetchExchangeRate],
+      [`${BASE_URL}/forecast/loan/add`, addForecastLoan],
     ]);
   } catch (err) {
     console.log(err);
