@@ -105,9 +105,6 @@ export const handlers = [
   http.post(`${BASE_URL}/forecast/loan/bootstrap`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
-  http.post(`${BASE_URL}/forecast/loan/preCheck`, (resolverInfo) => {
-    return mockResolver(resolverInfo);
-  }),
   http.post(`${BASE_URL}/forecast/loan/list`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),

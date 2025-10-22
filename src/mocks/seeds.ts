@@ -6,7 +6,6 @@ import {
 } from "./jsons/performance.json";
 import { 
   forecastLoanBootstrap, 
-  forecastLoanGetListPreCheck,
   getForecastLoanList
 } from "./jsons/forecastLoan.json";
 
@@ -25,7 +24,6 @@ export const setSeeds = async () => {
       [`${BASE_URL}/performance/preCheck`, performanceDetailPreCheck],
       [`${BASE_URL}/performance/grmPreCheck`, grmPerformanceDetailPreCheck],
       [`${BASE_URL}/forecast/loan/bootstrap`, forecastLoanBootstrap],
-      [`${BASE_URL}/forecast/loan/preCheck`, forecastLoanGetListPreCheck],
       [`${BASE_URL}/forecast/loan/list`, getForecastLoanList]
     ]);
   } catch (err) {

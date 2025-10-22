@@ -117,7 +117,6 @@ import { storeToRefs } from "pinia";
 import type { FormInstance, TableColumnCtx } from 'element-plus'
 import {
     getForecastLoanBootstrap,
-    getForecastLoanListPreCheck,
     getForecastLoanList,
 } from "@/api/forecastLoan";
 import { formatToYmdHms } from '@/utils/date';
@@ -305,15 +304,6 @@ async function handleQuery() {
     await formEl.validate(async (valid, fields) => {
         if (valid) {
             try {
-                // 先做前置檢核
-                await getForecastLoanListPreCheck({
-                    rmEmpNr: userInfo.value.loginUser.account || '',
-                    areaCd: areaCd.value || '',
-                    inputRmEmpNr: queryParams.value.rmempnr || '',
-                    pageNum: queryParams.value.pageNum,
-                    pageSize: queryParams.value.pageSize
-                });
-                // 檢核成功才重設頁碼並查表
                 queryParams.value.pageNum = 1;
                 await getList();
             } catch (error) {

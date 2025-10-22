@@ -1,9 +1,4 @@
 {
-  "forecastLoanGetListPreCheck": {
-    "code": 200,
-    "message": "成功",
-    "data": null
-  },
   "getForecastLoanList": {
     "code": 200,
     "message": "成功",

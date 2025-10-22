@@ -2,7 +2,6 @@ import request from '@/utils/request'
 
 enum API {
     FORECAST_LOAN_BOOTSTRAP_URL = '/forecast/loan/bootstrap',
-    FORECAST_LOAN_GET_LIST_PRECHECK_URL  = 'forecast/loan/preCheck',
     FORECAST_LOAN_GET_LIST = '/forecast/loan/list'   
 }
 
@@ -18,14 +17,6 @@ export function getForecastLoanBootstrap() {
     return request({
         url: API.FORECAST_LOAN_BOOTSTRAP_URL,
         method: 'post',
-    })
-}
-
-export const getForecastLoanListPreCheck = (params: ForecastLoanSelectDTO) => {
-    return request({
-        url: API.FORECAST_LOAN_GET_LIST_PRECHECK_URL,
-        method: 'post',
-        data: params,
     })
 }
 
