@@ -6,6 +6,9 @@ enum API {
     FORECAST_LOAN_GET_EXCHANGE_RATE = '/forecast/loan/exchangeRate',
     FORECAST_LOAN_ADD = '/forecast/loan/add',
     FORECAST_LOAN_DELETE = '/forecast/loan/delete',
+    FORECAST_LOAN_SELECT_ONE = '/forecast/loan/selectOne',
+    FORECAST_LOAN_GET_CLIENT_DATA = '/forecast/loan/getClientdataByClientcd',
+    FORECAST_LOAN_UPDATE = '/forecast/loan/update',
 }
 
 export interface ForecastLoanSelectDTO {
@@ -73,6 +76,52 @@ export interface DeleteForecastLoanDTO {
 export const deleteForecastLoan = (data: DeleteForecastLoanDTO) => {
     return request({
         url: API.FORECAST_LOAN_DELETE,
+        method: 'post',
+        data
+    })
+}
+
+export interface SelectOneForecastLoanDTO {
+    sid: number;
+}
+
+export const selectOneForecastLoan = (data: SelectOneForecastLoanDTO) => {
+    return request({
+        url: API.FORECAST_LOAN_SELECT_ONE + `/${data.sid}`,
+        method: 'post',
+    })
+}
+
+export interface GetClientdataByClientcdDTO {
+    clientcd: string;
+}
+
+export const getClientdataByClientcd = (data: GetClientdataByClientcdDTO) => {
+    return request({
+        url: API.FORECAST_LOAN_GET_CLIENT_DATA + `/${data.clientcd}`,
+        method: 'post',
+    })
+}
+
+interface UpdateForecastLoanDTO {
+    sid: number;
+    rmempnr: string;
+    demandtype: string;
+    proptype: string;
+    clientcd: string;
+    loantype: string;
+    clientnamec: string;
+    demanddate: string;
+    currencytype: string;
+    exchangeRate: number;
+    demandamt: number;
+    loandescription: string;
+}
+
+
+export const updateForecastLoan = (data: UpdateForecastLoanDTO) => {
+    return request({
+        url: API.FORECAST_LOAN_UPDATE,
         method: 'post',
         data
     })

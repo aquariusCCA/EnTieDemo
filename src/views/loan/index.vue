@@ -67,7 +67,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="客戶ID" prop="clientcd">
-                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable />
+                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable @blur="handleClientIdBlur"/>
                 </el-form-item>
                 <el-form-item label="放款類別" prop="loantype">
                     <el-select v-model="form.loantype" placeholder="請選擇放款類別">
@@ -75,8 +75,13 @@
                             :label="item.showtext" :value="item.datavalue1"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="form.sid == null" label="客戶名稱" prop="clientnamec">
-                    <el-input v-model="form.clientnamec" placeholder="請輸入客戶名稱" clearable />
+                <el-form-item label="客戶名稱" prop="clientnamec">
+                    <el-input 
+                        :disabled="form.sid !== null && form.clientnamec !== ''"
+                        v-model="form.clientnamec" 
+                        placeholder="請輸入客戶名稱" 
+                        clearable 
+                    />
                 </el-form-item>
                 <el-form-item label="預估發生日期" prop="demanddate">
                     <el-date-picker 
@@ -115,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref } from 'vue';
+import { reactive, toRefs, ref, onMounted } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 import { useUserStore } from '@/stores/modules/user';
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
@@ -126,7 +131,10 @@ import {
     getForecastLoanList,
     fetchExchangeRate,
     addForecastLoan,
-    deleteForecastLoan
+    deleteForecastLoan,
+    selectOneForecastLoan,
+    getClientdataByClientcd,
+    updateForecastLoan
 } from "@/api/forecastLoan";
 import { formatToYmdHms } from '@/utils/date';
 import { formatThousands } from '@/utils/number';
@@ -227,14 +235,42 @@ const dialogRules = {
     loandescription: [{ required: true, message: '請輸入原因說明', trigger: 'blur' }]
 }
 
+/** ===== Lifecycle ===== */
+onMounted(async () => {
+  bootstrapLoading.value = true
+  try {
+        const resp = await getForecastLoanBootstrap()
+        const { propTypeList, loanTypeList, currencyTypeList, demandtypeMap } = resp?.data || {}
+        pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList, demandtypeMap }
+  } catch (err) {
+    ElNotification.error({ title: '錯誤', message: String(err) })
+  } finally {
+    bootstrapLoading.value = false
+  }
+})
+
 /** ===== Actions ===== */
+async function handleClientIdBlur() {
+    try {
+        const { clientcd } = form.value
+        const resp = await getClientdataByClientcd({ clientcd })
+        console.log('data', resp.data)
+        form.value.clientnamec = resp.data.clientNameC || '';
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    }
+}
+
 async function getExchangeRate() {
     try {
+        bootstrapLoading.value = true;
         const { currencytype } = form.value
         const resp = await fetchExchangeRate(currencytype)
         console.log('resp', resp)
         form.value.exchangeRate = Number(resp.data.exchangeRate);
+        bootstrapLoading.value = false;
     } catch (err) {
+        bootstrapLoading.value = false;
         ElNotification.error({ title: '錯誤', message: String(err) })
     }
 }
@@ -242,9 +278,6 @@ async function getExchangeRate() {
 async function handleAdd() {
     try {
         resetForm();
-        const resp = await getForecastLoanBootstrap()
-        const { propTypeList, loanTypeList, currencyTypeList, demandtypeMap } = resp?.data || {}
-        pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList, demandtypeMap }
         open.value = true;
         title.value = "添加放款預估";
     } catch (err) {
@@ -266,24 +299,30 @@ function cancel() {
 }
 
 /** 修改操作 */
-function handleUpdate(row: ForecastLoan) {
+async function handleUpdate(row: ForecastLoan) {
     open.value = true
     title.value = '修改放款預估'
     console.log('row', row)
-    //   form.value = {
-    //     sid: row.sid,
-    //     rmempnr: row.rmempnr ?? '',
-    //     demandtype: row.demandtype ?? '',
-    //     proptype: row.proptype ?? '',
-    //     clientcd: row.clientcd ?? '',
-    //     loantype: row.loantype ?? '',
-    //     clientnamec: row.clientnamec ?? '',
-    //     demanddate: row.demanddate ?? '',
-    //     currencytype: row.currencytype ?? '',
-    //     exchangeRate: row.exchangeRate ?? null,
-    //     demandamt: row.demandamt ?? null,
-    //     loandescription: row.loandescription ?? ''
-    //   }
+    const { sid } = row
+    const resp = await selectOneForecastLoan({ sid })
+    const data = resp?.data
+    console.log('data', data)
+    form.value = {
+        sid: data.sid,
+        rmempnr: data.rmempnr ?? '',
+        demandtype: data.demandtype ?? '',
+        proptype: data.proptype ?? '',
+        clientcd: data.clientcd ?? '',          
+        loantype: data.loantype ?? '',
+        clientnamec: data.clientnamec ?? '',
+        demanddate: data.demanddate ?? '',
+        currencytype: data.currencytype ?? '',
+        exchangeRate: data.exchangeRate ?? null,
+        demandamt: data.demandamt ?? null,
+        loandescription: data.loandescription ?? ''
+    }
+    open.value = true
+    title.value = '修改放款預估'
 }
 
 /** 删除操作 */
@@ -361,6 +400,21 @@ async function submitForm() {
                 if (form.value.sid != null) {
                     // 修改
                     // await updateForecastLoan(form.value)
+                    console.log('修改：', form.value)
+                    await updateForecastLoan({
+                        sid: form.value.sid!,
+                        rmempnr: form.value.rmempnr,
+                        demandtype: form.value.demandtype,
+                        proptype: form.value.proptype,
+                        clientcd: form.value.clientcd,
+                        loantype: form.value.loantype,
+                        clientnamec: form.value.clientnamec,
+                        demanddate: form.value.demanddate,
+                        currencytype: form.value.currencytype,
+                        exchangeRate: Number(form.value.exchangeRate),
+                        demandamt: Number(form.value.demandamt),
+                        loandescription: form.value.loandescription
+                    })
                     ElMessage.success('修改成功')
                     open.value = false
                     await getList()

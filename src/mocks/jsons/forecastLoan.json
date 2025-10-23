@@ -1,4 +1,40 @@
 {
+  "updateForecastLoan": {
+    "code": 200,
+    "message": "更新成功",
+    "data": null
+  },
+  "getClientdataByClientcd": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "clientCd": "A123205433",
+      "clientNameC": "侯尊中"
+    }
+  },
+  "selectOneForecastLoan": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "sid": 23063,
+      "demandtype": "-",
+      "clientcd": "A123205433",
+      "clientnamec": "侯尊中",
+      "currencytype": "TWD",
+      "exchangeRate": 1.65,
+      "loantype": "5",
+      "demanddate": "2016/02/13",
+      "demandamt": 33000000,
+      "operationIntRate": null,
+      "proptype": "Z99",
+      "rmempnr": "05669",
+      "loandescription": "系統自動產生",
+      "acctNbr": "B000341054765100000065",
+      "deletedtag": "N",
+      "createdatetime": "2025-10-17T02:38:23.000+00:00",
+      "lastupdatedatetime": "2025-10-17T02:38:23.000+00:00"
+    }
+  },
   "deleteForecastLoan": {
     "code": 200,
     "message": "刪除成功",
@@ -26,7 +62,7 @@
       "total": 25,
       "rows": [
         {
-          "sid": 106765,
+          "sid": 23063,
           "demandtype": "放款增加",
           "clientcd": "12339246",
           "clientnamec": "茂宣企業股份有限公司",
@@ -228,7 +264,7 @@
         "+": "放款增加",
         "-": "放款減少"
       },
-      "propTypeList": [
+      "loanTypeList": [
         {
           "datavalue1": "1",
           "itemkey": "放款類別",
@@ -266,7 +302,7 @@
           "datavalue2": null
         }
       ],
-      "loanTypeList": [
+      "propTypeList": [
         {
           "datavalue1": "111",
           "itemkey": "放款性質",

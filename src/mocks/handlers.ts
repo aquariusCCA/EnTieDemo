@@ -116,7 +116,16 @@ export const handlers = [
   }),
   http.post(`${BASE_URL}/forecast/loan/delete`, (resolverInfo) => {
     return mockResolver(resolverInfo);
-  })
+  }),
+  http.post(`${BASE_URL}/forecast/loan/selectOne/23063`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  }),
+  http.post(`${BASE_URL}/forecast/loan/getClientdataByClientcd/A123205433`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  }),
+  http.post(`${BASE_URL}/forecast/loan/update`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  }),
 ];
 
 function base64ToUint8Array(base64: string): Uint8Array {
