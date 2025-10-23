@@ -4,7 +4,8 @@ enum API {
     FORECAST_LOAN_BOOTSTRAP_URL = '/forecast/loan/bootstrap',
     FORECAST_LOAN_GET_LIST = '/forecast/loan/list',
     FORECAST_LOAN_GET_EXCHANGE_RATE = '/forecast/loan/exchangeRate',
-    FORECAST_LOAN_ADD = '/forecast/loan/add'
+    FORECAST_LOAN_ADD = '/forecast/loan/add',
+    FORECAST_LOAN_DELETE = '/forecast/loan/delete',
 }
 
 export interface ForecastLoanSelectDTO {
@@ -60,6 +61,18 @@ export interface AddForecastLoanDTO {
 export const addForecastLoan = (data: AddForecastLoanDTO) => {
     return request({
         url: API.FORECAST_LOAN_ADD,
+        method: 'post',
+        data
+    })
+}
+
+export interface DeleteForecastLoanDTO {
+    sid: number;
+}
+
+export const deleteForecastLoan = (data: DeleteForecastLoanDTO) => {
+    return request({
+        url: API.FORECAST_LOAN_DELETE,
         method: 'post',
         data
     })

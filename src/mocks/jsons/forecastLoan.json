@@ -1,7 +1,12 @@
 {
+  "deleteForecastLoan": {
+    "code": 200,
+    "message": "刪除成功",
+    "data": null
+  },
   "addForecastLoan": {
     "code": 200,
-    "message": "操作成功",
+    "message": "添加成功",
     "data": null
   },
   "fetchExchangeRate": {
@@ -10,7 +15,7 @@
     "data": {
       "exchangeDare": "2025-10-17T02:38:23.000+00:00",
       "crncyCode": "TWD",
-      "exchangeRate": 1.0,
+      "exchangeRate": 0.0,
       "lastupdatedatetime": "2025-10-17T02:38:23.000+00:00"
     }
   },

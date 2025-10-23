@@ -125,7 +125,8 @@ import {
     getForecastLoanBootstrap,
     getForecastLoanList,
     fetchExchangeRate,
-    addForecastLoan
+    addForecastLoan,
+    deleteForecastLoan
 } from "@/api/forecastLoan";
 import { formatToYmdHms } from '@/utils/date';
 import { formatThousands } from '@/utils/number';
@@ -232,8 +233,7 @@ async function getExchangeRate() {
         const { currencytype } = form.value
         const resp = await fetchExchangeRate(currencytype)
         console.log('resp', resp)
-        const rate = resp?.data?.exchangeRate || null
-        form.value.exchangeRate = rate
+        form.value.exchangeRate = Number(resp.data.exchangeRate);
     } catch (err) {
         ElNotification.error({ title: '錯誤', message: String(err) })
     }
@@ -294,11 +294,14 @@ async function handleDelete(row: ForecastLoan) {
             cancelButtonText: '取消',
             type: 'warning'
         })
-        // 這裡呼叫實際後端刪除 API（TODO）
+        console.log('刪除資料', row)
+        await deleteForecastLoan({ sid: row.sid! })
         await getList()
         ElMessage.success('刪除成功')
-    } catch {
-        /* 使用者取消或失敗 */
+    } catch (error) {
+        console.log('取消刪除或發生錯誤', error)
+        if( error === 'cancel' ) return; // 使用者取消刪除不顯示錯誤通知
+        ElNotification.error({ title: '刪除失敗', message: String(error) })
     }
 }
 
