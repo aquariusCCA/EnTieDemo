@@ -33,9 +33,9 @@ export const setSeeds = async () => {
       [`${BASE_URL}/forecast/loan/list`, getForecastLoanList],
       [`${BASE_URL}/forecast/loan/exchangeRate/USD`, fetchExchangeRate],
       [`${BASE_URL}/forecast/loan/add`, addForecastLoan],
-      [`${BASE_URL}/forecast/loan/delete`, deleteForecastLoan],
+      [`${BASE_URL}/forecast/loan/delete/23063`, deleteForecastLoan],
       [`${BASE_URL}/forecast/loan/selectOne/23063`, selectOneForecastLoan],
-      [`${BASE_URL}/forecast/loan/getClientdataByClientcd/A123205433`, getClientdataByClientcd],
+      [`${BASE_URL}/forecast/loan/clientdata/A123205433`, getClientdataByClientcd],
       [`${BASE_URL}/forecast/loan/update`, updateForecastLoan],
     ]);
   } catch (err) {

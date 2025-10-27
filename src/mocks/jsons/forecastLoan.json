@@ -260,6 +260,7 @@
     "code": 200,
     "message": "成功",
     "data": {
+      "twdExchangeRate": 1.0,
       "demandtypeMap": {
         "+": "放款增加",
         "-": "放款減少"

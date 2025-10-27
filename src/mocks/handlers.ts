@@ -114,13 +114,13 @@ export const handlers = [
   http.post(`${BASE_URL}/forecast/loan/add`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
-  http.post(`${BASE_URL}/forecast/loan/delete`, (resolverInfo) => {
+  http.post(`${BASE_URL}/forecast/loan/delete/23063`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
   http.post(`${BASE_URL}/forecast/loan/selectOne/23063`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
-  http.post(`${BASE_URL}/forecast/loan/getClientdataByClientcd/A123205433`, (resolverInfo) => {
+  http.post(`${BASE_URL}/forecast/loan/clientdata/A123205433`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
   http.post(`${BASE_URL}/forecast/loan/update`, (resolverInfo) => {

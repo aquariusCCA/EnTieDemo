@@ -7,7 +7,7 @@ enum API {
     FORECAST_LOAN_ADD = '/forecast/loan/add',
     FORECAST_LOAN_DELETE = '/forecast/loan/delete',
     FORECAST_LOAN_SELECT_ONE = '/forecast/loan/selectOne',
-    FORECAST_LOAN_GET_CLIENT_DATA = '/forecast/loan/getClientdataByClientcd',
+    FORECAST_LOAN_GET_CLIENT_DATA = '/forecast/loan/clientdata',
     FORECAST_LOAN_UPDATE = '/forecast/loan/update',
 }
 
@@ -75,9 +75,8 @@ export interface DeleteForecastLoanDTO {
 
 export const deleteForecastLoan = (data: DeleteForecastLoanDTO) => {
     return request({
-        url: API.FORECAST_LOAN_DELETE,
-        method: 'post',
-        data
+        url: API.FORECAST_LOAN_DELETE + `/${data.sid}`,
+        method: 'post'
     })
 }
 
@@ -104,6 +103,7 @@ export const getClientdataByClientcd = (data: GetClientdataByClientcdDTO) => {
 }
 
 interface UpdateForecastLoanDTO {
+    areaCd: string;
     sid: number;
     rmempnr: string;
     demandtype: string;

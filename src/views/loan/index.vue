@@ -23,6 +23,12 @@
 
         <div class="table-container">
             <el-table v-loading="tableLoading" :data="forecastLoanList" :max-height="595">
+                <el-table-column label="操作" width="127" class-name="small-padding fixed-width">
+                    <template #default="scope">
+                        <el-button link type="primary" @click="handleUpdate(scope.row)">修改</el-button>
+                        <el-button link type="primary" @click="handleDelete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column label="預估類型" width="127" prop="demandtype" />
                 <el-table-column label="客戶ID" width="127" prop="clientcd" />
                 <el-table-column label="客戶名稱" width="250" prop="clientnamec" />
@@ -34,12 +40,6 @@
                 <el-table-column label="原因說明" width="127" prop="loandescription" />
                 <el-table-column label="最後更新" width="200" prop="lastupdatedatetime" :formatter="fmtDateUpdated" />
                 <el-table-column label="資料建立" width="200" prop="createdatetime" :formatter="fmtDateCreated" />
-                <el-table-column label="操作" width="127" class-name="small-padding fixed-width">
-                    <template #default="scope">
-                        <el-button link type="primary" @click="handleUpdate(scope.row)">修改</el-button>
-                        <el-button link type="primary" @click="handleDelete(scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
             </el-table>
 
             <div class="paginator-container">
@@ -48,8 +48,9 @@
             </div>
         </div>
 
-        <el-dialog :title="title" v-model="open" width="500px" append-to-body align-center>
-            <el-form v-loading="bootstrapLoading" ref="dialogFormRef" :model="form" :rules="dialogRules" label-position="top">
+        <el-dialog :title="title" v-model="open" width="500px" append-to-body align-center @close="cancel">
+            <el-form v-loading="bootstrapLoading" ref="dialogFormRef" :model="form" :rules="dialogRules"
+                label-position="top">
                 <el-form-item label="RM Code" prop="rmempnr">
                     <el-input v-model="form.rmempnr" placeholder="請輸入員編" clearable />
                 </el-form-item>
@@ -67,7 +68,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="客戶ID" prop="clientcd">
-                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable @blur="handleClientIdBlur"/>
+                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable @blur="handleClientcdBlur" />
                 </el-form-item>
                 <el-form-item label="放款類別" prop="loantype">
                     <el-select v-model="form.loantype" placeholder="請選擇放款類別">
@@ -76,22 +77,12 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="客戶名稱" prop="clientnamec">
-                    <el-input 
-                        :disabled="form.sid !== null && form.clientnamec !== ''"
-                        v-model="form.clientnamec" 
-                        placeholder="請輸入客戶名稱" 
-                        clearable 
-                    />
+                    <el-input :disabled="isDisableClientNameC" v-model="form.clientnamec" placeholder="請輸入客戶名稱"
+                        clearable />
                 </el-form-item>
                 <el-form-item label="預估發生日期" prop="demanddate">
-                    <el-date-picker 
-                        v-model="form.demanddate" 
-                        type="date" 
-                        placeholder="請輸入預估發生日期" 
-                        clearable 
-                        format="YYYY-MM-DD"
-                        value-format="YYYY/MM/DD"    
-                    />
+                    <el-date-picker v-model="form.demanddate" type="date" placeholder="請輸入預估發生日期" clearable
+                        format="YYYY-MM-DD" value-format="YYYY/MM/DD" />
                 </el-form-item>
                 <el-form-item label="幣別" prop="currencytype">
                     <el-select v-model="form.currencytype" placeholder="請選擇幣別" clearable @change="getExchangeRate">
@@ -103,7 +94,7 @@
                     <el-input disabled v-model="form.exchangeRate" />
                 </el-form-item>
                 <el-form-item label="預估金額" prop="demandamt">
-                    <el-input v-model.number="form.demandamt" type="number"/>
+                    <el-input v-model.number="form.demandamt" type="number" />
                 </el-form-item>
                 <el-form-item label="原因說明" prop="loandescription">
                     <el-input v-model="form.loandescription" />
@@ -120,7 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, onMounted } from 'vue';
+import { reactive, toRefs, ref, onMounted, nextTick } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 import { useUserStore } from '@/stores/modules/user';
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
@@ -169,18 +160,19 @@ interface PageBootstrap {
     loanTypeList: Array<any>
     currencyTypeList: Array<any>
     demandtypeMap: Record<string, string>
+    twdExchangeRate: number
 }
 
 const initFormField = {
     sid: null as number | null,
     rmempnr: userInfo.value.loginUser.account,
     demandtype: '+',
-    proptype: '1',
+    proptype: '111',
     clientcd: '',
-    loantype: '111',
+    loantype: '1',
     clientnamec: '',
     demanddate: '',
-    currencytype: '',
+    currencytype: 'TWD',
     exchangeRate: null as number | null,
     demandamt: null as number | null,
     loandescription: ''
@@ -196,11 +188,13 @@ const forecastLoanList = ref<ForecastLoan[]>([]);
 const total = ref(0);
 const open = ref(false);
 const title = ref("");
+const isDisableClientNameC = ref(false);
 const pageBooststrap = ref<PageBootstrap>({
     propTypeList: [],
     loanTypeList: [],
     currencyTypeList: [],
-    demandtypeMap: {}
+    demandtypeMap: {},
+    twdExchangeRate: 1.0
 });
 
 /** 使用 reactive + toRefs，確保 v-model 是同一引用 */
@@ -226,7 +220,21 @@ const { queryParams, form, rules } = toRefs(data);
 const dialogRules = {
     rmempnr: [{ required: true, message: '請輸入RM Code', trigger: 'blur' }],
     clientcd: [{ required: true, message: '請輸入客戶ID', trigger: 'blur' }],
-    clientnamec: [{ required: true, message: '請輸入客戶名稱', trigger: 'blur' }],
+    clientnamec: [
+        {
+            validator: (_rule: any, value: string, cb: any) => {
+                // 若欄位被鎖定（disabled=true），不檢查此規則
+                if (isDisableClientNameC.value) return cb()
+
+                // 欄位可編輯時才驗必填
+                if (!value || !String(value).trim()) {
+                    return cb(new Error('客戶名稱為必填'))
+                }
+                cb()
+            },
+            trigger: ['blur', 'change']
+        }
+    ],
     demanddate: [{ required: true, message: '請選擇日期', trigger: 'change' }],
     currencytype: [{ required: true, message: '請選擇幣別', trigger: 'change' }],
     demandamt: [
@@ -237,28 +245,50 @@ const dialogRules = {
 
 /** ===== Lifecycle ===== */
 onMounted(async () => {
-  bootstrapLoading.value = true
-  try {
+    bootstrapLoading.value = true
+    try {
         const resp = await getForecastLoanBootstrap()
-        const { propTypeList, loanTypeList, currencyTypeList, demandtypeMap } = resp?.data || {}
-        pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList, demandtypeMap }
-  } catch (err) {
-    ElNotification.error({ title: '錯誤', message: String(err) })
-  } finally {
-    bootstrapLoading.value = false
-  }
+        const { propTypeList, loanTypeList, currencyTypeList, demandtypeMap, twdExchangeRate } = resp?.data || {}
+        pageBooststrap.value = { propTypeList, loanTypeList, currencyTypeList, demandtypeMap, twdExchangeRate }
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    } finally {
+        bootstrapLoading.value = false
+    }
 })
 
 /** ===== Actions ===== */
-async function handleClientIdBlur() {
-    try {
-        const { clientcd } = form.value
-        const resp = await getClientdataByClientcd({ clientcd })
-        console.log('data', resp.data)
-        form.value.clientnamec = resp.data.clientNameC || '';
-    } catch (err) {
-        ElNotification.error({ title: '錯誤', message: String(err) })
+async function handleClientcdBlur() {
+  try {
+    // 開放客戶名稱輸入（先假設要讓使用者手動填）
+    isDisableClientNameC.value = false
+    form.value.clientnamec = ''
+    // 清除「客戶名稱」舊的錯誤狀態（若有）
+    queryRef.value?.clearValidate('clientnamec')
+
+    const { clientcd } = form.value
+    if (!clientcd || !clientcd.trim()) {
+      // 客戶ID為空不查詢
+      return
     }
+
+    const resp = await getClientdataByClientcd({ clientcd })
+    if (!resp.data || !resp.data.clientNameC) {
+      ElMessage.warning('查無此客戶名稱，請手動輸入')
+      // 開放輸入 → 交由條件式規則在 blur/change/提交時驗證
+      return
+    }
+
+    // 查到資料 → 設值並「鎖定欄位」
+    form.value.clientnamec = resp.data.clientNameC
+    isDisableClientNameC.value = true
+
+    // 若你希望此時就讓表單整體為「乾淨狀態」，可選擇清除錯誤
+    queryRef.value?.clearValidate('clientnamec')
+    // 注意：條件式規則在 disabled 狀態會自動放行，不再出紅字
+  } catch (err) {
+    ElNotification.error({ title: '錯誤', message: String(err) })
+  }
 }
 
 async function getExchangeRate() {
@@ -280,6 +310,8 @@ async function handleAdd() {
         resetForm();
         open.value = true;
         title.value = "添加放款預估";
+        isDisableClientNameC.value = false;
+        form.value.exchangeRate = pageBooststrap.value.twdExchangeRate;
     } catch (err) {
         ElNotification.error({ title: '錯誤', message: String(err) })
     }
@@ -290,6 +322,8 @@ function resetForm() {
     form.value = {
         ...initFormField
     };
+    console.log('resetForm form', dialogFormRef.value);
+    dialogFormRef.value?.resetFields();
 }
 
 // 取消按钮
@@ -312,7 +346,7 @@ async function handleUpdate(row: ForecastLoan) {
         rmempnr: data.rmempnr ?? '',
         demandtype: data.demandtype ?? '',
         proptype: data.proptype ?? '',
-        clientcd: data.clientcd ?? '',          
+        clientcd: data.clientcd ?? '',
         loantype: data.loantype ?? '',
         clientnamec: data.clientnamec ?? '',
         demanddate: data.demanddate ?? '',
@@ -323,6 +357,7 @@ async function handleUpdate(row: ForecastLoan) {
     }
     open.value = true
     title.value = '修改放款預估'
+    isDisableClientNameC.value = true;
 }
 
 /** 删除操作 */
@@ -339,7 +374,7 @@ async function handleDelete(row: ForecastLoan) {
         ElMessage.success('刪除成功')
     } catch (error) {
         console.log('取消刪除或發生錯誤', error)
-        if( error === 'cancel' ) return; // 使用者取消刪除不顯示錯誤通知
+        if (error === 'cancel') return; // 使用者取消刪除不顯示錯誤通知
         ElNotification.error({ title: '刪除失敗', message: String(error) })
     }
 }
@@ -399,9 +434,9 @@ async function submitForm() {
 
                 if (form.value.sid != null) {
                     // 修改
-                    // await updateForecastLoan(form.value)
                     console.log('修改：', form.value)
                     await updateForecastLoan({
+                        areaCd: areaCd.value || '',
                         sid: form.value.sid!,
                         rmempnr: form.value.rmempnr,
                         demandtype: form.value.demandtype,
@@ -416,12 +451,12 @@ async function submitForm() {
                         loandescription: form.value.loandescription
                     })
                     ElMessage.success('修改成功')
+                    queryParams.value.rmempnr = form.value.rmempnr
                     open.value = false
                     await getList()
                 } else {
                     // 新增
-                    console.log('add', typeof form.value.exchangeRate)
-                    console.log('add', typeof form.value.demandamt)
+                    console.log('新增：', form.value)
                     await addForecastLoan({
                         areaCd: areaCd.value || '',
                         rmempnr: form.value.rmempnr,
