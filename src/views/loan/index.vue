@@ -93,6 +93,9 @@
                 <el-form-item label="匯率" prop="exchangeRate">
                     <el-input disabled v-model="form.exchangeRate" />
                 </el-form-item>
+                <el-form-item label="利率" prop="operationIntRate">
+                    <el-input v-model="form.operationIntRate" />
+                </el-form-item>
                 <el-form-item label="預估金額" prop="demandamt">
                     <el-input v-model.number="form.demandamt" type="number" />
                 </el-form-item>
@@ -174,6 +177,7 @@ const initFormField = {
     demanddate: '',
     currencytype: 'TWD',
     exchangeRate: null as number | null,
+    operationIntRate: null as number | null,
     demandamt: null as number | null,
     loandescription: ''
 }
@@ -237,6 +241,7 @@ const dialogRules = {
     ],
     demanddate: [{ required: true, message: '請選擇日期', trigger: 'change' }],
     currencytype: [{ required: true, message: '請選擇幣別', trigger: 'change' }],
+    operationIntRate: [{ required: true, message: '請輸入匯率', trigger: 'change' }],
     demandamt: [
         { required: true, message: '請輸入金額', trigger: 'blur' },
     ],
@@ -260,6 +265,7 @@ onMounted(async () => {
 /** ===== Actions ===== */
 async function handleClientcdBlur() {
   try {
+    console.log('handleClientcdBlur')
     // 開放客戶名稱輸入（先假設要讓使用者手動填）
     isDisableClientNameC.value = false
     form.value.clientnamec = ''
@@ -352,6 +358,7 @@ async function handleUpdate(row: ForecastLoan) {
         demanddate: data.demanddate ?? '',
         currencytype: data.currencytype ?? '',
         exchangeRate: data.exchangeRate ?? null,
+        operationIntRate: data.operationIntRate ?? null,
         demandamt: data.demandamt ?? null,
         loandescription: data.loandescription ?? ''
     }
@@ -468,6 +475,7 @@ async function submitForm() {
                         demanddate: form.value.demanddate,
                         currencytype: form.value.currencytype,
                         exchangeRate: Number(form.value.exchangeRate),
+                        operationIntRate: Number(form.value.operationIntRate),
                         demandamt: Number(form.value.demandamt),
                         loandescription: form.value.loandescription
                     })

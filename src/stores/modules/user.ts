@@ -119,28 +119,28 @@ export const useUserStore = defineStore("user", () => {
 
   // 提取區域中心代碼x
   const areaCd = computed(() => {
-    const roles = userInfo.value.loginUser.roles;
-    if (!roles?.length) return "";
+    // const roles = userInfo.value.loginUser.roles;
+    // if (!roles?.length) return "";
 
-    // 遍歷每個 role 字串
-    for (const roleStr of roles) {
-      // 全域搜尋所有 OU=xxx
-      const regex = /OU=([^\s,]+)/g;
-      let match: RegExpExecArray | null;
+    // // 遍歷每個 role 字串
+    // for (const roleStr of roles) {
+    //   // 全域搜尋所有 OU=xxx
+    //   const regex = /OU=([^\s,]+)/g;
+    //   let match: RegExpExecArray | null;
 
-      while ((match = regex.exec(roleStr)) !== null) {
-        const ou = match[1]; // e.g. "924ABC" 或 "XYZ001"
-        const code = ou.slice(0, 3); // 取前三碼
+    //   while ((match = regex.exec(roleStr)) !== null) {
+    //     const ou = match[1]; // e.g. "924ABC" 或 "XYZ001"
+    //     const code = ou.slice(0, 3); // 取前三碼
 
-        // 只要前三碼完全是數字，就認為合法、直接回傳
-        if (/^\d{3}$/.test(code)) {
-          return code;
-        }
-      }
-    }
+    //     // 只要前三碼完全是數字，就認為合法、直接回傳
+    //     if (/^\d{3}$/.test(code)) {
+    //       return code;
+    //     }
+    //   }
+    // }
 
     // 全部都掃過了，沒符合的就回空
-    return "";
+    return "711";
   });
 
   // 判斷是否為區域中心人員(不是 924 或 983)

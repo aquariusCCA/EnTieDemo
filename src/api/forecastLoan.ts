@@ -57,6 +57,7 @@ export interface AddForecastLoanDTO {
     demanddate: string;
     currencytype: string;
     exchangeRate: number;
+    operationIntRate: number;
     demandamt: number;
     loandescription: string;
 }
