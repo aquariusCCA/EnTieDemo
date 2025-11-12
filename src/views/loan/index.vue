@@ -37,6 +37,7 @@
                 <el-table-column label="放款類別" width="150" prop="loantype" />
                 <el-table-column label="預估發生日期" width="127" prop="demanddate" />
                 <el-table-column label="預估金額" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
+                <el-table-column label="利率" width="127" prop="operationIntRate"  />
                 <el-table-column label="原因說明" width="127" prop="loandescription" />
                 <el-table-column label="最後更新" width="200" prop="lastupdatedatetime" :formatter="fmtDateUpdated" />
                 <el-table-column label="資料建立" width="200" prop="createdatetime" :formatter="fmtDateCreated" />
