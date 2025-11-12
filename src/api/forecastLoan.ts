@@ -115,6 +115,7 @@ interface UpdateForecastLoanDTO {
     demanddate: string;
     currencytype: string;
     exchangeRate: number;
+    operationIntRate: number;
     demandamt: number;
     loandescription: string;
 }

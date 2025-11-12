@@ -455,6 +455,7 @@ async function submitForm() {
                         demanddate: form.value.demanddate,
                         currencytype: form.value.currencytype,
                         exchangeRate: Number(form.value.exchangeRate),
+                        operationIntRate: Number(form.value.operationIntRate),
                         demandamt: Number(form.value.demandamt),
                         loandescription: form.value.loandescription
                     })

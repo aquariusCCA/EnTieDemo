@@ -25,7 +25,7 @@
       "loantype": "5",
       "demanddate": "2016/02/13",
       "demandamt": 33000000,
-      "operationIntRate": null,
+      "operationIntRate": 5.327,
       "proptype": "Z99",
       "rmempnr": "05669",
       "loandescription": "系統自動產生",
