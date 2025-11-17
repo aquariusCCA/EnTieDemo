@@ -36,8 +36,8 @@
                 <el-table-column label="性質別" width="120" prop="proptype" />
                 <el-table-column label="放款類別" width="150" prop="loantype" />
                 <el-table-column label="預估發生日期" width="127" prop="demanddate" />
-                <el-table-column label="預估金額" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
-                <el-table-column label="利率" width="127" prop="operationIntRate"  />
+                <el-table-column label="預估金額" align="right" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
+                <el-table-column label="利率" align="right" width="127" prop="operationIntRate"  />
                 <el-table-column label="原因說明" width="127" prop="loandescription" />
                 <el-table-column label="最後更新" width="200" prop="lastupdatedatetime" :formatter="fmtDateUpdated" />
                 <el-table-column label="資料建立" width="200" prop="createdatetime" :formatter="fmtDateCreated" />
@@ -68,14 +68,14 @@
                             :label="item.showtext" :value="item.datavalue1"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="客戶ID" prop="clientcd">
-                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable @blur="handleClientcdBlur" />
-                </el-form-item>
                 <el-form-item label="放款類別" prop="loantype">
                     <el-select v-model="form.loantype" placeholder="請選擇放款類別">
                         <el-option v-for="item in pageBooststrap.loanTypeList" :key="item.datavalue1"
                             :label="item.showtext" :value="item.datavalue1"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="客戶ID" prop="clientcd">
+                    <el-input v-model="form.clientcd" placeholder="請輸入客戶ID" clearable @blur="handleClientcdBlur" />
                 </el-form-item>
                 <el-form-item label="客戶名稱" prop="clientnamec">
                     <el-input :disabled="isDisableClientNameC" v-model="form.clientnamec" placeholder="請輸入客戶名稱"
@@ -97,7 +97,7 @@
                 <el-form-item label="利率" prop="operationIntRate">
                     <el-input v-model="form.operationIntRate" />
                 </el-form-item>
-                <el-form-item label="預估金額" prop="demandamt">
+                <el-form-item label="預估金額(原幣)" prop="demandamt">
                     <el-input v-model.number="form.demandamt" type="number" />
                 </el-form-item>
                 <el-form-item label="原因說明" prop="loandescription">
@@ -106,7 +106,7 @@
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button type="primary" @click="submitForm">确 定</el-button>
+                    <el-button type="primary" @click="submitForm">確 定</el-button>
                     <el-button @click="cancel">取 消</el-button>
                 </div>
             </template>
@@ -240,7 +240,39 @@ const dialogRules = {
             trigger: ['blur', 'change']
         }
     ],
-    demanddate: [{ required: true, message: '請選擇日期', trigger: 'change' }],
+    demanddate: [
+        { required: true, message: '請選擇日期', trigger: 'change' },
+        {
+            validator: (_rule: any, value: string, cb: (err?: Error) => void) => {
+                // 空值交給 required 規則處理，這裡不再報錯
+                if (!value) {
+                    cb()
+                    return
+                }
+
+                // Element Plus 現在 value-format 是 "YYYY/MM/DD"
+                // 為避免瀏覽器各自實作 new Date() 解析字串，先統一轉成 "YYYY-MM-DD"
+                const normalized = value.replace(/\//g, '-')
+                const selectedDate = new Date(normalized)
+                if (Number.isNaN(selectedDate.getTime())) {
+                    cb(new Error('日期格式錯誤'))
+                    return
+                }
+
+                // 只比對到「日」，把時間歸零
+                selectedDate.setHours(0, 0, 0, 0)
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+
+                if (selectedDate < today) {
+                    cb(new Error('預估發生日期不可早於今天'))
+                } else {
+                    cb()
+                }
+            },
+            trigger: ['blur', 'change']
+        }
+    ],
     currencytype: [{ required: true, message: '請選擇幣別', trigger: 'change' }],
     operationIntRate: [{ required: true, message: '請輸入匯率', trigger: 'change' }],
     demandamt: [
