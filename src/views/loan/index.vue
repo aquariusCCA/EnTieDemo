@@ -36,7 +36,13 @@
                 <el-table-column label="性質別" width="120" prop="proptype" />
                 <el-table-column label="放款類別" width="150" prop="loantype" />
                 <el-table-column label="預估發生日期" width="127" prop="demanddate" />
-                <el-table-column label="預估金額" align="right" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
+                <el-table-column label="預估金額(原幣)" align="right" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
+                <el-table-column label="折合台幣" align="right" width="127">
+                    <template #default="{ row }">
+                        {{ getTwdAmount(row) }}
+                    </template>
+                </el-table-column>
+                <el-table-column label="匯率" align="right" width="127" prop="exchangeRate" />
                 <el-table-column label="利率" align="right" width="127" prop="operationIntRate"  />
                 <el-table-column label="原因說明" width="127" prop="loandescription" />
                 <el-table-column label="最後更新" width="200" prop="lastupdatedatetime" :formatter="fmtDateUpdated" />
@@ -296,6 +302,29 @@ const demandamtTwd = computed(() => {
   // 這邊看規則要不要四捨五入到小數幾位
   return Number((amt * rate).toFixed(0)) // 或 toFixed(2)
 })
+
+// 單一方法，計算並格式化「折合台幣」金額
+const getTwdAmount = (row: ForecastLoan): string => {
+  console.log('row', row);
+  const demandAmt = row.demandamt;
+  const rate = row.exchangeRate;
+
+  // 邊界防護：金額或匯率沒值就不顯示
+  if (demandAmt == null || rate == null || isNaN(demandAmt) || isNaN(rate) || rate === 0) {
+    return '';
+  }
+
+  const twd = demandAmt * rate;
+
+  // 規則看你要不要小數位，這裡示範「無小數、四捨五入」
+  const rounded = Math.round(twd);
+
+  // 使用千分位格式化，讓畫面跟原幣欄位風格一致
+  return rounded.toLocaleString('zh-TW', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+};
 
 /** ===== Lifecycle ===== */
 onMounted(async () => {
