@@ -100,6 +100,9 @@
                 <el-form-item label="預估金額(原幣)" prop="demandamt">
                     <el-input v-model.number="form.demandamt" type="number" />
                 </el-form-item>
+                <el-form-item label="折合台幣" prop="demandamtTwd">
+                    <el-input disabled v-model.number="demandamtTwd" type="number" />
+                </el-form-item>
                 <el-form-item label="原因說明" prop="loandescription">
                     <el-input v-model="form.loandescription" />
                 </el-form-item>
@@ -115,7 +118,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, toRefs, ref, onMounted, nextTick } from 'vue';
+import { reactive, toRefs, ref, onMounted, computed } from 'vue';
 import pagination from '@/components/Pagination/index.vue';
 import { useUserStore } from '@/stores/modules/user';
 import { ElNotification, ElMessageBox, ElMessage } from 'element-plus'
@@ -280,6 +283,19 @@ const dialogRules = {
     ],
     loandescription: [{ required: true, message: '請輸入原因說明', trigger: 'blur' }]
 }
+
+/** ===== Computed ===== */
+// 衍生欄位，用 computed 算，不放進 form
+const demandamtTwd = computed(() => {
+  const amt = form.value.demandamt
+  const rate = Number(form.value.exchangeRate)
+
+  // 欄位沒填或轉不成數字就回傳 null/空字串
+  if (amt == null || !rate) return null
+
+  // 這邊看規則要不要四捨五入到小數幾位
+  return Number((amt * rate).toFixed(0)) // 或 toFixed(2)
+})
 
 /** ===== Lifecycle ===== */
 onMounted(async () => {
