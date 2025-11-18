@@ -22,8 +22,8 @@
         </div>
 
         <div class="table-container">
-            <el-table v-loading="tableLoading" :data="forecastLoanList" :max-height="595">
-                <el-table-column label="操作" width="127" class-name="small-padding fixed-width">
+            <el-table v-loading="tableLoading" :data="forecastLoanList" :max-height="300">
+                <el-table-column fixed label="操作" width="127" class-name="small-padding fixed-width">
                     <template #default="scope">
                         <el-button link type="primary" @click="handleUpdate(scope.row)">修改</el-button>
                         <el-button link type="primary" @click="handleDelete(scope.row)">删除</el-button>
@@ -31,9 +31,9 @@
                 </el-table-column>
                 <el-table-column label="預估類型" width="127" prop="demandtype" />
                 <el-table-column label="客戶ID" width="127" prop="clientcd" />
-                <el-table-column label="客戶名稱" width="250" prop="clientnamec" />
+                <el-table-column label="客戶名稱" width="300" prop="clientnamec" />
                 <el-table-column label="幣別" width="127" prop="currencytype" />
-                <el-table-column label="性質別" width="120" prop="proptype" />
+                <el-table-column label="性質別" width="300" prop="proptype" />
                 <el-table-column label="放款類別" width="150" prop="loantype" />
                 <el-table-column label="預估發生日期" width="127" prop="demanddate" />
                 <el-table-column label="預估金額(原幣)" align="right" width="127" prop="demandamt" :formatter="fmtDemandAmt" />
@@ -594,7 +594,7 @@ function fmtDemandAmt(row: ForecastLoan) {
 .operating-space,
 .table-container {
     width: 100%;
-    padding: 2rem;
+    padding: 1rem;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
