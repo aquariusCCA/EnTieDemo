@@ -82,6 +82,29 @@ export const constantRoutes = [
     ],
   },
   {
+    name: "Deposit",
+    path: "/deposit",
+    component: () => import("@/layout/index.vue"), // 懒加载Layout组件
+    redirect: "/deposit/index", // 重定向到/deposit/index
+    meta: {
+      name: "存款",
+      hidden: false,
+      icon: "Money",
+    },
+    children: [
+      {
+        name: "DepositIndex",
+        path: "/deposit/index",
+        component: () => import("@/views/deposit/index.vue"), // 懒加载DepositIndex组件
+        meta: {
+          name: "存款預估",
+          hidden: false,
+          icon: "Money",
+        },
+      }
+    ],
+  },
+  {
     path: "/404",
     component: () => import("@/views/error/404.vue"), // 懒加载404组件
     name: "404",

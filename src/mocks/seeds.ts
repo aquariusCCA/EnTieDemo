@@ -1,9 +1,15 @@
 import { setMany } from "idb-keyval";
-import { doLogin, doLogout, doFetchUserInfo } from "./jsons/user.json";
+import { 
+  doLogin, 
+  doLogout, 
+  doFetchUserInfo 
+} from "./jsons/user.json";
+
 import {
   performanceDetailPreCheck,
   grmPerformanceDetailPreCheck,
 } from "./jsons/performance.json";
+
 import { 
   forecastLoanBootstrap, 
   getForecastLoanList,
@@ -14,6 +20,12 @@ import {
   getClientdataByClientcd,
   updateForecastLoan
 } from "./jsons/forecastLoan.json";
+
+import { 
+  forecastDepositBootstrap,
+  feorecastDepositExchangeRate,
+  addForecastDeposit
+} from "./jsons/forecastDeposit.json";
 
 const BASE_URL = import.meta.env.VITE_SERVER;
 
@@ -37,6 +49,9 @@ export const setSeeds = async () => {
       [`${BASE_URL}/forecast/loan/selectOne/23063`, selectOneForecastLoan],
       [`${BASE_URL}/forecast/loan/clientdata/A123205433`, getClientdataByClientcd],
       [`${BASE_URL}/forecast/loan/update`, updateForecastLoan],
+      [`${BASE_URL}/forecast/deposit/bootstrap`, forecastDepositBootstrap],
+      [`${BASE_URL}/forecast/deposit/exchangeRate/EUR`, feorecastDepositExchangeRate],
+      [`${BASE_URL}/forecast/deposit/add`, addForecastDeposit],
     ]);
   } catch (err) {
     console.log(err);

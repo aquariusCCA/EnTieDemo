@@ -223,8 +223,7 @@ const data = reactive({
     },
     rules: {
         rmempnr: [
-            { required: true, message: "RM Code 不能為空", trigger: "blur" },
-            { min: 2, max: 20, message: "用户名称长度必须介于 2 和 20 之间", trigger: "blur" }
+            { required: true, message: "RM Code 不能為空", trigger: "blur" }
         ]
     }
 });
@@ -481,7 +480,7 @@ async function handleQuery() {
             }
         }
     })
-};
+}
 
 async function onPaginate() {
     await getList()
