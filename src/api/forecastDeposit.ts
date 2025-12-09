@@ -5,6 +5,8 @@ enum API {
     FORECAST_DEPOSIT_GET_EXCHANGE_RATE = '/forecast/deposit/exchangeRate',
     FORECAST_DEPOSIT_ADD = '/forecast/deposit/add',
     FORECAST_DEPOSIT_GET_LIST = '/forecast/deposit/list',
+    FORECAST_DEPOSIT_SELECT_ONE = '/forecast/deposit/selectOne',
+    FORECAST_DEPOSIT_UPDATE = '/forecast/deposit/update',
 }
 
 export function getForecastDepositBootstrap() {
@@ -55,5 +57,39 @@ export const getForecastDepositList = (params: ForecastDepositSelectDTO): Promis
         url: API.FORECAST_DEPOSIT_GET_LIST,
         method: 'post',
         data: params
+    })
+}
+
+export interface SelectOneForecastDepositDTO {
+    id: number;
+}
+
+export const selectOneForecastDeposit = (data: SelectOneForecastDepositDTO) => {
+    return request({
+        url: API.FORECAST_DEPOSIT_SELECT_ONE + `/${data.id}`,
+        method: 'post',
+    })
+}
+
+interface UpdateForecastDepositDTO {
+    id: number;
+    areaCd: string;
+    rmEmpNo: string;
+    rmEmpNameC: string;
+    demandType: string;
+    clientNameC: string;
+    currencyType: string;
+    demandDate: string;
+    exchangeRate: number;
+    demandAmt: number;
+    demandAmtTwd: number;
+    depositDescription: string;
+}
+
+export const updateForecastDeposit = (data: UpdateForecastDepositDTO) => {
+    return request({
+        url: API.FORECAST_DEPOSIT_UPDATE,
+        method: 'post',
+        data
     })
 }

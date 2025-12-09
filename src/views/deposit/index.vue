@@ -184,7 +184,9 @@ import {
     getForecastDepositBootstrap,
     fetchExchangeRate,
     addForecastDeposit,
-    getForecastDepositList
+    getForecastDepositList,
+    selectOneForecastDeposit,
+    updateForecastDeposit
 } from "@/api/forecastDeposit";
 import { 
     ElNotification, 
@@ -440,6 +442,25 @@ async function submitForm() {
                 if (form.value.id != null) {
                     // 修改
                     console.log('修改：', form.value)
+                    await updateForecastDeposit({
+                        id: form.value.id,
+                        areaCd: form.value.areaCd,
+                        rmEmpNo: form.value.rmEmpNo,
+                        rmEmpNameC: form.value.rmEmpNameC,
+                        demandType: form.value.demandType,
+                        clientNameC: form.value.clientNameC,
+                        currencyType: form.value.currencyType,
+                        demandDate: form.value.demandDate,
+                        exchangeRate: Number(form.value.exchangeRate),
+                        demandAmt: Number(form.value.demandAmt),
+                        demandAmtTwd: Number(demandAmtTwd.value || 0),
+                        depositDescription: form.value.depositDescription,
+                    })
+                    ElMessage.success('修改成功')
+                    open.value = false
+                    // 查詢更新列表
+                    queryParams.value.rmEmpNo = form.value.rmEmpNo
+                    await getList()
                 } else {
                     // 新增
                     console.log('新增：', form.value)
@@ -458,8 +479,8 @@ async function submitForm() {
                     ElMessage.success('新增成功')
                     open.value = false
                     // 查詢更新列表
-                    // queryParams.value.rmEmpNo = form.value.rmEmpNo
-                    // await getList()
+                    queryParams.value.rmEmpNo = form.value.rmEmpNo
+                    await getList()
                 }
             } catch (error) {
                 const title = form.value.id != null ? '修改失敗' : '新增失敗'
@@ -475,31 +496,30 @@ async function onPaginate() {
 
 /** 修改操作 */
 async function handleUpdate(row: ForecastDeposit) {
-    // open.value = true
-    // title.value = '修改放款預估'
-    // console.log('row', row)
-    // const { sid } = row
-    // const resp = await selectOneForecastLoan({ sid })
-    // const data = resp?.data
-    // console.log('data', data)
-    // form.value = {
-    //     sid: data.sid,
-    //     rmempnr: data.rmempnr ?? '',
-    //     demandtype: data.demandtype ?? '',
-    //     proptype: data.proptype ?? '',
-    //     clientcd: data.clientcd ?? '',
-    //     loantype: data.loantype ?? '',
-    //     clientnamec: data.clientnamec ?? '',
-    //     demanddate: data.demanddate ?? '',
-    //     currencytype: data.currencytype ?? '',
-    //     exchangeRate: data.exchangeRate ?? null,
-    //     operationIntRate: data.operationIntRate ?? null,
-    //     demandamt: data.demandamt ?? null,
-    //     loandescription: data.loandescription ?? ''
-    // }
-    // open.value = true
-    // title.value = '修改放款預估'
-    // isDisableClientNameC.value = true;
+    open.value = true
+    title.value = '修改存款預估'
+    console.log('row', row)
+    const { id } = row
+    const resp = await selectOneForecastDeposit({ id })
+    const data = resp?.data
+    console.log('data', data)
+    form.value = {
+        id: data.id,
+        areaCd: data.areaCd,
+        areaName: data.areaName,
+        rmEmpNo: data.rmEmpNo,
+        rmEmpNameC: data.rmEmpNameC,
+        demandType: data.demandType,
+        clientNameC: data.clientNameC,
+        currencyType: data.currencyType,
+        demandDate: data.demandDate,
+        exchangeRate: data.exchangeRate,
+        demandAmt: data.demandAmt,
+        demandAmtTwd: data.demandAmtTwd,
+        depositDescription: data.depositDescription,    
+    }
+    open.value = true
+    title.value = '修改存款預估'
 }
 
 /** 删除操作 */

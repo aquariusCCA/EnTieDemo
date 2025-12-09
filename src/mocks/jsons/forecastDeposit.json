@@ -118,5 +118,31 @@
       "code": 200,
       "msg": "查询成功"
     }
+  },
+  "selectOneForecastDeposit": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "id": 31,
+      "areaCd": "717",
+      "areaName": "北五區",
+      "rmEmpNo": "10090",
+      "rmEmpNameC": "楊宗樺",
+      "demandType": "+",
+      "clientNameC": "康斯特",
+      "currencyType": "EUR",
+      "demandDate": "2025-12-31",
+      "exchangeRate": 36.56204,
+      "demandAmt": 872000.0,
+      "demandAmtTwd": 26000000.0,
+      "depositDescription": "活期",
+      "createDatetime": "2025-12-08 14:03:08",
+      "lastUpdateDatetime": "2025-12-08 14:03:08"
+    }
+  },
+  "updateForecastDeposit": {
+    "code": 200,
+    "message": "更新成功",
+    "data": null
   }
 }

@@ -25,7 +25,9 @@ import {
   forecastDepositBootstrap,
   feorecastDepositExchangeRate,
   addForecastDeposit,
-  getForecastDepositList
+  getForecastDepositList,
+  selectOneForecastDeposit,
+  updateForecastDeposit
 } from "./jsons/forecastDeposit.json";
 
 const BASE_URL = import.meta.env.VITE_SERVER;
@@ -54,6 +56,8 @@ export const setSeeds = async () => {
       [`${BASE_URL}/forecast/deposit/exchangeRate/EUR`, feorecastDepositExchangeRate],
       [`${BASE_URL}/forecast/deposit/add`, addForecastDeposit],
       [`${BASE_URL}/forecast/deposit/list`, getForecastDepositList],
+      [`${BASE_URL}/forecast/deposit/selectOne/31`, selectOneForecastDeposit],
+      [`${BASE_URL}/forecast/deposit/update`, updateForecastDeposit],
     ]);
   } catch (err) {
     console.log(err);
