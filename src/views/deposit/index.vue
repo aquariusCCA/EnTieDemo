@@ -34,7 +34,58 @@
                             新增
                         </el-button>
                     </el-col>
+
+                    <el-col :span="1.5">
+                        <el-button 
+                            type="primary" 
+                            plain icon="Search" 
+                            @click="handleQuery"
+                        >
+                            查詢
+                        </el-button>
+                    </el-col>
                 </el-row>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <el-table 
+                v-loading="tableLoading" 
+                :data="forecastDepositList" 
+                :max-height="300"
+            >
+                <el-table-column 
+                    fixed 
+                    label="操作"
+                    width="127" 
+                    class-name="small-padding fixed-width"
+                >
+                    <template #default="scope">
+                        <el-button link type="primary" @click="handleUpdate(scope.row)">修改</el-button>
+                        <el-button link type="primary" @click="handleDelete(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column label="預估類型" width="127" prop="demandType" />
+                <el-table-column label="區域中心" width="127" prop="areaName" />
+                <el-table-column label="RM姓名" width="127" prop="rmEmpNameC" />
+                <el-table-column label="客戶名稱" width="300" prop="clientNameC" />
+                <el-table-column label="幣別" width="127" prop="currencyType" />
+                <el-table-column label="預估發生日期" width="127" prop="demandDate" />
+                <el-table-column label="預估金額(原幣)" align="right" width="127" prop="demandAmt" :formatter="fmtDemandAmt"/>
+                <el-table-column label="折合台幣" align="right" width="127" prop="demandAmtTwd" :formatter="fmtDemandAmtTwd"/>
+                <el-table-column label="匯率" align="right" width="127" prop="exchangeRate" />
+                <el-table-column label="存款天期(活期請註明)" width="300" prop="depositDescription" />
+                <el-table-column label="最後更新" width="200" prop="lastUpdateDatetime"/>
+                <el-table-column label="資料建立" width="200" prop="createDatetime"/>
+            </el-table>
+
+            <div class="paginator-container">
+                <pagination 
+                    :total="total" 
+                    v-model:page="queryParams.pageNum" 
+                    v-model:limit="queryParams.pageSize"
+                    @pagination="onPaginate" 
+                />
             </div>
         </div>
 
@@ -132,7 +183,8 @@ import {
 import {
     getForecastDepositBootstrap,
     fetchExchangeRate,
-    addForecastDeposit
+    addForecastDeposit,
+    getForecastDepositList
 } from "@/api/forecastDeposit";
 import { 
     ElNotification, 
@@ -141,10 +193,11 @@ import {
 import type { FormInstance } from 'element-plus'
 import { useUserStore } from '@/stores/modules/user';
 import pagination from '@/components/Pagination/index.vue';
+import { formatThousands } from '@/utils/number';
 
 /** ===== Stores ===== */
 const userStore = useUserStore();
-const { areaCd } = storeToRefs(userStore);
+const { areaCd, userInfo } = storeToRefs(userStore);
 
 /** ===== Types ===== */
 interface ForecastDeposit {
@@ -188,9 +241,12 @@ const initFormField = {
 }
 
 /** ===== Refs / State ===== */
+const queryRef = ref<FormInstance>()
+const dialogFormRef = ref<FormInstance>()
+
 const bootstrapLoading = ref(false);
 const tableLoading = ref(false);
-const forecastLoanList = ref<ForecastDeposit[]>([]);
+const forecastDepositList = ref<ForecastDeposit[]>([]);
 const pageBooststrap = ref<PageBootstrap>({
     areaNameSelectOptions: [],
     currencySelectOptions: [],
@@ -198,7 +254,7 @@ const pageBooststrap = ref<PageBootstrap>({
 });
 const open = ref(false);
 const title = ref("");
-const dialogFormRef = ref<FormInstance>()
+const total = ref(0);
 
 
 /** 使用 reactive + toRefs，確保 v-model 是同一引用 */
@@ -335,23 +391,42 @@ async function getExchangeRate() {
 
 /** 查询放款預估列表 */
 async function getList() {
-    // tableLoading.value = true
-    // try {
-    //     const resp = await getForecastLoanList({
-    //         rmEmpNr: userInfo.value?.loginUser?.account || '',
-    //         areaCd: areaCd.value || '',
-    //         inputRmEmpNr: queryParams.value.rmempnr || '',
-    //         pageNum: queryParams.value.pageNum,
-    //         pageSize: queryParams.value.pageSize
-    //     })
-    //     const rows: ForecastLoan[] = resp?.data?.rows ?? []
-    //     forecastLoanList.value = rows
-    //     total.value = resp?.data?.total ?? 0
-    // } catch (err) {
-    //     ElNotification.error({ title: '錯誤', message: String(err) })
-    // } finally {
-    //     tableLoading.value = false
-    // }
+    tableLoading.value = true
+    try {
+        const resp = await getForecastDepositList({
+            rmEmpNo: userInfo.value?.loginUser?.account || '',
+            areaCd: areaCd.value || '',
+            inputRmEmpNo: queryParams.value.rmEmpNo || '',
+            pageNum: queryParams.value.pageNum,
+            pageSize: queryParams.value.pageSize
+        })
+        const rows: ForecastDeposit[] = resp?.data?.rows ?? []
+        forecastDepositList.value = rows
+        total.value = resp?.data?.total ?? 0
+    } catch (err) {
+        ElNotification.error({ title: '錯誤', message: String(err) })
+    } finally {
+        tableLoading.value = false
+    }
+}
+
+/** 搜索按钮操作 */
+async function handleQuery() {
+    const formEl = queryRef.value
+    if (!formEl) return
+    await formEl.validate(async (valid, fields) => {
+        if (valid) {
+            try {
+                queryParams.value.pageNum = 1;
+                await getList();
+            } catch (error) {
+                ElNotification.error({
+                    title: '錯誤',
+                    message: String(error)
+                });
+            }
+        }
+    })
 }
 
 /** 提交按钮 */
@@ -392,6 +467,67 @@ async function submitForm() {
             }
         }
     })
+}
+
+async function onPaginate() {
+    await getList()
+}
+
+/** 修改操作 */
+async function handleUpdate(row: ForecastDeposit) {
+    // open.value = true
+    // title.value = '修改放款預估'
+    // console.log('row', row)
+    // const { sid } = row
+    // const resp = await selectOneForecastLoan({ sid })
+    // const data = resp?.data
+    // console.log('data', data)
+    // form.value = {
+    //     sid: data.sid,
+    //     rmempnr: data.rmempnr ?? '',
+    //     demandtype: data.demandtype ?? '',
+    //     proptype: data.proptype ?? '',
+    //     clientcd: data.clientcd ?? '',
+    //     loantype: data.loantype ?? '',
+    //     clientnamec: data.clientnamec ?? '',
+    //     demanddate: data.demanddate ?? '',
+    //     currencytype: data.currencytype ?? '',
+    //     exchangeRate: data.exchangeRate ?? null,
+    //     operationIntRate: data.operationIntRate ?? null,
+    //     demandamt: data.demandamt ?? null,
+    //     loandescription: data.loandescription ?? ''
+    // }
+    // open.value = true
+    // title.value = '修改放款預估'
+    // isDisableClientNameC.value = true;
+}
+
+/** 删除操作 */
+async function handleDelete(row: ForecastDeposit) {
+    // try {
+    //     await ElMessageBox.confirm(`是否確認刪除 SID 編號為「${row.sid}」的資料？`, '提示', {
+    //         confirmButtonText: '確定',
+    //         cancelButtonText: '取消',
+    //         type: 'warning'
+    //     })
+    //     console.log('刪除資料', row)
+    //     await deleteForecastLoan({ sid: row.sid! })
+    //     await getList()
+    //     ElMessage.success('刪除成功')
+    // } catch (error) {
+    //     console.log('取消刪除或發生錯誤', error)
+    //     if (error === 'cancel') return; // 使用者取消刪除不顯示錯誤通知
+    //     ElNotification.error({ title: '刪除失敗', message: String(error) })
+    // }
+}
+
+/** ===== Formatters ===== */
+function fmtDemandAmt(row: ForecastDeposit) {
+    return typeof row?.demandAmt === 'number' ? formatThousands(row.demandAmt) : ''
+}
+
+function fmtDemandAmtTwd(row: ForecastDeposit) {
+    return typeof row?.demandAmtTwd === 'number' ? formatThousands(row.demandAmtTwd) : ''
 }
 </script>
 

@@ -90,5 +90,33 @@
     "code": 200,
     "message": "添加成功",
     "data": null
+  },
+  "getForecastDepositList": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "total": 1,
+      "rows": [
+        {
+          "id": 31,
+          "areaCd": "711",
+          "areaName": "北一區",
+          "rmEmpNo": "00818",
+          "rmEmpNameC": "李勇杰",
+          "demandType": "放款減少",
+          "clientNameC": "力垣",
+          "currencyType": "USD",
+          "demandDate": "2025-12-31",
+          "exchangeRate": 36.44214,
+          "demandAmt": 1000000.0,
+          "demandAmtTwd": 31000000.0,
+          "depositDescription": "活存",
+          "createDatetime": "2025-12-08 14:03:08",
+          "lastUpdateDatetime": "2025-12-08 14:03:08"
+        }
+      ],
+      "code": 200,
+      "msg": "查询成功"
+    }
   }
 }
