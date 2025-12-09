@@ -7,6 +7,7 @@ enum API {
     FORECAST_DEPOSIT_GET_LIST = '/forecast/deposit/list',
     FORECAST_DEPOSIT_SELECT_ONE = '/forecast/deposit/selectOne',
     FORECAST_DEPOSIT_UPDATE = '/forecast/deposit/update',
+    FORECAST_DEPOSIT_DELETE = '/forecast/deposit/delete',
 }
 
 export function getForecastDepositBootstrap() {
@@ -91,5 +92,16 @@ export const updateForecastDeposit = (data: UpdateForecastDepositDTO) => {
         url: API.FORECAST_DEPOSIT_UPDATE,
         method: 'post',
         data
+    })
+}
+
+export interface DeleteForecastDepositDTO {
+    id: number;
+}
+
+export const deleteForecastDeposit = (data: DeleteForecastDepositDTO) => {
+    return request({
+        url: API.FORECAST_DEPOSIT_DELETE + `/${data.id}`,
+        method: 'post'
     })
 }

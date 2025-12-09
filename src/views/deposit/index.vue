@@ -186,11 +186,13 @@ import {
     addForecastDeposit,
     getForecastDepositList,
     selectOneForecastDeposit,
-    updateForecastDeposit
+    updateForecastDeposit,
+    deleteForecastDeposit
 } from "@/api/forecastDeposit";
 import { 
     ElNotification, 
-    ElMessage
+    ElMessage,
+    ElMessageBox
 } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { useUserStore } from '@/stores/modules/user';
@@ -524,21 +526,21 @@ async function handleUpdate(row: ForecastDeposit) {
 
 /** 删除操作 */
 async function handleDelete(row: ForecastDeposit) {
-    // try {
-    //     await ElMessageBox.confirm(`是否確認刪除 SID 編號為「${row.sid}」的資料？`, '提示', {
-    //         confirmButtonText: '確定',
-    //         cancelButtonText: '取消',
-    //         type: 'warning'
-    //     })
-    //     console.log('刪除資料', row)
-    //     await deleteForecastLoan({ sid: row.sid! })
-    //     await getList()
-    //     ElMessage.success('刪除成功')
-    // } catch (error) {
-    //     console.log('取消刪除或發生錯誤', error)
-    //     if (error === 'cancel') return; // 使用者取消刪除不顯示錯誤通知
-    //     ElNotification.error({ title: '刪除失敗', message: String(error) })
-    // }
+    try {
+        await ElMessageBox.confirm(`是否確認刪除 ID 編號為「${row.id}」的資料？`, '提示', {
+            confirmButtonText: '確定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        })
+        console.log('刪除資料', row)
+        await deleteForecastDeposit({ id: row.id! })
+        await getList()
+        ElMessage.success('刪除成功')
+    } catch (error) {
+        console.log('取消刪除或發生錯誤', error)
+        if (error === 'cancel') return; // 使用者取消刪除不顯示錯誤通知
+        ElNotification.error({ title: '刪除失敗', message: String(error) })
+    }
 }
 
 /** ===== Formatters ===== */

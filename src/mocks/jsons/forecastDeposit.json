@@ -144,5 +144,10 @@
     "code": 200,
     "message": "更新成功",
     "data": null
+  },
+  "deleteForecastDeposit": {
+    "code": 200,
+    "message": "刪除成功",
+    "data": null
   }
 }
