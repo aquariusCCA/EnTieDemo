@@ -230,7 +230,7 @@ interface PageBootstrap {
 
 const initFormField = {
     id: null as number | null,
-    areaCd: areaCd.value || '',
+    areaCd: '',
     areaName: '',
     rmEmpNo: '',
     rmEmpNameC: '',
@@ -467,7 +467,7 @@ async function submitForm() {
                     // 新增
                     console.log('新增：', form.value)
                     await addForecastDeposit({
-                        areaCd: form.value.areaCd,
+                        loggedInAreaCd: areaCd.value || '',
                         rmEmpNo: form.value.rmEmpNo,
                         demandType: form.value.demandType,
                         clientNameC: form.value.clientNameC,

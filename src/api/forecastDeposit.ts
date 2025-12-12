@@ -25,7 +25,7 @@ export const fetchExchangeRate = (crncyCode: string) => {
 }
 
 export interface AddForecastDepositDTO {
-    areaCd: string;
+    loggedInAreaCd: string;
     rmEmpNo: string;
     demandType: string;
     clientNameC: string;
