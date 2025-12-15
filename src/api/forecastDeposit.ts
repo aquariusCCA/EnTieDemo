@@ -46,8 +46,7 @@ export const addForecastDeposit = (data: AddForecastDepositDTO) => {
 }
 
 export interface ForecastDepositSelectDTO {
-    rmEmpNo: string;
-    areaCd: string;
+    loggedInAreaCd: string;
     inputRmEmpNo: string;
     pageNum: number;
     pageSize: number;

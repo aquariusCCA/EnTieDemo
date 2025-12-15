@@ -398,8 +398,7 @@ async function getList() {
     tableLoading.value = true
     try {
         const resp = await getForecastDepositList({
-            rmEmpNo: userInfo.value?.loginUser?.account || '',
-            areaCd: areaCd.value || '',
+            loggedInAreaCd: areaCd.value || '',
             inputRmEmpNo: queryParams.value.rmEmpNo || '',
             pageNum: queryParams.value.pageNum,
             pageSize: queryParams.value.pageSize
