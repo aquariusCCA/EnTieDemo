@@ -44,6 +44,16 @@
                             查詢
                         </el-button>
                     </el-col>
+
+                    <el-col :span="1.5" v-show="areaCd === '983'">
+                        <el-button 
+                            type="primary" 
+                            plain icon="Files" 
+                            @click="handleExport"
+                        >
+                            匯出存款預估報表
+                        </el-button>
+                    </el-col>                    
                 </el-row>
             </div>
         </div>
@@ -187,17 +197,20 @@ import {
     getForecastDepositList,
     selectOneForecastDeposit,
     updateForecastDeposit,
-    deleteForecastDeposit
+    deleteForecastDeposit,
+    exportForecastDeposit
 } from "@/api/forecastDeposit";
 import { 
     ElNotification, 
     ElMessage,
-    ElMessageBox
+    ElMessageBox,
+    ElLoading
 } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { useUserStore } from '@/stores/modules/user';
 import pagination from '@/components/Pagination/index.vue';
 import { formatThousands } from '@/utils/number';
+import { downloadBlob } from '@/utils/download'
 
 /** ===== Stores ===== */
 const userStore = useUserStore();
@@ -536,6 +549,30 @@ async function handleDelete(row: ForecastDeposit) {
         console.log('取消刪除或發生錯誤', error)
         if (error === 'cancel') return; // 使用者取消刪除不顯示錯誤通知
         ElNotification.error({ title: '刪除失敗', message: String(error) })
+    }
+}
+
+async function handleExport(){
+    const loading = ElLoading.service({
+        lock: true,
+        text: '報表生成中，請稍候 …',
+        background: 'rgba(0,0,0,0.3)'
+    })
+
+    try {
+        const response = await exportForecastDeposit()
+        const blob = response.data
+        const fileName = '存款預估報表.xlsx'
+        downloadBlob(blob, fileName)
+        ElNotification.success('報表下載已完成')
+    } catch (err) {
+        console.error('報表生成失敗:', err)
+        ElNotification.error({
+            title: '報表生成失敗',
+            message: String(err)
+        })
+    } finally {
+        loading.close()
     }
 }
 

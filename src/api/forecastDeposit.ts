@@ -8,6 +8,7 @@ enum API {
     FORECAST_DEPOSIT_SELECT_ONE = '/forecast/deposit/selectOne',
     FORECAST_DEPOSIT_UPDATE = '/forecast/deposit/update',
     FORECAST_DEPOSIT_DELETE = '/forecast/deposit/delete',
+    FORECAST_DEPOSIT_EXPORT = '/forecast/deposit/export',
 }
 
 export function getForecastDepositBootstrap() {
@@ -101,5 +102,13 @@ export const deleteForecastDeposit = (data: DeleteForecastDepositDTO) => {
     return request({
         url: API.FORECAST_DEPOSIT_DELETE + `/${data.id}`,
         method: 'post'
+    })
+}
+
+export const exportForecastDeposit = () => {
+    return request({
+        url: API.FORECAST_DEPOSIT_EXPORT,
+        method: 'post',
+        responseType: 'blob',                // 以二進位方式接收
     })
 }
