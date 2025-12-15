@@ -72,10 +72,9 @@ export const selectOneForecastDeposit = (data: SelectOneForecastDepositDTO) => {
 }
 
 interface UpdateForecastDepositDTO {
+    loggedInAreaCd: string;
     id: number;
-    areaCd: string;
     rmEmpNo: string;
-    rmEmpNameC: string;
     demandType: string;
     clientNameC: string;
     currencyType: string;

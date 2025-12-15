@@ -444,10 +444,9 @@ async function submitForm() {
                     // 修改
                     console.log('修改：', form.value)
                     await updateForecastDeposit({
+                        loggedInAreaCd: areaCd.value || '',
                         id: form.value.id,
-                        areaCd: form.value.areaCd,
                         rmEmpNo: form.value.rmEmpNo,
-                        rmEmpNameC: form.value.rmEmpNameC,
                         demandType: form.value.demandType,
                         clientNameC: form.value.clientNameC,
                         currencyType: form.value.currencyType,
@@ -497,8 +496,6 @@ async function onPaginate() {
 
 /** 修改操作 */
 async function handleUpdate(row: ForecastDeposit) {
-    open.value = true
-    title.value = '修改存款預估'
     console.log('row', row)
     const { id } = row
     const resp = await selectOneForecastDeposit({ id })
