@@ -23,8 +23,15 @@
         </el-form-item>
 
         <el-form-item prop="password" label="密碼">
-          <el-input id="password" v-model="loginForm.password" type="password" :prefix-icon="Lock" show-password
-            autocomplete="current-password" />
+          <el-input 
+            id="password" 
+            v-model="loginForm.password" 
+            type="password" 
+            :prefix-icon="Lock" 
+            show-password
+            autocomplete="current-password" 
+            @keyup.enter="toLogin"
+          />
         </el-form-item>
 
         <el-form-item>
