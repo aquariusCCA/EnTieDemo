@@ -36,9 +36,9 @@ export const constantRoutes = [
   },
   {
     name: "Reports",
-    path: "/reports",
+    path: "/performanceDetails",
     component: () => import("@/layout/index.vue"), // 懒加载Layout组件
-    redirect: "/reports/performanceDetails", // 重定向到/reports/performance-details
+    redirect: "/performanceDetails", // 重定向到 /performanceDetails
     meta: {
       name: "報表",
       hidden: false,
@@ -47,9 +47,9 @@ export const constantRoutes = [
     children: [
       {
         name: "PerformanceDetails",
-        path: "/reports/performanceDetails",
+        path: "/performanceDetails",
         component: () =>
-          import("@/views/reports/performanceDetails/PerformanceDetails.vue"), // 懶加载PerformanceDetails组件
+          import("@/views/performanceDetails/PerformanceDetails.vue"), // 懶加载PerformanceDetails组件
         meta: {
           name: "績效查詢",
           hidden: false,
@@ -62,7 +62,7 @@ export const constantRoutes = [
     name: "forecast",
     path: "/forecast",
     component: () => import("@/layout/index.vue"), // 懒加载Layout组件
-    redirect: "/forecast/loan", // 重定向到/forecast/loan/index
+    redirect: "/forecast/loan", // 重定向到 /forecast/loan
     meta: {
       name: "預估",
       hidden: false,
