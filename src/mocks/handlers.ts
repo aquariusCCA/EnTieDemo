@@ -144,7 +144,7 @@ export const handlers = [
   http.post(`${BASE_URL}/forecast/deposit/update`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
-  http.post(`${BASE_URL}/forecast/deposit/delete/31`, (resolverInfo) => {
+  http.post(`${BASE_URL}/forecast/deposit/delete/31/983`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
     http.post(`${BASE_URL}/forecast/deposit/export`, () => {

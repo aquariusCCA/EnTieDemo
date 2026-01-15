@@ -59,7 +59,7 @@ export const setSeeds = async () => {
       [`${BASE_URL}/forecast/deposit/list`, getForecastDepositList],
       [`${BASE_URL}/forecast/deposit/selectOne/31`, selectOneForecastDeposit],
       [`${BASE_URL}/forecast/deposit/update`, updateForecastDeposit],
-      [`${BASE_URL}/forecast/deposit/delete/31`, deleteForecastDeposit],
+      [`${BASE_URL}/forecast/deposit/delete/31/983`, deleteForecastDeposit],
     ]);
   } catch (err) {
     console.log(err);

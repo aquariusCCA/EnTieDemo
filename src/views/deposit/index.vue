@@ -84,7 +84,7 @@
                 <el-table-column label="預估金額(原幣)" align="right" width="127" prop="demandAmt" :formatter="fmtDemandAmt"/>
                 <el-table-column label="折合台幣" align="right" width="127" prop="demandAmtTwd" :formatter="fmtDemandAmtTwd"/>
                 <el-table-column label="匯率" align="right" width="127" prop="exchangeRate" />
-                <el-table-column label="存款天期(活期請註明)" width="300" prop="depositDescription" />
+                <el-table-column label="存款天期" width="300" prop="depositDescription" />
                 <el-table-column label="最後更新" width="200" prop="lastUpdateDatetime"/>
                 <el-table-column label="資料建立" width="200" prop="createDatetime"/>
             </el-table>
@@ -167,8 +167,20 @@
                 <el-form-item label="折合台幣" prop="demandAmtTwd">
                     <el-input disabled v-model.number="demandAmtTwd" type="number" />
                 </el-form-item>
-                <el-form-item label="存款天期(活期請註明)" prop="depositDescription">
-                    <el-input v-model="form.depositDescription" />
+                <el-form-item label="存款天期" prop="depositDescription">
+                    <el-select
+                        v-model="form.depositDescription"
+                        placeholder="請選擇"
+                        clearable
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in pageBooststrap.depositTypeSelectOptions"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                        />
+                    </el-select>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -239,6 +251,7 @@ interface PageBootstrap {
     areaNameSelectOptions: Array<any>
     currencySelectOptions: Array<any>
     demandTypeMap: Record<string, string>
+    depositTypeSelectOptions: Array<string>
 }
 
 const initFormField = {
@@ -267,7 +280,8 @@ const forecastDepositList = ref<ForecastDeposit[]>([]);
 const pageBooststrap = ref<PageBootstrap>({
     areaNameSelectOptions: [],
     currencySelectOptions: [],
-    demandTypeMap: {}
+    demandTypeMap: {},
+    depositTypeSelectOptions: []
 });
 const open = ref(false);
 const title = ref("");
@@ -353,12 +367,19 @@ onMounted(async () => {
     bootstrapLoading.value = true
     try {
         const resp = await getForecastDepositBootstrap()
-        const { areaNameSelectOptions, currencySelectOptions, demandTypeMap } = resp.data
+        const { 
+            areaNameSelectOptions, 
+            currencySelectOptions, 
+            demandTypeMap,
+            depositTypeSelectOptions
+        } = resp.data
         pageBooststrap.value = {
             areaNameSelectOptions,
             currencySelectOptions,
-            demandTypeMap
+            demandTypeMap,
+            depositTypeSelectOptions
         }
+        console.log('pageBooststrap', pageBooststrap.value)
     } catch (err) {
         ElNotification.error({ title: '錯誤', message: String(err) })
     } finally {
@@ -542,7 +563,7 @@ async function handleDelete(row: ForecastDeposit) {
             type: 'warning'
         })
         console.log('刪除資料', row)
-        await deleteForecastDeposit({ id: row.id! })
+        await deleteForecastDeposit({ id: row.id, loggedInAreaCd: areaCd.value || '' })
         await getList()
         ElMessage.success('刪除成功')
     } catch (error) {

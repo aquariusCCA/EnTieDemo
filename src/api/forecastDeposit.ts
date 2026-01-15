@@ -96,11 +96,12 @@ export const updateForecastDeposit = (data: UpdateForecastDepositDTO) => {
 
 export interface DeleteForecastDepositDTO {
     id: number;
+    loggedInAreaCd: string;
 }
 
 export const deleteForecastDeposit = (data: DeleteForecastDepositDTO) => {
     return request({
-        url: API.FORECAST_DEPOSIT_DELETE + `/${data.id}`,
+        url: API.FORECAST_DEPOSIT_DELETE + `/${data.id}` + `/${data.loggedInAreaCd}`,
         method: 'post'
     })
 }

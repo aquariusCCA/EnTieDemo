@@ -72,7 +72,16 @@
         },
         {
           "crncyCode": "CNY"
+        },
+        {
+          "crncyCode": "JPY"
         }
+      ],
+      "depositTypeSelectOptions": [
+        "備償",
+        "定存",
+        "活期",
+        "活存" 
       ]
     }
   },
