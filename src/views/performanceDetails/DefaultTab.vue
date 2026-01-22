@@ -172,7 +172,11 @@ const areacdOptions = [
   },
   {
     value: '736',
-    label: '南部區',
+    label: '嘉南區',
+  },
+  {
+    value: '741',
+    label: '高屏區',
   },
   {
     value: '924',
