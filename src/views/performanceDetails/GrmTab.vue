@@ -115,7 +115,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { usePerformanceStore } from '@/stores/modules/performance';
 import { useUserStore } from '@/stores/modules/user';
 import { storeToRefs } from 'pinia';
@@ -187,32 +187,7 @@ const areacdOptions = [
   },
 ]
 
-const dateOptions = [
-    {
-        value: '2020',
-        label: '2020年度',
-    },
-    {
-        value: '2021',
-        label: '2021年度',
-    },
-    {
-        value: '2022',
-        label: '2022年度',
-    },
-    {
-        value: '2023',
-        label: '2023年度',
-    },
-    {
-        value: '2024',
-        label: '2024年度',
-    },
-    {
-        value: 'recentYear',
-        label: '近一年度'
-    }
-]
+const dateOptions = computed(() => buildDateOptions());
 
 // 結束月份不可早於起始月份
 function validateEndMonth(_: any, value: string, callback: (error?: Error) => void) {
@@ -246,6 +221,32 @@ const rules = ref({
         { validator: validateEndMonth, trigger: 'change' },
     ],
 })
+
+type DateOption = { value: string; label: string };
+
+/**
+ * 產生年度下拉選項：
+ * - 永遠顯示「今年 - 5」到「今年 - 1」(共 5 個完整年度)
+ * - 最後加上 recentYear
+ */
+function buildDateOptions(base: Date = new Date(), yearsCount = 5): DateOption[] {
+  const thisYear = base.getFullYear();      // e.g. 2026
+  const startYear = thisYear - yearsCount;  // e.g. 2021
+  const endYear = thisYear - 1;             // e.g. 2025
+
+  const years: DateOption[] = Array.from(
+    { length: yearsCount },
+    (_, i) => {
+      const y = startYear + i;
+      return { value: String(y), label: `${y}年度` };
+    }
+  );
+
+  return [
+    ...years,
+    { value: "recentYear", label: "近一年度" },
+  ];
+}
 
 /** 工具：YYYYMM 格式化 */
 const pad2 = (n: number) => (n < 10 ? `0${n}` : `${n}`);
