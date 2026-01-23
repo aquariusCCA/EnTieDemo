@@ -6,6 +6,7 @@ import {
 } from "./jsons/user.json";
 
 import {
+  performanceBootstrap,
   performanceDetailPreCheck,
   grmPerformanceDetailPreCheck,
 } from "./jsons/performance.json";
@@ -43,6 +44,7 @@ export const setSeeds = async () => {
       [`${BASE_URL}/user/logout`, doLogout],
       [`${BASE_URL}/user/info`, doFetchUserInfo],
       [`${BASE_URL}/user/info`, doFetchUserInfo],
+      [`${BASE_URL}/performance/bootstrap`, performanceBootstrap],
       [`${BASE_URL}/performance/preCheck`, performanceDetailPreCheck],
       [`${BASE_URL}/performance/grmPreCheck`, grmPerformanceDetailPreCheck],
       [`${BASE_URL}/forecast/loan/bootstrap`, forecastLoanBootstrap],

@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 enum API {
+    PERFORMANCE_BOOTSTRAP_URL = '/performance/bootstrap',
     PERFORMANCE_DETAIL_URL = '/performance/detail',
     PERFORMANCE_DETAIL_PRECHECK_URL = '/performance/preCheck',
     PERFORMANCE_GRM_DETAIL_URL = '/performance/grmDetail',
@@ -22,6 +23,13 @@ export interface GrmPerformanceDetailParams {
     assignedRegion: string;
     startDataMonth: string;
     endDataMonth: string;
+}
+
+export function getPerformanceBootstrap() {
+    return request({
+        url: API.PERFORMANCE_BOOTSTRAP_URL,
+        method: 'post',
+    })
 }
 
 export const getPerformanceDetail = (params: PerformanceDetailParams) => {

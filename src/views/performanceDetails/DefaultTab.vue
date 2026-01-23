@@ -49,7 +49,7 @@
                         :disabled="isAreaCenter" 
                     >
                         <el-option
-                            v-for="item in areacdOptions"
+                            v-for="item in areaCdOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
@@ -115,7 +115,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { usePerformanceStore } from '@/stores/modules/performance';
 import { useUserStore } from '@/stores/modules/user';
 import { storeToRefs } from 'pinia';
@@ -125,10 +125,12 @@ import { ElLoading, ElNotification } from 'element-plus'
 import { downloadBlob } from '@/utils/download'
 
 const performanceStore = usePerformanceStore()
-const { fieldCondition } = storeToRefs(performanceStore)
+const { 
+    fieldCondition,
+    areaCdOptions
+} = storeToRefs(performanceStore)
 const {
     fetchPerformanceBlob,
-    setAreaCd,
     doPerformanceDetailPreCheck
 } = performanceStore
 
@@ -136,57 +138,6 @@ const userStore = useUserStore()
 const { isAreaCenter } = storeToRefs(userStore)
 
 const ruleFormRef = ref<FormInstance>()
-
-const areacdOptions = [
-  {
-    value: '711',
-    label: '北一區',
-  },
-  {
-    value: '712',
-    label: '北二區',
-  },
-  {
-    value: '713',
-    label: '北三區',
-  },
-  {
-    value: '717',
-    label: '北五區',
-  },
-  {
-    value: '718',
-    label: '北六區',
-  },
-  {
-    value: '722',
-    label: '北八區',
-  },
-  {
-    value: '726',
-    label: '桃竹區',
-  },
-  {
-    value: '731',
-    label: '台中區',
-  },
-  {
-    value: '736',
-    label: '嘉南區',
-  },
-  {
-    value: '741',
-    label: '高屏區',
-  },
-  {
-    value: '924',
-    label: '法授部',
-  },
-  {
-    value: '983',
-    label: '法業部',
-  },
-]
 
 const dateOptions = computed(() => buildDateOptions());
 

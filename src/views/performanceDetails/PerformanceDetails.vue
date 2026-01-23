@@ -7,10 +7,14 @@ import GrmTab from './GrmTab.vue'
 const activeName = ref('default')
 
 const performanceStore = usePerformanceStore()
-const { setAreaCd } = performanceStore
+const { 
+  setAreaCd, 
+  fetchPerformanceBootstrap 
+} = performanceStore
 
-onMounted(() => {
+onMounted(async() => {
     setAreaCd();
+    await fetchPerformanceBootstrap();
 })
 </script>
 

@@ -12,5 +12,69 @@
       "exist": false
     },
     "message": "成功"
+  },
+  "performanceBootstrap": {
+    "code": 200,
+    "message": "成功",
+    "data": {
+      "areaOptions": [
+        {
+          "value": "711",
+          "label": "北一區"
+        },
+        {
+          "value": "712",
+          "label": "北二區"
+        },
+        {
+          "value": "713",
+          "label": "北三區"
+        },
+        {
+          "value": "716",
+          "label": "北四區"
+        },
+        {
+          "value": "717",
+          "label": "北五區"
+        },
+        {
+          "value": "718",
+          "label": "北六區"
+        },
+        {
+          "value": "721",
+          "label": "北七區"
+        },
+        {
+          "value": "722",
+          "label": "北八區"
+        },
+        {
+          "value": "726",
+          "label": "桃竹區"
+        },
+        {
+          "value": "731",
+          "label": "台中區"
+        },
+        {
+          "value": "736",
+          "label": "嘉南區"
+        },
+        {
+          "value": "741",
+          "label": "高屏區"
+        },
+        {
+          "value": "924",
+          "label": "授信部"
+        },
+        {
+          "value": "983",
+          "label": "法業部"
+        }
+      ]
+    }
   }
 }

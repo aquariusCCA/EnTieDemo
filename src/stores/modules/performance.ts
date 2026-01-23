@@ -1,11 +1,12 @@
 import { defineStore, storeToRefs } from "pinia";
 import {
+  getPerformanceBootstrap,
   getPerformanceDetail,
   performanceDetailPreCheck,
   getGrmPerformanceDetail,
   grmPerformanceDetailPreCheck,
 } from "@/api/performance";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useUserStore } from "@/stores/modules/user";
 
 interface FieldCondition {
@@ -36,6 +37,8 @@ interface GrmFieldCondition {
   dateRangePreset: string;
 }
 
+type AreaOption = { value: string; label: string }
+
 const initialGrmFieldCondition: GrmFieldCondition = {
   grmId: "",
   groupName: "",
@@ -58,6 +61,18 @@ export const usePerformanceStore = defineStore("performance", () => {
     ...initialGrmFieldCondition,
   });
 
+  const areaCdOptions = ref<AreaOption[]>([])
+
+  async function fetchPerformanceBootstrap() {
+    try {
+      const res = await getPerformanceBootstrap();
+      const { areaOptions } = res.data;
+      areaCdOptions.value = areaOptions;
+    } catch (e) {
+      console.error("獲取初始數據失敗:", e);
+    }
+  }
+   
   // 設置區域中心代碼
   function setAreaCd() {
     // 如果是區域中心人員就需要設置
@@ -172,8 +187,10 @@ export const usePerformanceStore = defineStore("performance", () => {
   }
 
   return {
+    areaCdOptions,
     fieldCondition,
     grmFieldCondition,
+    fetchPerformanceBootstrap,
     setAreaCd,
     fetchPerformanceBlob,
     doPerformanceDetailPreCheck,

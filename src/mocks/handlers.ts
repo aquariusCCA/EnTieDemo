@@ -47,6 +47,9 @@ export const handlers = [
   http.post(`${BASE_URL}/user/info`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
+  http.post(`${BASE_URL}/performance/bootstrap`, (resolverInfo) => {
+    return mockResolver(resolverInfo);
+  }),
   http.post(`${BASE_URL}/performance/preCheck`, (resolverInfo) => {
     return mockResolver(resolverInfo);
   }),
